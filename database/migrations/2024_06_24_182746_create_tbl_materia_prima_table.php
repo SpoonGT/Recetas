@@ -1,0 +1,40 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateTblMateriaPrimaTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('tbl_materia_prima', function (Blueprint $table) {
+            $table->id();
+            $table->boolean('activo')->default(true);
+
+            $table->bigInteger('informacion_id')->unsigned()->index();
+            $table->foreign('informacion_id')->references('id')->on('tbl_informacion');
+
+            $table->softDeletes();
+            $table->string('deleted_by', 25)->nullable();
+
+            $table->unique('informacion_id');
+            $table->index(array('informacion_id', 'activo'));
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('tbl_materia_prima');
+    }
+}
