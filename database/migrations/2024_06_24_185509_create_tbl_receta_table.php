@@ -15,15 +15,26 @@ class CreateTblRecetaTable extends Migration
     {
         Schema::create('tbl_receta', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo_receta', 50)->unique();
-            $table->string('netsuit', 100)->unique();
-            $table->string('codigo_barra', 50)->unique();
-            $table->string('nombre', 150)->unique();
+            $table->smallInteger('version');
+
+            $table->string('codigo_receta', 50);
+
+            $table->string('netsuit', 50)->nullable();
+            $table->string('codigo_barra', 50)->nullable();
+
+            $table->string('nombre', 150);
+
             $table->boolean('activo')->default(true);
-            $table->boolean('aprobado')->default(false);
+            $table->enum('estado', ['REVISIÓN', 'APROBADO', 'RECHAZADO'])->default('REVISIÓN');
 
             $table->bigInteger('chef_id')->unsigned()->index();
             $table->foreign('chef_id')->references('id')->on('tbl_usuario');
+
+            $table->bigInteger('empaque_id')->unsigned()->index();
+            $table->foreign('empaque_id')->references('id')->on('tbl_area');
+
+            $table->bigInteger('produce_id')->unsigned()->index();
+            $table->foreign('produce_id')->references('id')->on('tbl_area');
 
             $table->timestamps();
             $table->softDeletes();
@@ -32,8 +43,12 @@ class CreateTblRecetaTable extends Migration
             $table->string('updated_by', 25)->nullable();
             $table->string('deleted_by', 25)->nullable();
 
-            $table->index(array('id', 'activo', 'aprobado'));
-            $table->index(array('activo', 'aprobado'));
+            $table->unique(array('id', 'version'));
+            $table->index(array('id', 'activo', 'estado'));
+            $table->index(array('netsuit', 'activo', 'estado'));
+            $table->index(array('codigo_barra', 'activo', 'estado'));
+            $table->index(array('codigo_receta', 'activo', 'estado'));
+            $table->index(array('activo', 'estado'));
         });
     }
 

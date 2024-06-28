@@ -15,6 +15,7 @@ class CreateTblProductoTable extends Migration
     {
         Schema::create('tbl_producto', function (Blueprint $table) {
             $table->id();
+            $table->enum('prefijo', ['PTL', 'PTI', 'SE']);
             $table->boolean('sub_ensmable')->default(true);
             $table->boolean('activo')->default(true);
 
@@ -25,7 +26,8 @@ class CreateTblProductoTable extends Migration
             $table->string('deleted_by', 25)->nullable();
 
             $table->unique('informacion_id');
-            $table->index(array('informacion_id', 'activo', 'sub_ensmable'));
+            $table->index(array('informacion_id', 'activo', 'sub_ensmable', 'prefijo'));
+            $table->index(array('activo', 'prefijo'));
         });
     }
 

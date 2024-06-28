@@ -45,7 +45,7 @@ BEGIN
     --CONSULTA OPCION 1 Seleccionar todos los registros de la tabla.
     IF @opcion = 1
     BEGIN
-		SET @query = N'SELECT * FROM [dbo].['+@table+N'] WHERE [deleted_at] IS NULL';
+		SET @query = N'SELECT * FROM [dbo].['+@table+N'] WITH(NOLOCK) WHERE [deleted_at] IS NULL';
 		EXECUTE sp_executesql @query;
     END
 
@@ -140,7 +140,7 @@ BEGIN
     --CONSULTA OPCION 5 Seleccionamos por id el registro en la tabla.
     IF @opcion = 5 
     BEGIN
-		SET @query = N'SELECT * FROM [dbo].['+@table+N'] WHERE [deleted_at] IS NULL AND id = @identificador';
+		SET @query = N'SELECT * FROM [dbo].['+@table+N'] WITH(NOLOCK) WHERE [deleted_at] IS NULL AND id = @identificador';
 		SET @parameters = N'@identificador INT';
 		EXECUTE sp_executesql @query, @parameters, @identificador = @id;
     END

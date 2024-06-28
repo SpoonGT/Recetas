@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Imports\MateriaPrimaImport;
+use App\Imports\ProductoImport;
+use App\Imports\SubEnsambleImport;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -16,6 +18,13 @@ class DatabaseSeeder extends Seeder
      * @return void
      */
     public function run()
+    {
+        //$this->insert();
+        //$this->materia_prima();
+        //$this->producto();
+    }
+
+    private function insert()
     {
         $rol = DB::select(
             "exec [dbo].[sp_rol_crud] 0, 'Administrador', 'Rol para administrar todas las pantallas del sistema.', 'migration', 2"
@@ -101,47 +110,47 @@ class DatabaseSeeder extends Seeder
 
         echo "=========================== UNIDAD ===========================" . PHP_EOL;
 
-        $json = '{"nomenclatura": "gg", "nombre": "Gramoz"}';
+        $json = '{"nomenclatura": "g", "nombre": "Gramos"}';
         $unidad = DB::select(
             "exec [dbo].[sp_table_maintenance] 0, 'tbl_unidad', '{$json}', 'migration', 2"
         )[0];
 
         echo "Unidad Creada: {$unidad->id} - {$unidad->nombre} | {$unidad->nomenclatura}" . PHP_EOL;
 
-        $json = '{"nomenclatura": "g", "nombre": "Gramos"}';
+        $json = '{"nomenclatura": "kg", "nombre": "Kilogramos"}';
         $unidad = DB::select(
-            "exec [dbo].[sp_table_maintenance] $unidad->id, 'tbl_unidad', '{$json}', 'migration', 3"
+            "exec [dbo].[sp_table_maintenance] 0, 'tbl_unidad', '{$json}', 'migration', 2"
         )[0];
 
-        echo "Unidad Actualizar: {$unidad->id} - {$unidad->nombre} | {$unidad->nomenclatura}" . PHP_EOL;
+        echo "Unidad Creada: {$unidad->id} - {$unidad->nombre} | {$unidad->nomenclatura}" . PHP_EOL;
+
+        $json = '{"nomenclatura": "ml", "nombre": "Mililitros"}';
+        $unidad = DB::select(
+            "exec [dbo].[sp_table_maintenance] 0, 'tbl_unidad', '{$json}', 'migration', 2"
+        )[0];
+
+        echo "Unidad Creada: {$unidad->id} - {$unidad->nombre} | {$unidad->nomenclatura}" . PHP_EOL;
+
+        $json = '{"nomenclatura": "ud", "nombre": "Unidades"}';
+        $unidad = DB::select(
+            "exec [dbo].[sp_table_maintenance] 0, 'tbl_unidad', '{$json}', 'migration', 2"
+        )[0];
+
+        echo "Unidad Creada: {$unidad->id} - {$unidad->nombre} | {$unidad->nomenclatura}" . PHP_EOL;
 
         echo "======================================================================" . PHP_EOL;
 
         echo "=========================== ALERGENO ===========================" . PHP_EOL;
 
-        $json = '{"nombre": "Triggo"}';
-        $alergeno = DB::select(
-            "exec [dbo].[sp_table_maintenance] 0, 'tbl_alergeno', '{$json}', 'migration', 2"
-        )[0];
+        for ($i = 0; $i < 20; $i++) {
+            $alergia_crear["nombre"] =  "Alergia {$i}";
+            $json = json_encode($alergia_crear);
+            $alergeno = DB::select(
+                "exec [dbo].[sp_table_maintenance] 0, 'tbl_alergeno', '{$json}', 'migration', 2"
+            )[0];
 
-        $json = '{"nombre": "Dos"}';
-        $alergeno = DB::select(
-            "exec [dbo].[sp_table_maintenance] 0, 'tbl_alergeno', '{$json}', 'migration', 2"
-        )[0];
-
-        $json = '{"nombre": "Tres"}';
-        $alergeno = DB::select(
-            "exec [dbo].[sp_table_maintenance] 0, 'tbl_alergeno', '{$json}', 'migration', 2"
-        )[0];
-
-        echo "Alergeno Creada: {$alergeno->id} - {$alergeno->nombre}" . PHP_EOL;
-
-        $json = '{"nombre": "Trigo"}';
-        $alergeno = DB::select(
-            "exec [dbo].[sp_table_maintenance] $alergeno->id, 'tbl_alergeno', '{$json}', 'migration', 3"
-        )[0];
-
-        echo "Alergeno Actualizar: {$alergeno->id} - {$alergeno->nombre}" . PHP_EOL;
+            echo "Alergeno Creada: {$alergeno->id} - {$alergeno->nombre}" . PHP_EOL;
+        }
 
         echo "======================================================================" . PHP_EOL;
 
@@ -164,5 +173,91 @@ class DatabaseSeeder extends Seeder
         echo "======================================================================" . PHP_EOL;
 
         Excel::import(new MateriaPrimaImport, 'database/seeders/Netsuite.xlsx');
+        Excel::import(new ProductoImport, 'database/seeders/Netsuite.xlsx');
+        Excel::import(new SubEnsambleImport, 'database/seeders/Netsuite.xlsx');
+    }
+
+    private function materia_prima()
+    {
+        $test_materia = DB::select(
+            "exec [dbo].[sp_materia_prima_maintenance] 1, 0, 0, 'migration', 3"
+        )[0];
+
+        echo "Actualizar Estado Materia: {$test_materia->activo}" . PHP_EOL;
+
+        $test_materia = count(DB::select(
+            "exec [dbo].[sp_materia_prima_maintenance] 1, 0, 0, 'migration', 5"
+        ));
+
+        echo "Materia Prima: Se encontraron {$test_materia}" . PHP_EOL;
+
+        $test_materia = count(DB::select(
+            "exec [dbo].[sp_materia_prima_maintenance] 0, 0, 0, 'migration', 6"
+        ));
+
+        echo "Materia Prima: Se encontraron {$test_materia}" . PHP_EOL;
+
+        $test_materia = DB::select(
+            "exec [dbo].[sp_materia_prima_maintenance] 1, 0, 0, 'migration', 7"
+        )[0];
+
+        echo "Materia Prima: Se encontraron {$test_materia->netsuit}" . PHP_EOL;
+
+        $test_materia = DB::select(
+            "exec [dbo].[sp_materia_prima_maintenance] 1, 0, 1, 'migration', 8"
+        )[0];
+
+        echo "Nueva Alergia: {$test_materia->netsuit}" . PHP_EOL;
+
+        $test_materia = DB::select(
+            "exec [dbo].[sp_materia_prima_maintenance] 1, 0, 1, 'migration', 9"
+        )[0];
+
+        echo "Estado Alergia: {$test_materia->netsuit}" . PHP_EOL;
+
+        $test_materia = DB::select(
+            "exec [dbo].[sp_materia_prima_maintenance] 1, 0, 1, 'migration', 10"
+        )[0];
+
+        echo "Eliminar Alergia: {$test_materia->netsuit}" . PHP_EOL;
+    }
+
+    private function producto()
+    {
+        $test = DB::select(
+            "exec [dbo].[sp_producto_maintenance] 1, 0, 'migration', 3"
+        )[0];
+
+        echo "Actualizar Estado Producto: {$test->activo}" . PHP_EOL;
+
+        $test = count(DB::select(
+            "exec [dbo].[sp_producto_maintenance] 1, 0, 'migration', 5"
+        ));
+
+        echo "Producto: Se encontraron {$test}" . PHP_EOL;
+
+        $test = count(DB::select(
+            "exec [dbo].[sp_producto_maintenance] 0, 0, 'migration', 6"
+        ));
+
+        echo "Producto: Se encontraron {$test}" . PHP_EOL;
+
+        $test = DB::select(
+            "exec [dbo].[sp_producto_maintenance] 1, 0, 'migration', 7"
+        )[0];
+
+        echo "Producto: Se encontraron {$test->netsuit}" . PHP_EOL;
+
+        $test = DB::select(
+            "exec [dbo].[sp_producto_maintenance] 1, 0, 'migration', 9"
+        )[0];
+
+        echo "Estado Producto Materia: {$test->netsuit}" . PHP_EOL;
+
+        $test = DB::select(
+            "exec [dbo].[sp_producto_maintenance] 1, 0, 'migration', 10"
+        )[0];
+
+        echo "Eliminar Producto Materia: {$test->netsuit}" . PHP_EOL;
     }
 }

@@ -14,8 +14,10 @@ class CreateTblProductoMateriaPrimaTable extends Migration
     public function up()
     {
         Schema::create('tbl_producto_materia_prima', function (Blueprint $table) {
+            $table->id();
             $table->decimal('cantidad', 14, 4)->default(1);
 
+            $table->string('nomenclatura', 20);
             $table->bigInteger('unidad_id')->unsigned()->index();
             $table->foreign('unidad_id')->references('id')->on('tbl_unidad');
 
@@ -37,7 +39,6 @@ class CreateTblProductoMateriaPrimaTable extends Migration
             $table->string('updated_by', 25)->nullable();
             $table->string('deleted_by', 25)->nullable();
 
-            $table->unique(array('producto_id', 'materia_prima_id', 'unidad_id'));
             $table->index(array('producto_id', 'unidad_id'));
             $table->index(array('producto_id', 'materia_prima_id'));
         });

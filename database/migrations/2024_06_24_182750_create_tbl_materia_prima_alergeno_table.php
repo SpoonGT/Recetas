@@ -14,6 +14,7 @@ class CreateTblMateriaPrimaAlergenoTable extends Migration
     public function up()
     {
         Schema::create('tbl_materia_prima_alergeno', function (Blueprint $table) {
+            $table->id();
             $table->boolean('activo')->default(true);
 
             $table->bigInteger('materia_prima_id')->unsigned()->index();
@@ -32,7 +33,7 @@ class CreateTblMateriaPrimaAlergenoTable extends Migration
             $table->string('updated_by', 25)->nullable();
             $table->string('deleted_by', 25)->nullable();
 
-            $table->unique(array('materia_prima_id', 'alergeno_id'));
+            $table->index(array('materia_prima_id', 'alergeno_id', 'activo'));
         });
     }
 

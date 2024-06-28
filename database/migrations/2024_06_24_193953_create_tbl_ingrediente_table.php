@@ -27,8 +27,7 @@ class CreateTblIngredienteTable extends Migration
             $table->bigInteger('informacion_id')->unsigned()->index();
             $table->foreign('informacion_id')->references('id')->on('tbl_informacion');
 
-            $table->string('codigo_barra', 100)->nullable();
-            $table->string('netsuit', 100)->nullable();
+            $table->string('netsuit', 100);
             $table->string('nombre', 150);
 
             $table->string('marca', 75);
@@ -43,6 +42,8 @@ class CreateTblIngredienteTable extends Migration
             $table->string('created_by', 25);
             $table->string('updated_by', 25)->nullable();
             $table->string('deleted_by', 25)->nullable();
+
+            $table->unique(array('receta_id', 'categoria_id', 'informacion_id'));
         });
     }
 

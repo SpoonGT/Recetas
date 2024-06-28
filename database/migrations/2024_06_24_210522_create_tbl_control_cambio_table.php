@@ -15,14 +15,13 @@ class CreateTblControlCambioTable extends Migration
     {
         Schema::create('tbl_control_cambio', function (Blueprint $table) {
             $table->id();
-            $table->longText('observacion')->nullable();
-            $table->boolean('aplicado')->default(false);
+            $table->longText('observacion');
 
             $table->bigInteger('receta_id')->unsigned()->index();
             $table->foreign('receta_id')->references('id')->on('tbl_receta');
 
-            $table->bigInteger('revision_receta_id')->unsigned()->index();
-            $table->foreign('revision_receta_id')->references('id')->on('tbl_revision_receta');
+            $table->bigInteger('usuario_id')->unsigned()->index();
+            $table->foreign('usuario_id')->references('id')->on('tbl_usuario');
         });
     }
 

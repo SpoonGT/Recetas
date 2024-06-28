@@ -15,6 +15,7 @@ class CreateTblMateriaPrimaTable extends Migration
     {
         Schema::create('tbl_materia_prima', function (Blueprint $table) {
             $table->id();
+            $table->enum('prefijo', ['MP', 'EM', 'AS']);
             $table->boolean('activo')->default(true);
 
             $table->bigInteger('informacion_id')->unsigned()->index();
@@ -24,7 +25,7 @@ class CreateTblMateriaPrimaTable extends Migration
             $table->string('deleted_by', 25)->nullable();
 
             $table->unique('informacion_id');
-            $table->index(array('informacion_id', 'activo'));
+            $table->index(array('activo', 'prefijo'));
         });
     }
 
