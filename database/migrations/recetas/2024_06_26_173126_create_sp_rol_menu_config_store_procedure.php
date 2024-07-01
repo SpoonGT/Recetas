@@ -91,15 +91,14 @@ BEGIN
 			SELECT TOP 1 @rol_nombre = rol_nombre, @id = [id], @nombre = [nombre], @url = [url], @icono = [icono], @menu_id = [menu_id] FROM @TempMenu;
 
 			INSERT INTO @FinalMenu (rol_id, rol_nombre, id, nombre, url, icono, menu_id) VALUES (@rol_id, @rol_nombre, @id, @nombre, @url, @icono, @menu_id);
-
 			INSERT INTO @FinalMenu (rol_id, rol_nombre, id, nombre, url, icono, menu_id)
-			SELECT @rol_id, @rol_nombre, [id], [nombre], [url], [icono], [menu_id] FROM [dbo].[tbl_menu] WHERE [menu_id] = @id ORDER BY [id] ASC;
+			SELECT @rol_id, @rol_nombre, [id], [nombre], [url], [icono], [menu_id] FROM [dbo].[tbl_menu] WHERE [menu_id] = @id;
 
 			DELETE TOP (1) FROM @TempMenu;
             SELECT @count = COUNT(*) FROM @TempMenu;
 		END
 
-		SELECT * FROM @FinalMenu ORDER BY [menu_id], [id] ASC;
+		SELECT * FROM @FinalMenu;
     END
 
 END

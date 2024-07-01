@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTblUsuarioTable extends Migration
+class CreateTblRolTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class CreateTblUsuarioTable extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_usuario', function (Blueprint $table) {
+        Schema::create('tbl_rol', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre_completo', 150);
-            $table->string('usuario', 25)->unique();
-            $table->string('contrasenia');
-            $table->string('email', 100)->unique();
-
-            $table->bigInteger('rol_id')->unsigned()->index();
-            $table->foreign('rol_id')->references('id')->on('tbl_rol');
+            $table->string('nombre', 75)->unique();
+            $table->string('descripcion')->nullable();
 
             $table->timestamps();
             $table->softDeletes();
@@ -39,6 +34,6 @@ class CreateTblUsuarioTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_usuario');
+        Schema::dropIfExists('tbl_rol');
     }
 }

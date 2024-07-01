@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSpMenuCrudStoreProcedure extends Migration
+class CreateSpRolCrudStoreProcedure extends Migration
 {
     /**
      * Run the migrations.
@@ -14,12 +14,10 @@ class CreateSpMenuCrudStoreProcedure extends Migration
     {
         DB::unprepared(
             "
-CREATE PROCEDURE [dbo].[sp_menu_crud]
+CREATE PROCEDURE sp_rol_crud
     @id INT = 0,
     @nombre NVARCHAR(75) NULL,
-    @url NVARCHAR(250) NULL,
-    @icono NVARCHAR(75) NULL,
-    @menu_id INT NULL,
+    @descripcion NVARCHAR(255) NULL,
     @usuario NVARCHAR(25) NULL,
     @opcion INT
 AS
@@ -31,23 +29,21 @@ BEGIN
     --CONSULTA OPCION 1  Seleccionar todos los registros de la tabla.
     IF @opcion = 1
     BEGIN
-        SELECT * FROM [dbo].[tbl_menu];
+        SELECT * FROM [dbo].[tbl_rol] WHERE [deleted_at] IS NULL;
     END
 
     --CONSULTA OPCION 2 Guardamos el registro en la tabla.
     IF @opcion = 2 
     BEGIN
-        INSERT INTO [dbo].[tbl_menu] ([nombre], [url], [icono], [menu_id], [created_at], [created_by])
-        VALUES (@nombre, @url, @icono, @menu_id, GETDATE(), @usuario);
+        INSERT INTO [dbo].[tbl_rol] ([nombre], [descripcion], [created_at], [created_by])
+        VALUES (@nombre, @descripcion, GETDATE(), @usuario);
 
-        SET @ultimo_id = IDENT_CURRENT(N'[dbo].[tbl_menu]');
+        SET @ultimo_id = IDENT_CURRENT(N'[dbo].[tbl_rol]');
 
-        EXECUTE sp_menu_crud
+        EXECUTE sp_rol_crud
         @id = @ultimo_id,
         @nombre = null,
-        @url = null,
-        @icono = null,
-        @menu_id = null,
+        @descripcion = null,
         @usuario = NULL,
         @opcion = 5
     END
@@ -55,22 +51,18 @@ BEGIN
     --CONSULTA OPCION 3 Actualizamos el registro en la tabla.
     IF @opcion = 3
     BEGIN
-        UPDATE [dbo].[tbl_menu]
+        UPDATE [dbo].[tbl_rol]
         SET 
             [nombre] = @nombre,  
-            [url] = @url,
-            [icono] = @icono,
-            [menu_id] = @menu_id,
+            [descripcion] = @descripcion,
             [updated_by] = @usuario,
             [updated_at] = GETDATE()
         WHERE [id] = @id;
 
-        EXECUTE sp_menu_crud
-        @id = @id,
-        @nombre = null,
-        @url = null,
-        @icono = null,
-        @menu_id = null,
+        EXECUTE sp_rol_crud 
+        @id = @id, 
+        @nombre = null, 
+        @descripcion = null,
         @usuario = NULL,
         @opcion = 5
     END
@@ -78,25 +70,19 @@ BEGIN
     --CONSULTA OPCION 4 Eliminamos el registro en la tabla.
     IF @opcion = 4 
     BEGIN
-        DELETE FROM [dbo].[tbl_menu] WHERE [id] = @id;
+        UPDATE [dbo].[tbl_rol] SET [deleted_by] = @usuario, [deleted_at] = GETDATE() WHERE [id] = @id;
     END
 
     --CONSULTA OPCION 5 Seleccionamos por id el registro en la tabla.
     IF @opcion = 5 
     BEGIN
-        SELECT * FROM [dbo].[tbl_menu] WHERE [id] = @id;
+        SELECT * FROM [dbo].[tbl_rol] WHERE [id] = @id;
     END
 
-    --CONSULTA OPCION 6 Seleccionamos por id el registro en la tabla.
+    --CONSULTA OPCION 6 Seleccionamos id y nombre para llenar lista desplegable.
     IF @opcion = 6 
     BEGIN
-        SELECT [id], [nombre] FROM [dbo].[tbl_menu] WHERE [menu_id] = 0;
-    END
-
-    --CONSULTA OPCION 7 Seleccionamos por id el registro en la tabla.
-    IF @opcion = 7 
-    BEGIN
-        SELECT [id], [nombre] FROM [dbo].[tbl_menu] WHERE [menu_id] = @id;
+        SELECT [id], [nombre] FROM [dbo].[tbl_rol] WHERE [deleted_at] IS NULL;
     END
 
 END
@@ -111,6 +97,6 @@ END
      */
     public function down()
     {
-        DB::unprepared("DROP PROCEDURE IF EXISTS sp_menu_crud;");
+        DB::unprepared("DROP PROCEDURE IF EXISTS sp_rol_crud;");
     }
 }

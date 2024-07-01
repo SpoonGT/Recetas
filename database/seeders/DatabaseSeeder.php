@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Imports\MateriaPrimaImport;
 use App\Imports\ProductoImport;
-use App\Imports\SubEnsambleImport;
 use Illuminate\Database\Seeder;
+use App\Imports\SubEnsambleImport;
 use Illuminate\Support\Facades\DB;
+use App\Imports\MateriaPrimaImport;
+use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,12 +19,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        //$this->insert();
-        //$this->materia_prima();
-        //$this->producto();
+        $this->generar_menu();
+        $this->seguridad();
+        if (Config::get('database.connections.sqlsrv.database') == "RECETAS") {
+            $this->catalogo_receta();
+            $this->import_receta();
+            $this->materia_prima_receta();
+            $this->producto_receta();
+        }
     }
 
-    private function insert()
+    private function generar_menu()
     {
         $rol = DB::select(
             "exec [dbo].[sp_rol_crud] 0, 'Administrador', 'Rol para administrar todas las pantallas del sistema.', 'migration', 2"
@@ -33,7 +38,7 @@ class DatabaseSeeder extends Seeder
         echo "Rol Creado: {$rol->id} - {$rol->nombre}" . PHP_EOL;
 
         $menu = DB::select(
-            "exec [dbo].[sp_menu_crud] 0, 'Inicio', '/', 'fa-solid fa-house-laptop', 0, 'migration', 2"
+            "exec [dbo].[sp_menu_crud] 0, 'Inicio', '/Home', 'fa-solid fa-house-laptop', 0, 'migration', 2"
         )[0];
 
         echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
@@ -45,7 +50,21 @@ class DatabaseSeeder extends Seeder
         echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
         $menu = DB::select(
-            "exec [dbo].[sp_menu_crud] 0, 'Inicio 2', '/ini', 'fa-solid fa-house-laptop', {$menu->id}, 'migration', 2"
+            "exec [dbo].[sp_menu_crud] 0, 'Seguridad', '/Seguridad', 'fa-solid fa-gears', 0, 'migration', 2"
+        )[0];
+
+        echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+        $menu_id = $menu->id;
+
+        $rol_menu = DB::select(
+            "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+        )[0];
+
+        echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+        $menu = DB::select(
+            "exec [dbo].[sp_menu_crud] 0, 'Rol', '/Seguridad/Rol', 'fa-solid fa-dice-d6', {$menu_id}, 'migration', 2"
         )[0];
 
         echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
@@ -56,8 +75,35 @@ class DatabaseSeeder extends Seeder
 
         echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+        $menu = DB::select(
+            "exec [dbo].[sp_menu_crud] 0, 'Menu', '/Seguridad/Menu', 'fa-solid fa-list', {$menu_id}, 'migration', 2"
+        )[0];
+
+        echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+        $rol_menu = DB::select(
+            "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+        )[0];
+
+        echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+        $menu = DB::select(
+            "exec [dbo].[sp_menu_crud] 0, 'Usuario', '/Seguridad/Usuario', 'fa-solid fa-user-gear', {$menu_id}, 'migration', 2"
+        )[0];
+
+        echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+        $rol_menu = DB::select(
+            "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+        )[0];
+
+        echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+    }
+
+    private function seguridad()
+    {
         $configuracion_menu = DB::select(
-            "exec [dbo].[sp_rol_menu_config] {$rol->id}, 0, 'migration', 6  "
+            "exec [dbo].[sp_rol_menu_config] 1, 0, 'migration', 6  "
         );
 
         echo "=========================== MENU CONFIGURADO ===========================" . PHP_EOL;
@@ -66,12 +112,17 @@ class DatabaseSeeder extends Seeder
 
         echo "======================================================================" . PHP_EOL;
 
+        $contrasenia = "aD71mfjmsFmDBnAlc1Hu+fEfJqsZ7+Gp8aSgxVZAT40=";
+
         $usuario = DB::select(
-            "exec [dbo].[sp_usuario_crud] 0, 'David Desarrollador', 'david.desa', 'david@gmail.com', 1, {$rol->id}, 'migration', 2"
+            "exec [dbo].[sp_usuario_crud] 0, 'Usuario', 'usuario.desa', '{$contrasenia}', 'usuario@gmail.com', 1, 'migration', 2"
         )[0];
 
         echo "Usuario Creado: {$usuario->id} - {$usuario->nombre_completo}" . PHP_EOL;
+    }
 
+    private function catalogo_receta()
+    {
         echo "=========================== CATEGORIA ===========================" . PHP_EOL;
 
         $json = '{"nombre": "Decoracion", "prefijos": "PTL"}';
@@ -171,13 +222,16 @@ class DatabaseSeeder extends Seeder
         echo "Area Actualizar: {$area->id} - {$area->nombre} | {$area->tipo}" . PHP_EOL;
 
         echo "======================================================================" . PHP_EOL;
+    }
 
+    private function import_receta()
+    {
         Excel::import(new MateriaPrimaImport, 'database/seeders/Netsuite.xlsx');
         Excel::import(new ProductoImport, 'database/seeders/Netsuite.xlsx');
         Excel::import(new SubEnsambleImport, 'database/seeders/Netsuite.xlsx');
     }
 
-    private function materia_prima()
+    private function materia_prima_receta()
     {
         $test_materia = DB::select(
             "exec [dbo].[sp_materia_prima_maintenance] 1, 0, 0, 'migration', 3"
@@ -222,7 +276,7 @@ class DatabaseSeeder extends Seeder
         echo "Eliminar Alergia: {$test_materia->netsuit}" . PHP_EOL;
     }
 
-    private function producto()
+    private function producto_receta()
     {
         $test = DB::select(
             "exec [dbo].[sp_producto_maintenance] 1, 0, 'migration', 3"
