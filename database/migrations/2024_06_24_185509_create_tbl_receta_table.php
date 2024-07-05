@@ -26,15 +26,20 @@ class CreateTblRecetaTable extends Migration
 
             $table->boolean('activo')->default(true);
             $table->enum('estado', ['REVISIÓN', 'APROBADO', 'RECHAZADO'])->default('REVISIÓN');
+            $table->dateTime('fecha_aprobacion')->nullable();
+            $table->bigInteger('aprueba_id')->default(0)->unsigned()->index();
 
             $table->bigInteger('chef_id')->unsigned()->index();
             $table->foreign('chef_id')->references('id')->on('tbl_usuario');
 
+            $table->bigInteger('produce_id')->unsigned()->index();
+            $table->foreign('produce_id')->references('id')->on('tbl_area');
+
             $table->bigInteger('empaque_id')->unsigned()->index();
             $table->foreign('empaque_id')->references('id')->on('tbl_area');
 
-            $table->bigInteger('produce_id')->unsigned()->index();
-            $table->foreign('produce_id')->references('id')->on('tbl_area');
+            $table->bigInteger('correlativo_codigo_id')->unsigned()->index();
+            $table->foreign('correlativo_codigo_id')->references('id')->on('tbl_correlativo_codigo');
 
             $table->timestamps();
             $table->softDeletes();
@@ -43,12 +48,12 @@ class CreateTblRecetaTable extends Migration
             $table->string('updated_by', 25)->nullable();
             $table->string('deleted_by', 25)->nullable();
 
-            $table->unique(array('id', 'version'));
-            $table->index(array('id', 'activo', 'estado'));
-            $table->index(array('netsuit', 'activo', 'estado'));
-            $table->index(array('codigo_barra', 'activo', 'estado'));
-            $table->index(array('codigo_receta', 'activo', 'estado'));
-            $table->index(array('activo', 'estado'));
+            $table->unique(array('version', 'correlativo_codigo_id', 'codigo_receta'));
+            $table->index(array('id', 'activo', 'estado', 'version'));
+            $table->index(array('netsuit', 'activo', 'estado', 'version'));
+            $table->index(array('codigo_barra', 'activo', 'estado', 'version', 'correlativo_codigo_id'));
+            $table->index(array('codigo_receta', 'activo', 'estado', 'version', 'correlativo_codigo_id'));
+            $table->index(array('activo', 'estado', 'version'));
         });
     }
 

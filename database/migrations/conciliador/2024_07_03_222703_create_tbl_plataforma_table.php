@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTblAreaTable extends Migration
+class CreateTblPlataformaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateTblAreaTable extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_area', function (Blueprint $table) {
+        Schema::create('tbl_plataforma', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 75)->unique();
-            $table->enum('tipo', ['EMPAQUE', 'PRODUCE']);
+            $table->string('abreviatura', 10)->unique();
+            $table->string('plataforma', 125);
+
             $table->timestamps();
             $table->softDeletes();
 
@@ -24,7 +25,8 @@ class CreateTblAreaTable extends Migration
             $table->string('updated_by', 25)->nullable();
             $table->string('deleted_by', 25)->nullable();
 
-            $table->index('tipo');
+            $table->index(array('abreviatura', 'deleted_at'));
+            $table->index(array('plataforma', 'deleted_at'));
         });
     }
 
@@ -35,6 +37,6 @@ class CreateTblAreaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_area');
+        Schema::dropIfExists('tbl_plataforma');
     }
 }

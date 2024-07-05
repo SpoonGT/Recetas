@@ -24,7 +24,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    DECLARE @ultimo_id INT = 0, @nombre NVARCHAR(MAX), @nomenclatura NVARCHAR(MAX), @tipo NVARCHAR(MAX), @prefijos NVARCHAR(MAX), 
+    DECLARE @ultimo_id INT = 0, @nombre NVARCHAR(MAX), @nomenclatura NVARCHAR(MAX), @abreviatura NVARCHAR(MAX), @prefijos NVARCHAR(MAX), 
 	@query NVARCHAR(MAX), @parameters NVARCHAR(MAX);
 
 	IF @data IS NOT NULL
@@ -33,12 +33,12 @@ BEGIN
 			@nombre = nombre,
             @prefijos = prefijos,
 			@nomenclatura = nomenclatura,
-			@tipo = tipo
+			@abreviatura = abreviatura
 		FROM OPENJSON(@data) WITH (
 			nombre NVARCHAR(50) '$.nombre',
 			prefijos NVARCHAR(50) '$.prefijos',
 			nomenclatura NVARCHAR(50) '$.nomenclatura',
-			tipo NVARCHAR(50) '$.tipo'
+			abreviatura NVARCHAR(50) '$.abreviatura'
 		)
 	END
 
@@ -59,7 +59,7 @@ BEGIN
 			EXECUTE sp_executesql @query, @parameters, @pnombre = @nombre, @pprefijos = @prefijos, @pcreated_by = @usuario;
 		END
 
-		IF @table = 'tbl_marca' OR @table = 'tbl_alergeno'
+		IF @table = 'tbl_marca' OR @table = 'tbl_alergeno' OR @table = 'tbl_microbiologico' OR @table = 'tbl_transporte'
 		BEGIN
 			SET @query = N'INSERT INTO [dbo].['+@table+N'] ([nombre], [created_at], [created_by]) VALUES (@pnombre, GETDATE(), @pcreated_by);';
 			SET @parameters = N'@pnombre NVARCHAR(MAX), @pcreated_by NVARCHAR(MAX)';
@@ -75,9 +75,9 @@ BEGIN
 
 		IF @table = 'tbl_area'
 		BEGIN
-			SET @query = N'INSERT INTO [dbo].['+@table+N'] ([nombre], [tipo], [created_at], [created_by]) VALUES (@pnombre, @ptipo, GETDATE(), @pcreated_by);';
-			SET @parameters = N'@pnombre NVARCHAR(MAX), @ptipo NVARCHAR(MAX), @pcreated_by NVARCHAR(MAX)';
-			EXECUTE sp_executesql @query, @parameters, @pnombre = @nombre, @ptipo = @tipo, @pcreated_by = @usuario;
+			SET @query = N'INSERT INTO [dbo].['+@table+N'] ([nombre], [abreviatura], [created_at], [created_by]) VALUES (@pnombre, @pabreviatura, GETDATE(), @pcreated_by);';
+			SET @parameters = N'@pnombre NVARCHAR(MAX), @pabreviatura NVARCHAR(MAX), @pcreated_by NVARCHAR(MAX)';
+			EXECUTE sp_executesql @query, @parameters, @pnombre = @nombre, @pabreviatura = @abreviatura, @pcreated_by = @usuario;
 		END
 
         SET @ultimo_id = IDENT_CURRENT(N'[dbo].['+@table+N']');
@@ -100,7 +100,7 @@ BEGIN
 			EXECUTE sp_executesql @query, @parameters, @pid = @id, @pnombre = @nombre, @pprefijos = @prefijos, @pupdated_by = @usuario;
 		END
 
-		IF @table = 'tbl_marca' OR @table = 'tbl_alergeno'
+		IF @table = 'tbl_marca' OR @table = 'tbl_alergeno' OR @table = 'tbl_microbiologico' OR @table = 'tbl_transporte'
 		BEGIN
 			SET @query = N'UPDATE [dbo].['+@table+N'] SET [nombre] = @pnombre, [updated_at] = GETDATE(), [updated_by] = @pupdated_by WHERE [id] = @pid;';
 			SET @parameters = N'@pid INT, @pnombre NVARCHAR(MAX), @pupdated_by NVARCHAR(MAX)';
@@ -116,9 +116,9 @@ BEGIN
 
 		IF @table = 'tbl_area'
 		BEGIN
-			SET @query = N'UPDATE [dbo].['+@table+N'] SET [nombre] = @pnombre, [tipo] = @ptipo, [updated_at] = GETDATE(), [updated_by] = @pupdated_by WHERE [id] = @pid;';
-			SET @parameters = N'@pid INT, @pnombre NVARCHAR(MAX), @ptipo NVARCHAR(MAX), @pupdated_by NVARCHAR(MAX)';
-			EXECUTE sp_executesql @query, @parameters, @pid = @id, @ptipo = @tipo, @pnombre = @nombre, @pupdated_by = @usuario;
+			SET @query = N'UPDATE [dbo].['+@table+N'] SET [nombre] = @pnombre, [abreviatura] = @pabreviatura, [updated_at] = GETDATE(), [updated_by] = @pupdated_by WHERE [id] = @pid;';
+			SET @parameters = N'@pid INT, @pnombre NVARCHAR(MAX), @pabreviatura NVARCHAR(MAX), @pupdated_by NVARCHAR(MAX)';
+			EXECUTE sp_executesql @query, @parameters, @pid = @id, @pabreviatura = @abreviatura, @pnombre = @nombre, @pupdated_by = @usuario;
 		END
 
         EXECUTE sp_table_maintenance

@@ -38,7 +38,7 @@ BEGIN
         UPDATE [dbo].[tbl_token] SET [deleted_by] = @usuario, [deleted_at] = GETDATE() WHERE [usuario_id] = @usuario_id;
 
         INSERT INTO [dbo].[tbl_token] ([token], [usuario_id], [expira])
-        VALUES (@token, @usuario_id, (SELECT DATEADD(minute, 5, GETDATE())));
+        VALUES (@token, @usuario_id, (SELECT DATEADD(minute, 65, GETDATE())));
 
         EXECUTE sp_token_maintenance
         @token = @token,

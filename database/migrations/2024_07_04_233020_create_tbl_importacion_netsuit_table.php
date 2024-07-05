@@ -4,25 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTblFichaTecnicaTable extends Migration
+class CreateTblImportacionNetsuitTable extends Migration
 {
     /**
      * Run the migrations.
-     *
+     * importas ---> En el proceso de importación es de 500 registros pero solo fueron importados 450, estos 450 registros se encuentra en proceso de validación.
      * @return void
      */
     public function up()
     {
-        Schema::create('tbl_ficha_tecnica', function (Blueprint $table) {
+        Schema::create('tbl_importacion_netsuit', function (Blueprint $table) {
             $table->id();
-
-            $table->bigInteger('receta_id')->unsigned()->index();
-            $table->foreign('receta_id')->references('id')->on('tbl_receta');
-
+            $table->enum('estado', ['PROCESANDO', 'VALIDADO'])->default('PROCESANDO');
             $table->timestamp('created_at', 0);
             $table->string('created_by', 25);
-
-            $table->unique('receta_id');
         });
     }
 
@@ -33,6 +28,6 @@ class CreateTblFichaTecnicaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_ficha_tecnica');
+        Schema::dropIfExists('tbl_importacion_netsuit');
     }
 }

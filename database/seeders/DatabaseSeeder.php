@@ -4,11 +4,13 @@ namespace Database\Seeders;
 
 use App\Imports\ProductoImport;
 use Illuminate\Database\Seeder;
+use App\Imports\PuntoVentaImport;
 use App\Imports\SubEnsambleImport;
 use Illuminate\Support\Facades\DB;
+use App\Imports\AsignarAliasImport;
 use App\Imports\MateriaPrimaImport;
-use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Config;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,11 +23,17 @@ class DatabaseSeeder extends Seeder
     {
         $this->generar_menu();
         $this->seguridad();
-        if (Config::get('database.connections.sqlsrv.database') == "RECETAS") {
+        if (Config::get('database.default') == "sqlsrv_recetas") {
             $this->catalogo_receta();
             $this->import_receta();
             $this->materia_prima_receta();
             $this->producto_receta();
+            echo "Migración de Recetas" . PHP_EOL;
+        }
+
+        if (Config::get('database.default') == "sqlsrv_conciliador") {
+            $this->catalogo_conciliacion();
+            echo "Migración de Conciliación" . PHP_EOL;
         }
     }
 
@@ -112,7 +120,11 @@ class DatabaseSeeder extends Seeder
 
         echo "======================================================================" . PHP_EOL;
 
-        $contrasenia = "aD71mfjmsFmDBnAlc1Hu+fEfJqsZ7+Gp8aSgxVZAT40=";
+        if (Config::get('database.default') == "sqlsrv_recetas") {
+            $contrasenia = "lwYx8+0tB1bK3dAeL8oi8FZs4tBPnV/FsoWBm+hFE9A=";
+        } else {
+            $contrasenia = "aD71mfjmsFmDBnAlc1Hu+fEfJqsZ7+Gp8aSgxVZAT40=";
+        }
 
         $usuario = DB::select(
             "exec [dbo].[sp_usuario_crud] 0, 'Usuario', 'usuario.desa', '{$contrasenia}', 'usuario@gmail.com', 1, 'migration', 2"
@@ -207,19 +219,90 @@ class DatabaseSeeder extends Seeder
 
         echo "=========================== AREA ===========================" . PHP_EOL;
 
-        $json = '{"tipo": "EMPAQUE", "nombre": "UNidad 1"}';
+        $json = '{"abreviatura": "EMPAQUE", "nombre": "UNidad 1"}';
         $area = DB::select(
             "exec [dbo].[sp_table_maintenance] 0, 'tbl_area', '{$json}', 'migration', 2"
         )[0];
 
-        echo "Area Creada: {$area->id} - {$area->nombre} | {$area->tipo}" . PHP_EOL;
+        echo "Area Creada: {$area->id} - {$area->nombre} | {$area->abreviatura}" . PHP_EOL;
 
-        $json = '{"tipo": "PRODUCE", "nombre": "Unidad 1"}';
+        $json = '{"abreviatura": "DES", "nombre": "Decoración"}';
         $area = DB::select(
             "exec [dbo].[sp_table_maintenance] $area->id, 'tbl_area', '{$json}', 'migration', 3"
         )[0];
 
-        echo "Area Actualizar: {$area->id} - {$area->nombre} | {$area->tipo}" . PHP_EOL;
+        echo "Area Actualizar: {$area->id} - {$area->nombre} | {$area->abreviatura}" . PHP_EOL;
+
+        echo "======================================================================" . PHP_EOL;
+
+        echo "=========================== MICROBIOLOGICO ===========================" . PHP_EOL;
+
+        $json = '{"nombre": "Faz"}';
+        $microbiologico = DB::select(
+            "exec [dbo].[sp_table_maintenance] 0, 'tbl_microbiologico', '{$json}', 'migration', 2"
+        )[0];
+
+        echo "Microbiologico Creada: {$microbiologico->id} - {$microbiologico->nombre}" . PHP_EOL;
+
+        $json = '{"nombre": "Salmonella"}';
+        $microbiologico = DB::select(
+            "exec [dbo].[sp_table_maintenance] $microbiologico->id, 'tbl_microbiologico', '{$json}', 'migration', 3"
+        )[0];
+
+        echo "Microbiologico Actualizar: {$microbiologico->id} - {$microbiologico->nombre}" . PHP_EOL;
+
+        $json = '{"nombre": "Lysteria Monocytogenes"}';
+        $microbiologico = DB::select(
+            "exec [dbo].[sp_table_maintenance] 0, 'tbl_microbiologico', '{$json}', 'migration', 2"
+        )[0];
+
+        echo "Microbiologico Creada: {$microbiologico->id} - {$microbiologico->nombre}" . PHP_EOL;
+
+        $json = '{"nombre": "E. coli"}';
+        $microbiologico = DB::select(
+            "exec [dbo].[sp_table_maintenance] 0, 'tbl_microbiologico', '{$json}', 'migration', 2"
+        )[0];
+
+        echo "Microbiologico Creada: {$microbiologico->id} - {$microbiologico->nombre}" . PHP_EOL;
+
+        $json = '{"nombre": "Staphylococcus aureus"}';
+        $microbiologico = DB::select(
+            "exec [dbo].[sp_table_maintenance] 0, 'tbl_microbiologico', '{$json}', 'migration', 2"
+        )[0];
+
+        echo "Microbiologico Creada: {$microbiologico->id} - {$microbiologico->nombre}" . PHP_EOL;
+
+        echo "======================================================================" . PHP_EOL;
+
+        echo "=========================== TRANSPORTE ===========================" . PHP_EOL;
+
+        $json = '{"nombre": "Faz"}';
+        $transporte = DB::select(
+            "exec [dbo].[sp_table_maintenance] 0, 'tbl_transporte', '{$json}', 'migration', 2"
+        )[0];
+
+        echo "Transporte Creada: {$transporte->id} - {$transporte->nombre}" . PHP_EOL;
+
+        $json = '{"nombre": "Refrigeración 0°C / 5°C"}';
+        $transporte = DB::select(
+            "exec [dbo].[sp_table_maintenance] $transporte->id, 'tbl_transporte', '{$json}', 'migration', 3"
+        )[0];
+
+        echo "Transporte Actualizar: {$transporte->id} - {$transporte->nombre}" . PHP_EOL;
+
+        $json = '{"nombre": "Congelación -12°/-18°C"}';
+        $transporte = DB::select(
+            "exec [dbo].[sp_table_maintenance] 0, 'tbl_transporte', '{$json}', 'migration', 2"
+        )[0];
+
+        echo "Transporte Creada: {$transporte->id} - {$transporte->nombre}" . PHP_EOL;
+
+        $json = '{"nombre": "Ambiente"}';
+        $transporte = DB::select(
+            "exec [dbo].[sp_table_maintenance] 0, 'tbl_transporte', '{$json}', 'migration', 2"
+        )[0];
+
+        echo "Transporte Creada: {$transporte->id} - {$transporte->nombre}" . PHP_EOL;
 
         echo "======================================================================" . PHP_EOL;
     }
@@ -313,5 +396,52 @@ class DatabaseSeeder extends Seeder
         )[0];
 
         echo "Eliminar Producto Materia: {$test->netsuit}" . PHP_EOL;
+    }
+
+    private function catalogo_conciliacion()
+    {
+        Excel::import(new PuntoVentaImport, 'database/seeders/PuntoVenta.xlsx');
+
+        $plataforma = DB::select(
+            "exec [dbo].[sp_plataforma_crud] 0, 'DIDI', 'DIDI Pasajero', 'migracion', 2"
+        )[0];
+
+        $plataforma = DB::select(
+            "exec [dbo].[sp_plataforma_crud] $plataforma->id, 'DIDI', 'DIDI Pasajero', 'migracion', 3"
+        )[0];
+
+        echo "Plataforma Creado: {$plataforma->id} - {$plataforma->plataforma}" . PHP_EOL;
+
+        $plataforma = DB::select(
+            "exec [dbo].[sp_plataforma_crud] 0, 'PEYA', 'Pedidos Ya', 'migracion', 2"
+        )[0];
+
+        $plataforma = DB::select(
+            "exec [dbo].[sp_plataforma_crud] $plataforma->id, 'PEYA', 'Pedidos Ya', 'migracion', 3"
+        )[0];
+
+        echo "Plataforma Creado: {$plataforma->id} - {$plataforma->plataforma}" . PHP_EOL;
+
+        $plataforma = DB::select(
+            "exec [dbo].[sp_plataforma_crud] 0, 'JUSTO', 'Justo Drivers', 'migracion', 2"
+        )[0];
+
+        $plataforma = DB::select(
+            "exec [dbo].[sp_plataforma_crud] $plataforma->id, 'JUSTO', 'Justo Drivers', 'migracion', 3"
+        )[0];
+
+        echo "Plataforma Creado: {$plataforma->id} - {$plataforma->plataforma}" . PHP_EOL;
+
+        $plataforma = DB::select(
+            "exec [dbo].[sp_plataforma_crud] 0, 'UBER', 'Uber Eats', 'migracion', 2"
+        )[0];
+
+        $plataforma = DB::select(
+            "exec [dbo].[sp_plataforma_crud] $plataforma->id, 'UBER', 'Uber Eats', 'migracion', 3"
+        )[0];
+
+        echo "Plataforma Creado: {$plataforma->id} - {$plataforma->plataforma}" . PHP_EOL;
+
+        Excel::import(new AsignarAliasImport, 'database/seeders/AsignarAlias.xlsx');
     }
 }

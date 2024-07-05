@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTblUsuarioAreaTable extends Migration
+class CreateTblPuntoVentaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateTblUsuarioAreaTable extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_usuario_area', function (Blueprint $table) {
-            $table->bigInteger('usuario_id')->unsigned()->index();
-            $table->foreign('usuario_id')->references('id')->on('tbl_usuario');
-
-            $table->bigInteger('area_id')->unsigned()->index();
-            $table->foreign('area_id')->references('id')->on('tbl_area');
+        Schema::create('tbl_punto_venta', function (Blueprint $table) {
+            $table->id();
+            $table->string('codigo', 25)->unique();
+            $table->string('local', 125);
+            $table->string('alias', 125);
 
             $table->timestamps();
             $table->softDeletes();
@@ -27,7 +26,10 @@ class CreateTblUsuarioAreaTable extends Migration
             $table->string('updated_by', 25)->nullable();
             $table->string('deleted_by', 25)->nullable();
 
-            $table->unique(array('usuario_id', 'area_id'));
+            $table->unique(array('local', 'alias'));
+            $table->index(array('codigo', 'deleted_at'));
+            $table->index(array('local', 'alias', 'deleted_at'));
+            $table->index(array('alias'));
         });
     }
 
@@ -38,6 +40,6 @@ class CreateTblUsuarioAreaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_usuario_area');
+        Schema::dropIfExists('tbl_punto_venta');
     }
 }

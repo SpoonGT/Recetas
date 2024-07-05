@@ -91,14 +91,21 @@ BEGIN
 			SELECT TOP 1 @rol_nombre = rol_nombre, @id = [id], @nombre = [nombre], @url = [url], @icono = [icono], @menu_id = [menu_id] FROM @TempMenu;
 
 			INSERT INTO @FinalMenu (rol_id, rol_nombre, id, nombre, url, icono, menu_id) VALUES (@rol_id, @rol_nombre, @id, @nombre, @url, @icono, @menu_id);
+
 			INSERT INTO @FinalMenu (rol_id, rol_nombre, id, nombre, url, icono, menu_id)
-			SELECT @rol_id, @rol_nombre, [id], [nombre], [url], [icono], [menu_id] FROM [dbo].[tbl_menu] WHERE [menu_id] = @id;
+            SELECT 
+            T1.id AS 'rol_id', T1.nombre AS 'rol_nombre', 
+            T2.id AS 'menu_id', T2.nombre AS 'menu_nombre', T2.url AS 'menu_url', T2.icono AS 'menu_icono', T2.menu_id AS 'menu_padre'
+            FROM [dbo].[tbl_rol_menu] AS T0
+            INNER JOIN [dbo].[tbl_rol] AS T1 ON T0.[rol_id] = T1.[id]
+            INNER JOIN [dbo].[tbl_menu] AS T2 ON T0.[menu_id] = T2.[id]
+            WHERE T1.[id] = @rol_id AND T2.[menu_id] = @id AND T1.[deleted_at] IS NULL;
 
 			DELETE TOP (1) FROM @TempMenu;
             SELECT @count = COUNT(*) FROM @TempMenu;
 		END
 
-		SELECT * FROM @FinalMenu;
+		SELECT * FROM @FinalMenu ORDER BY [menu_id], [id] ASC;
     END
 
 END

@@ -47,12 +47,12 @@ BEGIN
 
 			EXECUTE sp_usuario_crud
             @id = @ultimo_id,
-            @nombre_completo = null,
-            @nameuser = null,
-            @contrasenia = null,
-            @email = null,
-            @rol_id = null,
-            @usuario = NULL,
+            @nombre_completo = @nombre_completo,
+            @nameuser = @nameuser,
+            @contrasenia = @contrasenia,
+            @email = @email,
+            @rol_id = @rol_id,
+            @usuario = @usuario,
 			@opcion = 3
 		END
         ELSE
