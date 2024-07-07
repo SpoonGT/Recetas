@@ -107,13 +107,6 @@ BEGIN
         SELECT * FROM [dbo].[tbl_plataforma] WITH(NOLOCK) WHERE [abreviatura] = @abreviatura;
     END
 
-    --CONSULTA OPCION 8 Seleccionamos lista desplegable.
-    IF @opcion = 8 
-    BEGIN
-        SELECT 0 AS id, [alias] AS 'punto_venta', '' AS 'plataforma', [id] AS 'punto_venta_id', @id AS plataforma_id
-        FROM [dbo].[tbl_punto_venta] WITH(NOLOCK) WHERE [deleted_at] IS NULL;
-    END
-
 END
             "
         );
