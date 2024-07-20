@@ -25,9 +25,9 @@ class DatabaseSeeder extends Seeder
         $this->seguridad();
         if (Config::get('database.default') == "sqlsrv_recetas") {
             $this->catalogo_receta();
-            $this->import_receta();
+            /*$this->import_receta();
             $this->materia_prima_receta();
-            $this->producto_receta();
+            $this->producto_receta();*/
             echo "Migración de Recetas" . PHP_EOL;
         }
 
@@ -159,6 +159,20 @@ class DatabaseSeeder extends Seeder
             )[0];
 
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Importar Plataforma', '/CsvPlataformaTemporal', 'fa-solid fa-file-csv', 0, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $menu_id = $menu->id;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
         }
     }
 
@@ -216,7 +230,7 @@ class DatabaseSeeder extends Seeder
 
         echo "Marca Creada: {$marca->id} - {$marca->nombre}" . PHP_EOL;
 
-        $json = '{"nombre": "Fas"}';
+        $json = '{"nombre": "Genérico"}';
         $marca = DB::select(
             "exec [dbo].[sp_table_maintenance] $marca->id, 'tbl_marca', '{$json}', 'migration', 3"
         )[0];
@@ -457,45 +471,65 @@ class DatabaseSeeder extends Seeder
         Excel::import(new PuntoVentaImport, 'database/seeders/PuntoVenta.xlsx');
 
         $plataforma = DB::select(
-            "exec [dbo].[sp_plataforma_crud] 0, 'DIDI', 'DIDI Pasajero', 'migracion', 2"
+            "exec [dbo].[sp_plataforma_crud] 0, 'DIDI', 'DIDI Pasajero', 0, 1, 'migracion', 2"
         )[0];
 
         $plataforma = DB::select(
-            "exec [dbo].[sp_plataforma_crud] $plataforma->id, 'DIDI', 'DIDI Pasajero', 'migracion', 3"
-        )[0];
-
-        echo "Plataforma Creado: {$plataforma->id} - {$plataforma->plataforma}" . PHP_EOL;
-
-        $plataforma = DB::select(
-            "exec [dbo].[sp_plataforma_crud] 0, 'PEYA', 'Pedidos Ya', 'migracion', 2"
-        )[0];
-
-        $plataforma = DB::select(
-            "exec [dbo].[sp_plataforma_crud] $plataforma->id, 'PEYA', 'Pedidos Ya', 'migracion', 3"
+            "exec [dbo].[sp_plataforma_crud] $plataforma->id, 'DIDI', 'DIDI Pasajero', 0, 1, 'migracion', 3"
         )[0];
 
         echo "Plataforma Creado: {$plataforma->id} - {$plataforma->plataforma}" . PHP_EOL;
 
         $plataforma = DB::select(
-            "exec [dbo].[sp_plataforma_crud] 0, 'JUSTO', 'Justo Drivers', 'migracion', 2"
+            "exec [dbo].[sp_plataforma_crud] 0, 'PEYA', 'Pedidos Ya', 0, 0, 'migracion', 2"
         )[0];
 
         $plataforma = DB::select(
-            "exec [dbo].[sp_plataforma_crud] $plataforma->id, 'JUSTO', 'Justo Drivers', 'migracion', 3"
+            "exec [dbo].[sp_plataforma_crud] $plataforma->id, 'PEYA', 'Pedidos Ya', 0, 0, 'migracion', 3"
         )[0];
 
         echo "Plataforma Creado: {$plataforma->id} - {$plataforma->plataforma}" . PHP_EOL;
 
         $plataforma = DB::select(
-            "exec [dbo].[sp_plataforma_crud] 0, 'UBER', 'Uber Eats', 'migracion', 2"
+            "exec [dbo].[sp_plataforma_crud] 0, 'JUSTO', 'Justo Drivers', 0, 1, 'migracion', 2"
         )[0];
 
         $plataforma = DB::select(
-            "exec [dbo].[sp_plataforma_crud] $plataforma->id, 'UBER', 'Uber Eats', 'migracion', 3"
+            "exec [dbo].[sp_plataforma_crud] $plataforma->id, 'JUSTO', 'Justo Drivers', 0, 1, 'migracion', 3"
+        )[0];
+
+        echo "Plataforma Creado: {$plataforma->id} - {$plataforma->plataforma}" . PHP_EOL;
+
+        $plataforma = DB::select(
+            "exec [dbo].[sp_plataforma_crud] 0, 'UBER', 'Uber Eats', 1, 1, 'migracion', 2"
+        )[0];
+
+        $plataforma = DB::select(
+            "exec [dbo].[sp_plataforma_crud] $plataforma->id, 'UBER', 'Uber Eats', 1, 1, 'migracion', 3"
         )[0];
 
         echo "Plataforma Creado: {$plataforma->id} - {$plataforma->plataforma}" . PHP_EOL;
 
         Excel::import(new AsignarAliasImport, 'database/seeders/AsignarAlias.xlsx');
+
+        DB::select(
+            "exec [dbo].[sp_configuracion_import] 0, 'id_pedido', 'Número de pedido', 2, 1, 'migracion', 2"
+        )[0];
+
+        DB::select(
+            "exec [dbo].[sp_configuracion_import] 0, 'local', 'Nombre de la tienda', 0, 1, 'migracion', 2"
+        )[0];
+
+        DB::select(
+            "exec [dbo].[sp_configuracion_import] 0, 'fecha', 'Fecha del pedido/reembolso', 3, 1, 'migracion', 2"
+        )[0];
+
+        DB::select(
+            "exec [dbo].[sp_configuracion_import] 0, 'total', 'Venta de comida (impuestos incluidos)', 7, 1, 'migracion', 2"
+        )[0];
+
+        DB::select(
+            "exec [dbo].[sp_configuracion_import] 0, 'estado', 'Estado del pedido', 6, 1, 'migracion', 2"
+        )[0];
     }
 }

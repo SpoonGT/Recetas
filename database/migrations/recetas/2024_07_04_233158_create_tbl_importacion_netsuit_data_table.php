@@ -14,9 +14,10 @@ class CreateTblImportacionNetsuitDataTable extends Migration
     public function up()
     {
         Schema::create('tbl_importacion_netsuit_data', function (Blueprint $table) {
-            $table->boolean('aplicado')->default(false);
+            $table->id();
 
-            $table->string('prefijo', 10);
+            $table->enum('estado', ['PROCESANDO', 'VALIDADO', 'EXISTENTE'])->default('PROCESANDO');
+
             $table->string('embalaje', 75)->nullable();
             $table->string('lista_material', 75)->nullable();
             $table->string('revision', 75)->nullable();
@@ -28,6 +29,8 @@ class CreateTblImportacionNetsuitDataTable extends Migration
 
             $table->bigInteger('importacion_netsuit_id')->unsigned()->index();
             $table->foreign('importacion_netsuit_id')->references('id')->on('tbl_importacion_netsuit');
+
+            $table->index(array('importacion_netsuit_id', 'estado'));
         });
     }
 

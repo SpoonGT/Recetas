@@ -18,6 +18,8 @@ CREATE PROCEDURE sp_plataforma_crud
     @id INT = 0,
     @abreviatura NVARCHAR(10) NULL,
     @plataforma NVARCHAR(125) NULL,
+    @fila INT = 0,
+    @redondea BIT NULL,
     @usuario NVARCHAR(25) NULL,
     @opcion INT
 AS
@@ -43,13 +45,15 @@ BEGIN
             @id = @ultimo_id,
             @abreviatura = @abreviatura,
             @plataforma = @plataforma,
+            @fila = @fila,
+            @redondea = @redondea,
             @usuario = @usuario,
 			@opcion = 3
 		END
         ELSE
         BEGIN
-            INSERT INTO [dbo].[tbl_plataforma] ([abreviatura], [plataforma], [created_at], [created_by])
-            VALUES (@abreviatura, @plataforma, GETDATE(), @usuario);
+            INSERT INTO [dbo].[tbl_plataforma] ([abreviatura], [plataforma], [fila], [redondea], [created_at], [created_by])
+            VALUES (@abreviatura, @plataforma, @fila, @redondea, GETDATE(), @usuario);
 
             SET @ultimo_id = IDENT_CURRENT(N'[dbo].[tbl_plataforma]');
 
@@ -57,6 +61,8 @@ BEGIN
             @id = @ultimo_id,
             @abreviatura = null,
             @plataforma = null,
+            @fila = 0,
+            @redondea = null,
             @usuario = NULL,
 			@opcion = 5
         END
@@ -69,6 +75,8 @@ BEGIN
         SET 
             [abreviatura] = @abreviatura,
             [plataforma] = @plataforma,
+            [fila] = @fila,
+            [redondea] = @redondea,
             [updated_by] = @usuario,
             [updated_at] = GETDATE(),
             [deleted_by] = NULL,
@@ -79,6 +87,8 @@ BEGIN
         @id = @id,
         @abreviatura = null,
         @plataforma = null,
+        @fila = 0,
+        @redondea = null,
         @usuario = NULL,
         @opcion = 5
     END

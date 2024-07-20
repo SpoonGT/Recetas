@@ -102,7 +102,6 @@ BEGIN
     --CONSULTA OPCION 8 Guardamos el registro en la tabla.
     IF @opcion = 8 
     BEGIN
-
         INSERT INTO [dbo].[tbl_materia_prima_alergeno] ([materia_prima_id], [informacion_id], [alergeno_id], [created_at], [created_by])
         VALUES (@id, (SELECT [informacion_id] FROM [dbo].[tbl_materia_prima] WHERE [id] = @id), @alergeno_id, GETDATE(), @usuario);
 

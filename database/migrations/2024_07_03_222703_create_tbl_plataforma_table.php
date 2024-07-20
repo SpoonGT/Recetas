@@ -17,6 +17,8 @@ class CreateTblPlataformaTable extends Migration
             $table->id();
             $table->string('abreviatura', 10)->unique();
             $table->string('plataforma', 125);
+            $table->smallInteger('fila');
+            $table->boolean('redondea');
 
             $table->timestamps();
             $table->softDeletes();

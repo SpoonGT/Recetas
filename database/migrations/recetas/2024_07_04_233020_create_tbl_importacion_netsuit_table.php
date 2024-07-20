@@ -18,6 +18,8 @@ class CreateTblImportacionNetsuitTable extends Migration
             $table->enum('estado', ['PROCESANDO', 'VALIDADO'])->default('PROCESANDO');
             $table->timestamp('created_at', 0);
             $table->string('created_by', 25);
+
+            $table->index('estado');
         });
     }
 

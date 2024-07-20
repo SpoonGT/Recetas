@@ -43,9 +43,9 @@ BEGIN
     IF @opcion = 1
     BEGIN
         SELECT T0.*, T1.[nombre] AS marca, T2.[nombre] AS unidad		
-		FROM [dbo].[tbl_informacion] T0  
-		INNER JOIN [dbo].[tbl_marca] T1 ON T0.[marca_id] = T1.[id]
-		INNER JOIN [dbo].[tbl_unidad] T2 ON T0.[unidad_id] = T2.[id]
+		FROM [dbo].[tbl_informacion] T0 WITH(NOLOCK)
+		INNER JOIN [dbo].[tbl_marca] T1 WITH(NOLOCK) ON T0.[marca_id] = T1.[id]
+		INNER JOIN [dbo].[tbl_unidad] T2 WITH(NOLOCK) ON T0.[unidad_id] = T2.[id]
     END
 
     --CONSULTA OPCION 2 Guardamos el registro en la tabla.
@@ -70,16 +70,19 @@ BEGIN
 
 					SET @ultimo_id = IDENT_CURRENT(N'[dbo].[tbl_materia_prima]');
 				
-					INSERT INTO [dbo].[tbl_materia_prima_alergeno] ([materia_prima_id], [informacion_id], [alergeno_id], [created_at], [created_by])
-					SELECT 
-						@ultimo_id,
-						@informacion_id,
-						alergeno,
-						GETDATE(), 
-						@usuario
-					FROM OPENJSON(@data) WITH (
-						alergeno NVARCHAR(50) 'strict $.id'
-					)
+					IF @data IS NOT NULL
+					BEGIN
+						INSERT INTO [dbo].[tbl_materia_prima_alergeno] ([materia_prima_id], [informacion_id], [alergeno_id], [created_at], [created_by])
+						SELECT 
+							@ultimo_id,
+							@informacion_id,
+							alergeno,
+							GETDATE(), 
+							@usuario
+						FROM OPENJSON(@data) WITH (
+							alergeno NVARCHAR(50) 'strict $.id'
+						)
+					END
 				END
 
 				IF @proceso = 'tbl_producto'
@@ -185,7 +188,11 @@ BEGIN
     --CONSULTA OPCION 5 Seleccionamos por id el registro en la tabla.
     IF @opcion = 5 
     BEGIN
-        SELECT * FROM [dbo].[tbl_informacion] WHERE [id] = @id;
+        SELECT T0.*, T1.[nombre] AS marca, T2.[nombre] AS unidad		
+		FROM [dbo].[tbl_informacion] T0 WITH(NOLOCK)
+		INNER JOIN [dbo].[tbl_marca] T1 WITH(NOLOCK) ON T0.[marca_id] = T1.[id]
+		INNER JOIN [dbo].[tbl_unidad] T2 WITH(NOLOCK) ON T0.[unidad_id] = T2.[id]
+		WHERE T0.[id] = @id;
     END
 
     --CONSULTA OPCION 6 Seleccionamos id y nombre para llenar lista desplegable.
@@ -193,24 +200,28 @@ BEGIN
     BEGIN
         SELECT T0.[id], 
 		CONCAT(T0.[netsuit], CONCAT(' | ', CONCAT(T0.[nombre], CONCAT(' (', CONCAT(T2.[nomenclatura], CONCAT(') ', T1.[nombre])))))) AS nombre
-		FROM [dbo].[tbl_informacion] T0 
-		INNER JOIN [dbo].[tbl_marca] T1 ON T0.[marca_id] = T1.[id]
-		INNER JOIN [dbo].[tbl_unidad] T2 ON T0.[unidad_id] = T2.[id]
+		FROM [dbo].[tbl_informacion] T0 WITH(NOLOCK)
+		INNER JOIN [dbo].[tbl_marca] T1 WITH(NOLOCK) ON T0.[marca_id] = T1.[id]
+		INNER JOIN [dbo].[tbl_unidad] T2 WITH(NOLOCK) ON T0.[unidad_id] = T2.[id]
 		WHERE T0.[prefijo] IN (@prefijo);
     END
 
     --CONSULTA OPCION 7 Seleccionamos por netsuit el registro en la tabla.
     IF @opcion = 7 
     BEGIN
-        SELECT * FROM [dbo].[tbl_informacion] WHERE [netsuit] = @netsuit;
+        SELECT T0.*, T1.[nombre] AS marca, T2.[nombre] AS unidad		
+		FROM [dbo].[tbl_informacion] T0 WITH(NOLOCK)
+		INNER JOIN [dbo].[tbl_marca] T1 WITH(NOLOCK) ON T0.[marca_id] = T1.[id]
+		INNER JOIN [dbo].[tbl_unidad] T2 WITH(NOLOCK) ON T0.[unidad_id] = T2.[id]
+		WHERE T0.[netsuit] = @netsuit;
     END
 
     --CONSULTA OPCION 8 Seleccionamos por netsuit el registro en la tabla.
     IF @opcion = 8 
     BEGIN
         SELECT T1.*, T0.unidad_id
-		FROM [dbo].[tbl_informacion] AS T0
-		INNER JOIN [dbo].[tbl_materia_prima] AS T1 ON T0.[id] = T1.[informacion_id]
+		FROM [dbo].[tbl_informacion] AS T0 WITH(NOLOCK)
+		INNER JOIN [dbo].[tbl_materia_prima] AS T1 WITH(NOLOCK) ON T0.[id] = T1.[informacion_id]
 		WHERE T0.[netsuit] = @netsuit;
     END
 
@@ -218,8 +229,8 @@ BEGIN
     IF @opcion = 9 
     BEGIN
         SELECT T1.*, T0.unidad_id
-		FROM [dbo].[tbl_informacion] AS T0
-		INNER JOIN [dbo].[tbl_producto] AS T1 ON T0.[id] = T1.[informacion_id]
+		FROM [dbo].[tbl_informacion] AS T0 WITH(NOLOCK)
+		INNER JOIN [dbo].[tbl_producto] AS T1 WITH(NOLOCK) ON T0.[id] = T1.[informacion_id]
 		WHERE T0.[netsuit] = @netsuit;
     END
 	

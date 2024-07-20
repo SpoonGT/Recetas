@@ -16,30 +16,28 @@ class CreateTblCsvIcgTemporalTable extends Migration
         Schema::create('tbl_csv_icg_temporal', function (Blueprint $table) {
             $table->id();
 
-            $table->string('plataforma', 100); //0
-            $table->string('id_pedido', 50)->nullable(); //1
-            $table->string('local', 125); //2
-            $table->string('serie', 10)->nullable(); //3
-            $table->string('serie_compuesta', 25)->nullable(); //4
-            $table->string('numero_documento')->nullable(); //5
-            $table->string('numero_orden', 50)->nullable(); //6
-            $table->date('fecha_pedido'); //7
-            $table->date('fecha_entrega')->nullable(); //8
-            $table->date('fecha_pago')->nullable(); //9
-            $table->string('estado', 25)->nullable(); //10
-            $table->string('forma_pago', 50)->nullable(); //11
-            $table->string('total_bruto', 14, 4); //12
-            $table->string('total_promocion', 14, 4)->nullable(); //13
-            $table->string('total_neto', 14, 4); //14
-            $table->string('nombre_cliente', 150)->nullable(); //15
-            $table->string('cajero', 150)->nullable(); //16
-            $table->string('tipo_servicio', 50)->nullable(); //17
+            $table->string('plataforma', 10);
+            $table->string('id_pedido', 50);
+            $table->string('local', 125);
+            $table->date('fecha_pedido');
+            $table->date('fecha_entrega');
+            $table->decimal('total_bruto', 14, 6);
+            $table->string('total_promocion')->nullable();
+            $table->string('total_neto')->nullable();
+            $table->string('serie_compuesta', 25);
+            $table->bigInteger('numero_documento');
+            $table->bigInteger('numero_orden')->nullable();
+            $table->string('forma_pago', 50)->nullable();
+            $table->string('nombre_cliente', 150)->nullable();
+            $table->string('cajero', 150)->nullable();
+            $table->string('estado', 25)->nullable();
 
             $table->timestamp('created_at', 0);
             $table->string('created_by', 25);
             $table->boolean('procesado')->default(false);
+            $table->longText('mensaje')->nullable();
 
-            $table->index(array('id', 'plataforma', 'fecha_pedido', 'local', 'procesado'));
+            $table->index(array('id', 'plataforma', 'id_pedido', 'fecha_pedido', 'fecha_entrega', 'local', 'procesado'));
         });
     }
 

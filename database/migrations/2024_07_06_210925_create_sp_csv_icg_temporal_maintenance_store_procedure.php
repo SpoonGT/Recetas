@@ -16,6 +16,8 @@ class CreateSpCsvIcgTemporalMaintenanceStoreProcedure extends Migration
             "
 CREATE PROCEDURE sp_csv_icg_temporal_maintenance
     @id INT = 0,
+    @mensaje NVARCHAR(MAX) NULL,
+    @procesado BIT NULL,
     @opcion INT
 AS
 BEGIN
@@ -26,7 +28,7 @@ BEGIN
     BEGIN
         DECLARE @ultiama_carga DATETIME, @usuario NVARCHAR(50)
 
-        SELECT * FROM [dbo].[tbl_csv_icg_temporal] WITH(NOLOCK);
+        SELECT * FROM [dbo].[tbl_csv_icg_temporal] WITH(NOLOCK) WHERE [procesado] = 0;
         SELECT TOP 1 @ultiama_carga = [created_at], @usuario = created_by FROM [dbo].[tbl_csv_icg_temporal] WITH(NOLOCK);
 
         SELECT 
@@ -39,11 +41,7 @@ BEGIN
     --CONSULTA OPCION 3 Actualizamos el registro en la tabla.
     IF @opcion = 3
     BEGIN
-        UPDATE [dbo].[tbl_csv_icg_temporal] SET [procesado] = 1 WHERE [id] = @id;
-
-        EXECUTE sp_csv_icg_temporal_maintenance
-        @id = @id,
-        @opcion = 5
+        UPDATE [dbo].[tbl_csv_icg_temporal] SET [procesado] = @procesado, [mensaje] = @mensaje WHERE [id] = @id;
     END
 
     --CONSULTA OPCION 5 Seleccionamos por id el registro en la tabla.

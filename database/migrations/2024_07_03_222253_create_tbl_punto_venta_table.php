@@ -29,7 +29,7 @@ class CreateTblPuntoVentaTable extends Migration
             $table->unique(array('local', 'alias'));
             $table->index(array('codigo', 'deleted_at'));
             $table->index(array('local', 'alias', 'deleted_at'));
-            $table->index(array('alias'));
+            $table->index(array('alias', 'deleted_at'));
         });
     }
 
