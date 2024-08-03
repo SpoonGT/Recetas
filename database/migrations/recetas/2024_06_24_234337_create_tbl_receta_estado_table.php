@@ -21,6 +21,7 @@ class CreateTblRecetaEstadoTable extends Migration
             $table->foreign('receta_id')->references('id')->on('tbl_receta');
 
             $table->timestamp('created_at', 0);
+            $table->string('created_by', 25);
         });
     }
 

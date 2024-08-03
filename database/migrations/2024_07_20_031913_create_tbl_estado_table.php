@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTblCsvPlataformaEstadoTable extends Migration
+class CreateTblEstadoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTblCsvPlataformaEstadoTable extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_csv_plataforma_estado', function (Blueprint $table) {
+        Schema::create('tbl_estado', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 75)->unique();
         });
@@ -26,6 +26,6 @@ class CreateTblCsvPlataformaEstadoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_csv_plataforma_estado');
+        Schema::dropIfExists('tbl_estado');
     }
 }

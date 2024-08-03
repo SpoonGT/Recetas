@@ -26,7 +26,7 @@ class CreateTblCsvIcgTemporalTable extends Migration
             $table->string('total_neto')->nullable();
             $table->string('serie_compuesta', 25);
             $table->bigInteger('numero_documento');
-            $table->bigInteger('numero_orden')->nullable();
+            $table->string('numero_orden')->nullable();
             $table->string('forma_pago', 50)->nullable();
             $table->string('nombre_cliente', 150)->nullable();
             $table->string('cajero', 150)->nullable();
@@ -37,7 +37,12 @@ class CreateTblCsvIcgTemporalTable extends Migration
             $table->boolean('procesado')->default(false);
             $table->longText('mensaje')->nullable();
 
-            $table->index(array('id', 'plataforma', 'id_pedido', 'fecha_pedido', 'fecha_entrega', 'local', 'procesado'));
+            $table->index(array('id', 'plataforma', 'id_pedido', 'fecha_pedido', 'fecha_entrega', 'local', 'procesado'), 'index_optimizacion_busqueda_uno');
+            $table->index(array('id', 'plataforma', 'id_pedido', 'local', 'serie_compuesta', 'fecha_pedido', 'total_bruto', 'total_promocion', 'total_neto', 'forma_pago', 'procesado'), 'index_optimizacion_busqueda_dos');
+            $table->index(array('plataforma', 'id_pedido', 'local', 'serie_compuesta', 'fecha_pedido', 'fecha_entrega', 'total_bruto', 'total_promocion', 'total_neto', 'forma_pago', 'procesado'), 'index_optimizacion_busqueda_tres');
+            $table->index(array('plataforma', 'id_pedido', 'local', 'serie_compuesta', 'numero_documento', 'fecha_pedido', 'total_bruto', 'total_neto', 'forma_pago', 'procesado'), 'index_optimizacion_busqueda_cuatro');
+            $table->index(array('plataforma', 'local', 'serie_compuesta', 'numero_documento', 'procesado'), 'index_optimizacion_busqueda_cinco');
+            $table->index(array('plataforma', 'id_pedido', 'local', 'fecha_pedido', 'fecha_entrega', 'total_bruto', 'total_promocion', 'total_neto', 'serie_compuesta', 'numero_documento', 'numero_orden', 'forma_pago', 'nombre_cliente', 'cajero', 'estado', 'procesado'), 'index_optimizacion_busqueda_seis');
         });
     }
 

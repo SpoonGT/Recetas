@@ -14,8 +14,6 @@ class CreateTblHorneoTable extends Migration
     public function up()
     {
         Schema::create('tbl_horneo', function (Blueprint $table) {
-            $table->id();
-
             $table->bigInteger('receta_id')->unsigned()->index();
             $table->foreign('receta_id')->references('id')->on('tbl_receta');
 
@@ -30,12 +28,10 @@ class CreateTblHorneoTable extends Migration
 
             $table->longText('otros')->nullable();
 
-            $table->timestamps();
-            $table->softDeletes();
-
+            $table->timestamp('created_at', 0);
             $table->string('created_by', 25);
-            $table->string('updated_by', 25)->nullable();
-            $table->string('deleted_by', 25)->nullable();
+
+            $table->unique('receta_id');
         });
     }
 

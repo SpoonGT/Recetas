@@ -14,8 +14,8 @@ class CreateTblPorcionPesoTable extends Migration
     public function up()
     {
         Schema::create('tbl_porcion_peso', function (Blueprint $table) {
-            $table->bigInteger('porcion_id')->unsigned()->index();
-            $table->foreign('porcion_id')->references('id')->on('tbl_porcion');
+            $table->bigInteger('receta_id')->unsigned()->index();
+            $table->foreign('receta_id')->references('id')->on('tbl_receta');
 
             $table->bigInteger('cantidad');
             $table->string('nomenclatura', 20);
@@ -23,12 +23,10 @@ class CreateTblPorcionPesoTable extends Migration
             $table->bigInteger('unidad_id')->unsigned()->index();
             $table->foreign('unidad_id')->references('id')->on('tbl_unidad');
 
-            $table->timestamps();
-
+            $table->timestamp('created_at', 0);
             $table->string('created_by', 25);
-            $table->string('updated_by', 25)->nullable();
 
-            $table->unique('porcion_id');
+            $table->unique('receta_id');
         });
     }
 

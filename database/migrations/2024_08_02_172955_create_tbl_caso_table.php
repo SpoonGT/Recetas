@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTblCategoriaTable extends Migration
+class CreateTblCasoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateTblCategoriaTable extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_categoria', function (Blueprint $table) {
+        Schema::create('tbl_caso', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 75)->unique(); //ENSAMMBLE
-            $table->string('prefijos', 250); //MP, SE
+            $table->string('nombre', 75)->unique();
+
             $table->timestamps();
             $table->softDeletes();
 
@@ -33,6 +33,6 @@ class CreateTblCategoriaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_categoria');
+        Schema::dropIfExists('tbl_caso');
     }
 }

@@ -31,9 +31,9 @@ BEGIN
     --CONSULTA OPCION 2 Guardamos el registro en la tabla.
     IF @opcion = 2 
     BEGIN
-		IF(EXISTS(SELECT * FROM [dbo].[tbl_configuracion_import] WHERE [plataforma_id] = @plataforma_id AND [icg] = @icg AND [encabezado] = @encabezado))
+		IF(EXISTS(SELECT * FROM [dbo].[tbl_configuracion_import] WHERE [plataforma_id] = @plataforma_id AND [icg] = @icg))
 		BEGIN
-			SELECT @ultimo_id = [id] FROM [dbo].[tbl_configuracion_import] WHERE [plataforma_id] = @plataforma_id AND [icg] = @icg AND [encabezado] = @encabezado;
+			SELECT @ultimo_id = [id] FROM [dbo].[tbl_configuracion_import] WHERE [plataforma_id] = @plataforma_id AND [icg] = @icg;
 
 			EXECUTE sp_configuracion_import
             @id = @ultimo_id,

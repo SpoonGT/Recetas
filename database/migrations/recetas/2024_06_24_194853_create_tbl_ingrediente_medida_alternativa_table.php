@@ -23,10 +23,8 @@ class CreateTblIngredienteMedidaAlternativaTable extends Migration
             $table->bigInteger('ingrediente_id')->unsigned()->index();
             $table->foreign('ingrediente_id')->references('id')->on('tbl_ingrediente');
 
-            $table->timestamps();
-
+            $table->timestamp('created_at', 0);
             $table->string('created_by', 25);
-            $table->string('updated_by', 25)->nullable();
 
             $table->unique('ingrediente_id');
             $table->index(array('ingrediente_id', 'unidad_id'));

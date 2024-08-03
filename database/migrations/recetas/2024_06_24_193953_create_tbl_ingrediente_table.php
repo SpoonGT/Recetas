@@ -36,12 +36,8 @@ class CreateTblIngredienteTable extends Migration
             $table->decimal('cantidad', 14, 4)->default(1);
             $table->string('nomenclatura', 20);
 
-            $table->timestamps();
-            $table->softDeletes();
-
+            $table->timestamp('created_at', 0);
             $table->string('created_by', 25);
-            $table->string('updated_by', 25)->nullable();
-            $table->string('deleted_by', 25)->nullable();
 
             $table->unique(array('receta_id', 'categoria_id', 'informacion_id'));
         });

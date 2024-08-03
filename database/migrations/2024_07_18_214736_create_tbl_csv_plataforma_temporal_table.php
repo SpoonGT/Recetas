@@ -31,8 +31,9 @@ class CreateTblCsvPlataformaTemporalTable extends Migration
             $table->boolean('procesado')->default(false);
             $table->longText('mensaje')->nullable();
 
-            $table->index(array('plataforma_id', 'procesado'));
-            $table->index(array('plataforma_id', 'procesado', 'id_pedido'));
+            $table->index(array('plataforma', 'id_pedido', 'local', 'fecha', 'total', 'estado', 'procesado'), 'index_optimizacion_busqueda_uno');
+            $table->index(array('plataforma_id', 'procesado'), 'index_optimizacion_busqueda_dos');
+            $table->index(array('plataforma_id', 'procesado', 'id_pedido'), 'index_optimizacion_busqueda_tres');
         });
     }
 

@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSpCsvPlataformaEstadoStoreProcedure extends Migration
+class CreateSpEstadoInsertStoreProcedure extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class CreateSpCsvPlataformaEstadoStoreProcedure extends Migration
     {
         DB::unprepared(
             "
-CREATE PROCEDURE sp_csv_plataforma_estado
+CREATE PROCEDURE sp_estado_insert
     @id INT = 0,
     @nombre NVARCHAR(75) NULL,
     @opcion INT
@@ -27,23 +27,23 @@ BEGIN
     --CONSULTA OPCION 2 Guardamos el registro en la tabla.
     IF @opcion = 2 
     BEGIN
-		IF(EXISTS(SELECT * FROM [dbo].[tbl_csv_plataforma_estado] WITH(NOLOCK) WHERE [nombre] = @nombre))
+		IF(EXISTS(SELECT * FROM [dbo].[tbl_estado] WITH(NOLOCK) WHERE [nombre] = @nombre))
 		BEGIN
-			SELECT @ultimo_id = [id] FROM [dbo].[tbl_csv_plataforma_estado] WITH(NOLOCK) WHERE [nombre] = @nombre;
+			SELECT @ultimo_id = [id] FROM [dbo].[tbl_estado] WITH(NOLOCK) WHERE [nombre] = @nombre;
 
-            EXECUTE sp_csv_plataforma_estado
+            EXECUTE sp_estado_insert
             @id = @ultimo_id,
             @nombre = null,
             @opcion = 5
 		END
         ELSE
         BEGIN
-            INSERT INTO [dbo].[tbl_csv_plataforma_estado] ([nombre])
+            INSERT INTO [dbo].[tbl_estado] ([nombre])
             VALUES (@nombre);
 
-            SET @ultimo_id = IDENT_CURRENT(N'[dbo].[tbl_csv_plataforma_estado]');
+            SET @ultimo_id = IDENT_CURRENT(N'[dbo].[tbl_estado]');
 
-			EXECUTE sp_csv_plataforma_estado
+			EXECUTE sp_estado_insert
             @id = @ultimo_id,
             @nombre = null,
 			@opcion = 5
@@ -53,7 +53,7 @@ BEGIN
     --CONSULTA OPCION 5 Seleccionamos por id el registro en la tabla.
     IF @opcion = 5 
     BEGIN
-		SELECT * FROM [dbo].[tbl_csv_plataforma_estado] WITH(NOLOCK) WHERE [id] = @id;
+		SELECT * FROM [dbo].[tbl_estado] WITH(NOLOCK) WHERE [id] = @id;
     END
 
 END
@@ -68,6 +68,6 @@ END
      */
     public function down()
     {
-        DB::unprepared("DROP PROCEDURE IF EXISTS sp_csv_plataforma_estado;");
+        DB::unprepared("DROP PROCEDURE IF EXISTS sp_estado_insert;");
     }
 }
