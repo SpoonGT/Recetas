@@ -25,9 +25,9 @@ class DatabaseSeeder extends Seeder
         $this->seguridad();
         if (Config::get('database.default') == "sqlsrv_recetas") {
             $this->catalogo_receta();
-            $this->import_receta();
+            /*$this->import_receta();
             $this->materia_prima_receta();
-            $this->producto_receta();
+            $this->producto_receta();*/
             echo "Migración de Recetas" . PHP_EOL;
         }
 
@@ -106,6 +106,170 @@ class DatabaseSeeder extends Seeder
         )[0];
 
         echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+        if (Config::get('database.default') == "sqlsrv_recetas") {
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Catálogo', '/Catalogo', 'fa-solid fa-gear', 0, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $menu_id = $menu->id;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Alergeno', '/Catalogo/Alergeno', 'fa-solid fa-shield-virus', {$menu_id}, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Área', '/Catalogo/Area', 'fa-solid fa-warehouse', {$menu_id}, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Categoría', '/Catalogo/Categoria', 'fa-solid fa-layer-group', {$menu_id}, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Marca', '/Catalogo/Marca', 'fa-solid fa-rug', {$menu_id}, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Unidad', '/Catalogo/Unidad', 'fa-brands fa-unity', {$menu_id}, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Materia Prima', '/MateriaPrima', 'fa-solid fa-m', 0, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $menu_id = $menu->id;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Importar', '/MateriaPrima/Importar', 'fa-solid fa-file-import', {$menu_id}, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Netsuit', '/MateriaPrima/Netsuit', 'fa-solid fa-wheat-awn', {$menu_id}, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Recetas', '/Recetas', 'fa-solid fa-registered', 0, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $menu_id = $menu->id;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Nueva Receta', '/Recetas/Nueva Receta', 'fa-solid fa-file-circle-plus', {$menu_id}, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Administración Receta', '/Recetas/Administracion Receta', 'fa-solid fa-box-archive', {$menu_id}, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Revisión Receta', '/Recetas/Revision Receta', 'fa-solid fa-clipboard-check', {$menu_id}, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+        }
 
         if (Config::get('database.default') == "sqlsrv_conciliador") {
             $menu = DB::select(
