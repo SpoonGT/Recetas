@@ -78,7 +78,7 @@ return [
             'sslmode' => 'prefer',
         ],
 
-        /*'sqlsrv_recetas' => [
+        'sqlsrv_recetas' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', 'sql5108.site4now.net'),
@@ -89,9 +89,9 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-        ],*/
+        ],
 
-        'sqlsrv_recetas' => [
+        /*'sqlsrv_recetas' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -102,7 +102,7 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-        ],
+        ],*/
 
         'sqlsrv_conciliador' => [
             'driver' => 'sqlsrv',

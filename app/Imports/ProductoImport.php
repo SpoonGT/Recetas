@@ -26,7 +26,7 @@ class ProductoImport implements ToModel
             if (count($existe_materia) > 0) {
                 $es_valdo = substr($row[0], 0, 2);
 
-                if ($es_valdo != "MP" && $es_valdo != "EM") {
+                if ($es_valdo == "SE") {
 
                     $data["ensamble"] = $row[0];
                     $data["materia"] = $row[6];

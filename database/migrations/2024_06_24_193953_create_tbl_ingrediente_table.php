@@ -15,7 +15,7 @@ class CreateTblIngredienteTable extends Migration
     {
         Schema::create('tbl_ingrediente', function (Blueprint $table) {
             $table->id();
-            $table->enum('tipo', ['PRODUCTO', 'MATERIA PRIMA']);
+            $table->enum('tipo', ['PRODUCTO', 'MATERIA PRIMA'])->index();
 
             $table->bigInteger('receta_id')->unsigned()->index();
             $table->foreign('receta_id')->references('id')->on('tbl_receta');
@@ -39,7 +39,8 @@ class CreateTblIngredienteTable extends Migration
             $table->timestamp('created_at', 0);
             $table->string('created_by', 25);
 
-            $table->unique(array('receta_id', 'categoria_id', 'informacion_id'));
+            $table->index(array('receta_id', 'tipo'));
+            $table->index(array('receta_id', 'categoria_id', 'informacion_id'));
         });
     }
 

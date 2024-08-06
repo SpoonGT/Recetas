@@ -285,6 +285,26 @@ class DatabaseSeeder extends Seeder
             ['nombre' => 'Fas', 'abreviatura' => "F"]
         );
 
+        DB::table('tbl_estado')->insert(
+            ['nombre' => 'CREADO', 'color' => "default"]
+        );
+
+        DB::table('tbl_estado')->insert(
+            ['nombre' => 'EN REVISIÓN', 'color' => "primary"]
+        );
+
+        DB::table('tbl_estado')->insert(
+            ['nombre' => 'APROBADA', 'color' => "success"]
+        );
+
+        DB::table('tbl_estado')->insert(
+            ['nombre' => 'RECHAZADA', 'color' => "danger"]
+        );
+
+        DB::table('tbl_estado')->insert(
+            ['nombre' => 'SUSTITUIDO POR VERSIÓN', 'color' => "info"]
+        );
+
         echo "=========================== CATEGORIA ===========================" . PHP_EOL;
 
         $json = '{"nombre": "Decoracion", "prefijos": "PTL"}';
@@ -453,7 +473,7 @@ class DatabaseSeeder extends Seeder
     private function import_receta()
     {
         Excel::import(new MateriaPrimaImport, 'database/seeders/Netsuite.xlsx');
-        //Excel::import(new ProductoImport, 'database/seeders/Netsuite.xlsx');
+        Excel::import(new ProductoImport, 'database/seeders/Netsuite.xlsx');
         Excel::import(new SubEnsambleImport, 'database/seeders/Netsuite.xlsx');
     }
 

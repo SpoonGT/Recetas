@@ -14,7 +14,7 @@ class CreateTblIngredienteMedidaAlternativaTable extends Migration
     public function up()
     {
         Schema::create('tbl_ingrediente_medida_alternativa', function (Blueprint $table) {
-            $table->string('cantidad', 50)->default("")->nullable();
+            $table->decimal('cantidad', 14, 4)->default(0);
             $table->string('nomenclatura', 20);
 
             $table->bigInteger('unidad_id')->unsigned()->index();

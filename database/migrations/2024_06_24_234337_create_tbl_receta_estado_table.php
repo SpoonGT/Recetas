@@ -14,14 +14,16 @@ class CreateTblRecetaEstadoTable extends Migration
     public function up()
     {
         Schema::create('tbl_receta_estado', function (Blueprint $table) {
-            $table->enum('estado', ['CREADO', 'REVISIÓN', 'RECHAZADO', 'APROBADO']);
-            $table->enum('color', ['primary', 'warning', 'danger', 'success']);
+            $table->bigInteger('estado_id')->unsigned()->index();
+            $table->foreign('estado_id')->references('id')->on('tbl_estado');
 
             $table->bigInteger('receta_id')->unsigned()->index();
             $table->foreign('receta_id')->references('id')->on('tbl_receta');
 
             $table->timestamp('created_at', 0);
             $table->string('created_by', 25);
+
+            $table->index(array('estado_id', 'receta_id'));
         });
     }
 

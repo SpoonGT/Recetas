@@ -102,8 +102,11 @@ BEGIN
     --CONSULTA OPCION 8 Guardamos el registro en la tabla.
     IF @opcion = 8 
     BEGIN
-        INSERT INTO [dbo].[tbl_materia_prima_alergeno] ([materia_prima_id], [informacion_id], [alergeno_id], [created_at], [created_by])
-        VALUES (@id, (SELECT [informacion_id] FROM [dbo].[tbl_materia_prima] WHERE [id] = @id), @alergeno_id, GETDATE(), @usuario);
+		IF(NOT EXISTS(SELECT * FROM [dbo].[tbl_materia_prima_alergeno] WITH(NOLOCK) WHERE [materia_prima_id] = @id AND [alergeno_id] = @alergeno_id))
+		BEGIN
+            INSERT INTO [dbo].[tbl_materia_prima_alergeno] ([materia_prima_id], [informacion_id], [alergeno_id], [created_at], [created_by])
+            VALUES (@id, (SELECT [informacion_id] FROM [dbo].[tbl_materia_prima] WHERE [id] = @id), @alergeno_id, GETDATE(), @usuario);
+		END
 
         EXECUTE sp_materia_prima_maintenance
         @id = @id,
@@ -111,7 +114,6 @@ BEGIN
 		@alergeno_id = 0,
         @usuario = NULL,
         @opcion = 7
-
     END
 
     --CONSULTA OPCION 9 Actualizamos el registro en la tabla.
