@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSpCsvIcgDuplicadoResueltoStoreProcedureTable extends Migration
+class CreateSpCsvIcgDuplicadoResueltoStoreProcedure extends Migration
 {
     /**
      * Run the migrations.

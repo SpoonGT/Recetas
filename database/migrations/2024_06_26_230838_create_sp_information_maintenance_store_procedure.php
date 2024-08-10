@@ -162,11 +162,9 @@ BEGIN
     IF @opcion = 3
     BEGIN
         UPDATE [dbo].[tbl_informacion]
-        SET 
-            [nombre] = @nombre,  
+        SET  
             [descripcion] = @descripcion,
             [marca_id] = @marca_id,
-            [unidad_id] = @unidad_id,
             [updated_by] = @usuario,
             [updated_at] = GETDATE()
         WHERE [id] = @id;

@@ -26,8 +26,8 @@ class CreateTblFichaTecnicaAlergenoTable extends Migration
             $table->bigInteger('receta_id')->unsigned()->index();
             $table->foreign('receta_id')->references('id')->on('tbl_receta');
 
-            $table->timestamp('created_at', 0);
-            $table->string('created_by', 25);
+            $table->softDeletes();
+            $table->string('deleted_by', 25)->nullable();
         });
     }
 

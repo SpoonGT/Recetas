@@ -28,6 +28,9 @@ class CreateTblIngredienteAlergenoTable extends Migration
 
             $table->index(array('receta_id', 'ingrediente_id'));
             $table->index(array('receta_id', 'ingrediente_id', 'informacion_id', 'alergeno_id'));
+
+            $table->softDeletes();
+            $table->string('deleted_by', 25)->nullable();
         });
     }
 
