@@ -78,18 +78,18 @@ return [
             'sslmode' => 'prefer',
         ],
 
-         'sqlsrv_recetas' => [
-             'driver' => 'sqlsrv',
-             'url' => env('DATABASE_URL'),
-             'host' => env('DB_HOST', 'sql5108.site4now.net'),
-             'port' => env('DB_PORT', '1433'),
-             'database' => env('DB_DATABASE', 'db_a85b6c_spooncr'),
-             'username' => env('DB_USERNAME', 'db_a85b6c_spooncr_admin'),
-             'password' => env('DB_PASSWORD', 'Q2iNhQJsni9K'),
-             'charset' => 'utf8',
-             'prefix' => '',
-             'prefix_indexes' => true,
-         ],
+        /*'sqlsrv_recetas' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', 'sql5108.site4now.net'),
+            'port' => env('DB_PORT', '1433'),
+            'database' => env('DB_DATABASE', 'db_a85b6c_spooncr'),
+            'username' => env('DB_USERNAME', 'db_a85b6c_spooncr_admin'),
+            'password' => env('DB_PASSWORD', 'Q2iNhQJsni9K'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],*/
 
         'sqlsrv_recetas' => [
             'driver' => 'sqlsrv',

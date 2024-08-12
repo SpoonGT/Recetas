@@ -30,7 +30,10 @@ BEGIN
     --CONSULTA OPCION 1  Seleccionar todos los registros de la tabla.
     IF @opcion = 1
     BEGIN
-		SELECT *
+		SELECT T0.id, T0.prefijo, T0.activo, T0.informacion_id, 
+		T1.codigo, T1.netsuit, T1.nombre, T1.descripcion, T1.marca_id, T1.unidad_id, 
+		T2.nombre AS marca, 
+		T3.nombre AS unidad, T3.nomenclatura AS nomenclatura
 		FROM [dbo].[tbl_materia_prima] AS T0 WITH(NOLOCK)
 		INNER JOIN [dbo].[tbl_informacion] AS T1 WITH(NOLOCK) ON T0.[informacion_id] = T1.[id]
 		INNER JOIN [dbo].[tbl_marca] AS T2 WITH(NOLOCK) ON T1.[marca_id] = T2.[id]
@@ -63,7 +66,10 @@ BEGIN
     --CONSULTA OPCION 5 Seleccionamos por id el registro en la tabla.
     IF @opcion = 5 
     BEGIN
-		SELECT *
+		SELECT T0.id, T0.prefijo, T0.activo, T0.informacion_id, 
+		T1.codigo, T1.netsuit, T1.nombre, T1.descripcion, T1.marca_id, T1.unidad_id, 
+		T2.nombre AS marca, 
+		T3.nombre AS unidad, T3.nomenclatura AS nomenclatura
 		FROM [dbo].[tbl_materia_prima] AS T0 WITH(NOLOCK)
 		INNER JOIN [dbo].[tbl_informacion] AS T1 WITH(NOLOCK) ON T0.[informacion_id] = T1.[id]
 		INNER JOIN [dbo].[tbl_marca] AS T2 WITH(NOLOCK) ON T1.[marca_id] = T2.[id]
@@ -86,14 +92,18 @@ BEGIN
     --CONSULTA OPCION 7 Seleccionar todos los registros de la tabla.
     IF @opcion = 7
     BEGIN
-		SELECT *
+		SELECT T0.id, T0.prefijo, T0.activo, T0.informacion_id, 
+		T1.codigo, T1.netsuit, T1.nombre, T1.descripcion, T1.marca_id, T1.unidad_id, 
+		T2.nombre AS marca, 
+		T3.nombre AS unidad, T3.nomenclatura AS nomenclatura
 		FROM [dbo].[tbl_materia_prima] AS T0 WITH(NOLOCK)
 		INNER JOIN [dbo].[tbl_informacion] AS T1 WITH(NOLOCK) ON T0.[informacion_id] = T1.[id]
 		INNER JOIN [dbo].[tbl_marca] AS T2 WITH(NOLOCK) ON T1.[marca_id] = T2.[id]
 		INNER JOIN [dbo].[tbl_unidad] AS T3 WITH(NOLOCK) ON T1.[unidad_id] = T3.[id]
 		WHERE T0.[deleted_at] IS NULL AND T0.[id] = @id;
 
-		SELECT *
+		SELECT T0.*,
+		T1.nombre AS alergeno
 		FROM [dbo].[tbl_materia_prima_alergeno] AS T0 WITH(NOLOCK)
 		INNER JOIN [dbo].[tbl_alergeno] AS T1 WITH(NOLOCK) ON T0.alergeno_id = T1.[id]
 		WHERE T0.[deleted_at] IS NULL AND T0.[materia_prima_id] = @id;
@@ -143,15 +153,6 @@ BEGIN
         UPDATE [dbo].[tbl_materia_prima_alergeno] SET [deleted_by] = @usuario, [deleted_at] = GETDATE() 
 		OUTPUT INSERTED.[materia_prima_id] INTO @RecuperarId
         WHERE [id] = @id;
-
-		SET @ultimo_id = (SELECT TOP 1 Id FROM @RecuperarId);
-
-        EXECUTE sp_materia_prima_maintenance
-        @id = @ultimo_id,
-        @activo = null,
-		@alergeno_id = 0,
-        @usuario = NULL,
-        @opcion = 7
     END
 
 END

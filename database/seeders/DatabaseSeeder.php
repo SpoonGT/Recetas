@@ -235,7 +235,7 @@ class DatabaseSeeder extends Seeder
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
             $menu = DB::select(
-                "exec [dbo].[sp_menu_crud] 0, 'Nueva Receta', '/Recetas/Nueva Receta', 'fa-solid fa-file-circle-plus', {$menu_id}, 'migration', 2"
+                "exec [dbo].[sp_menu_crud] 0, 'Nueva Receta', '/Recetas/NuevaReceta', 'fa-solid fa-file-circle-plus', {$menu_id}, 'migration', 2"
             )[0];
 
             echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
@@ -247,7 +247,7 @@ class DatabaseSeeder extends Seeder
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
             $menu = DB::select(
-                "exec [dbo].[sp_menu_crud] 0, 'Administración Receta', '/Recetas/Administracion Receta', 'fa-solid fa-box-archive', {$menu_id}, 'migration', 2"
+                "exec [dbo].[sp_menu_crud] 0, 'Administración Receta', '/Recetas/AdministracionReceta', 'fa-solid fa-box-archive', {$menu_id}, 'migration', 2"
             )[0];
 
             echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
@@ -259,7 +259,45 @@ class DatabaseSeeder extends Seeder
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
             $menu = DB::select(
-                "exec [dbo].[sp_menu_crud] 0, 'Revisión Receta', '/Recetas/Revision Receta', 'fa-solid fa-clipboard-check', {$menu_id}, 'migration', 2"
+                "exec [dbo].[sp_menu_crud] 0, 'Revisión Receta', '/Recetas/RevisionReceta', 'fa-solid fa-clipboard-check', {$menu_id}, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Fichas Técnicas', '/FichasTecnicas', 'fa-solid fa-file-invoice', 0, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $menu_id = $menu->id;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Nueva Ficha Técnica', '/FichasTecnicas/NuevaFichaTecnica', 'fa-solid fa-file-circle-plus', {$menu_id}, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Administración Ficha Técnica', '/FichasTecnicas/AdministracionFichaTecnica', 'fa-solid fa-boxes-packing', {$menu_id}, 'migration', 2"
             )[0];
 
             echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
@@ -300,6 +338,18 @@ class DatabaseSeeder extends Seeder
 
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Plataforma', '/Catalogo/Plataforma', 'fa-solid fa-truck-ramp-box', {$menu_id}, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Regla de Negocio', '/Catalogo/ReglaNegocio', 'fa-solid fa-pen-ruler', {$menu_id}, 'migration', 2"
             )[0];
 
             echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;

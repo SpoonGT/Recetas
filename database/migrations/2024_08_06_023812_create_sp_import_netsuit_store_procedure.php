@@ -47,11 +47,11 @@ BEGIN
         SELECT *
         FROM [dbo].[tbl_import_netsuit] AS TEMPORAL WITH(NOLOCK)
         WHERE [procesado] = 0
+        AND dbo.fn_obtener_letras_sin_espacio([articulo]) IN ('MP', 'EM', 'AS')
         AND NOT EXISTS (
             SELECT *
             FROM [dbo].[tbl_informacion] AS DEFINITIVA WITH(NOLOCK)
             WHERE TEMPORAL.[articulo] = DEFINITIVA.[netsuit]
-            AND TEMPORAL.[nombre] = DEFINITIVA.[nombre]
         )
     END
 
@@ -61,11 +61,11 @@ BEGIN
         SELECT *
         FROM [dbo].[tbl_import_netsuit] AS TEMPORAL WITH(NOLOCK)
         WHERE [procesado] = 0
+        AND dbo.fn_obtener_letras_sin_espacio([articulo]) IN ('MP', 'EM', 'AS')
         AND EXISTS (
             SELECT *
             FROM [dbo].[tbl_informacion] AS DEFINITIVA WITH(NOLOCK)
             WHERE TEMPORAL.[articulo] = DEFINITIVA.[netsuit]
-            AND TEMPORAL.[nombre] = DEFINITIVA.[nombre]
         )
     END
 END

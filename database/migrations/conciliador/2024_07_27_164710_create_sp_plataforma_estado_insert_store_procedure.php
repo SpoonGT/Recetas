@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSpPlataformaEstadoInsertStoreProcedureTable extends Migration
+class CreateSpPlataformaEstadoInsertStoreProcedure extends Migration
 {
     /**
      * Run the migrations.
