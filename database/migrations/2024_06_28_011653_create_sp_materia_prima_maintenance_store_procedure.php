@@ -105,7 +105,7 @@ BEGIN
 		SELECT T0.*,
 		T1.nombre AS alergeno
 		FROM [dbo].[tbl_materia_prima_alergeno] AS T0 WITH(NOLOCK)
-		INNER JOIN [dbo].[tbl_alergeno] AS T1 WITH(NOLOCK) ON T0.alergeno_id = T1.[id]
+		INNER JOIN [dbo].[tbl_alergeno] AS T1 WITH(NOLOCK) ON T0.alergeno_id = T1.[id] AND T1.[deleted_at] IS NULL
 		WHERE T0.[deleted_at] IS NULL AND T0.[materia_prima_id] = @id;
     END
 
