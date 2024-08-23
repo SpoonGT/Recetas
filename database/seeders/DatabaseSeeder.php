@@ -840,5 +840,33 @@ class DatabaseSeeder extends Seeder
         DB::select(
             "exec [dbo].[sp_configuracion_import] 0, 'estado', 'Estado del pedido', 6, 1, 'migracion', 2"
         )[0];
+
+        //UBER
+
+        DB::select(
+            "exec [dbo].[sp_configuracion_import] 0, 'id_pedido', 'ID del pedido', 2, 4, 'migracion', 2"
+        )[0];
+
+        DB::select(
+            "exec [dbo].[sp_configuracion_import] 0, 'local', 'Nombre de la tienda', 0, 4, 'migracion', 2"
+        )[0];
+
+        DB::select(
+            "exec [dbo].[sp_configuracion_import] 0, 'fecha', 'Fecha del pedido', 4, 4, 'migracion', 2"
+        )[0];
+
+        DB::select(
+            "exec [dbo].[sp_configuracion_import] 0, 'total', 'Total de las ventas después de los ajustes (impuestos incluidos)', 21, 4, 'migracion', 2"
+        )[0];
+
+        DB::select(
+            "exec [dbo].[sp_configuracion_import] 0, 'estado', 'Estado del pedido', 8, 4, 'migracion', 2"
+        )[0];
+
+        for ($i = 0; $i < 5; $i++) {
+            DB::select(
+                "exec [dbo].[sp_caso_crud] 0, 'Caso $i', 'migracion', 2"
+            )[0];
+        }
     }
 }

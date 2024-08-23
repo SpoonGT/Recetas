@@ -20,6 +20,7 @@ CREATE PROCEDURE sp_csv_plataforma_conciliar
     @punto_venta_id INT = 0,
     @alias_id INT = 0,
     @estado_id INT = 0,
+    @informacion NVARCHAR(75) NULL,
     @opcion INT
 AS
 BEGIN
@@ -35,6 +36,12 @@ BEGIN
     IF @opcion = 3
     BEGIN
         UPDATE [dbo].[tbl_csv_plataforma] SET [procesado] = 1 WHERE [id] = @id;
+    END
+
+    --CONSULTA OPCION 4 Actualizamos el estado.
+    IF @opcion = 4
+    BEGIN
+        UPDATE [dbo].[tbl_csv_plataforma] SET [informacion] = @informacion WHERE [id] = @id;
     END
 
     --CONSULTA OPCION 5 Seleccionamos todos los registros que ya han sido procesados.
@@ -77,6 +84,30 @@ BEGIN
     IF @opcion = 11 
     BEGIN
         SELECT * FROM [dbo].[tbl_csv_plataforma] WITH(NOLOCK) WHERE [estado_id] = @estado_id;
+    END
+
+    --CONSULTA OPCION 12 Seleccionamos todos los registros del estado.
+    IF @opcion = 12 
+    BEGIN
+        SELECT * FROM [dbo].[tbl_csv_plataforma] WITH(NOLOCK) WHERE [informacion] = 'REGISTRADO';
+    END
+
+    --CONSULTA OPCION 13 Seleccionamos todos los registros del estado.
+    IF @opcion = 13 
+    BEGIN
+        SELECT * FROM [dbo].[tbl_csv_plataforma] WITH(NOLOCK) WHERE [informacion] = 'REGLA VALIDACION';
+    END
+
+    --CONSULTA OPCION 14 Seleccionamos todos los registros del estado.
+    IF @opcion = 14 
+    BEGIN
+        SELECT * FROM [dbo].[tbl_csv_plataforma] WITH(NOLOCK) WHERE [informacion] = 'CONCILIACION AUTOMATICA';
+    END
+
+    --CONSULTA OPCION 15 Seleccionamos todos los registros del estado.
+    IF @opcion = 15 
+    BEGIN
+        SELECT * FROM [dbo].[tbl_csv_plataforma] WITH(NOLOCK) WHERE [informacion] = 'CONCILIACION MANUAL';
     END
 END
             "
