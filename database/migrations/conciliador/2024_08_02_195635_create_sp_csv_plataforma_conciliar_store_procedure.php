@@ -29,7 +29,9 @@ BEGIN
     --CONSULTA OPCION 1 Seleccionamos todos los registros que no han sido procesados.
     IF @opcion = 1
     BEGIN
-        SELECT * FROM [dbo].[tbl_csv_plataforma] WITH(NOLOCK) WHERE [procesado] = 0;
+        SELECT * FROM [dbo].[tbl_csv_plataforma] WITH(NOLOCK) 
+        WHERE [procesado] = 0 
+        AND [informacion] IN ('REGISTRADO', 'RE PROSESAR');
     END
 
     --CONSULTA OPCION 3 Actualizamos el registro en la tabla.

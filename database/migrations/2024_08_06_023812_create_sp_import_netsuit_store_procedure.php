@@ -68,6 +68,12 @@ BEGIN
             WHERE TEMPORAL.[articulo] = DEFINITIVA.[netsuit]
         )
     END
+
+    --CONSULTA OPCION 8 Actualizamos todos los registros que no fueron operados.
+    IF @opcion = 8
+    BEGIN
+        UPDATE [dbo].[tbl_import_netsuit] SET [procesado] = 1, [mensaje] = 'Este código no aplica para el proceso de materia prima' WHERE [mensaje] IS NULL;
+    END
 END
             "
         );

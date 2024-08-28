@@ -78,7 +78,7 @@ return [
             'sslmode' => 'prefer',
         ],
 
-        /*'sqlsrv_recetas' => [
+        'sqlsrv_recetas_nube' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', 'sql5108.site4now.net'),
@@ -89,16 +89,42 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-        ],*/
+        ],
+
+        'sqlsrv_recetas_desa' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', '192.168.2.20'),
+            'port' => env('DB_PORT', '1433'),
+            'database' => env('DB_DATABASE', 'Recetas'),
+            'username' => env('DB_USERNAME', 'usrRecetas'),
+            'password' => env('DB_PASSWORD', 'pwdRecetas'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
 
         'sqlsrv_recetas' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '1433'),
-            'database' => env('DB_DATABASE', 'RECETAS'),
+            'database' => env('DB_DATABASE', 'Recetas'),
             'username' => env('DB_USERNAME', 'sa'),
             'password' => env('DB_PASSWORD', 'a12345678*'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
+        'sqlsrv_conciliador_desa' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', '192.168.2.20'),
+            'port' => env('DB_PORT', '1433'),
+            'database' => env('DB_DATABASE', 'Conciliador'),
+            'username' => env('DB_USERNAME', 'usrConciliador'),
+            'password' => env('DB_PASSWORD', 'pwdConciliador'),
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
@@ -109,7 +135,7 @@ return [
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '1433'),
-            'database' => env('DB_DATABASE', 'CONCILIADOR'),
+            'database' => env('DB_DATABASE', 'Conciliador'),
             'username' => env('DB_USERNAME', 'sa'),
             'password' => env('DB_PASSWORD', 'a12345678*'),
             'charset' => 'utf8',

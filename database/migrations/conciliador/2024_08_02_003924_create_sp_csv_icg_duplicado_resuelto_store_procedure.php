@@ -25,7 +25,7 @@ BEGIN
     --CONSULTA OPCION 1 Seleccionamos todos los registros.
     IF @opcion = 1
     BEGIN
-        SELECT * FROM [dbo].[tbl_csv_icg_duplicado] WITH(NOLOCK);
+        SELECT * FROM [dbo].[tbl_csv_icg_duplicado] WITH(NOLOCK) WHERE [resuelto] = 0;
     END
 
     --CONSULTA OPCION 3 Actualizamos el registro en la tabla.

@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->generar_menu();
         $this->seguridad();
-        if (Config::get('database.default') == "sqlsrv_recetas") {
+        if (Config::get('database.default') == "sqlsrv_recetas_nube" || Config::get('database.default') == "sqlsrv_recetas_desa" || Config::get('database.default') == "sqlsrv_recetas") {
             $this->catalogo_receta();
             /*$this->import_receta();
             $this->materia_prima_receta();
@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             echo "Migración de Recetas" . PHP_EOL;
         }
 
-        if (Config::get('database.default') == "sqlsrv_conciliador") {
+        if (Config::get('database.default') == "sqlsrv_conciliador_desa" || Config::get('database.default') == "sqlsrv_conciliador") {
             $this->catalogo_conciliacion();
             echo "Migración de Conciliación" . PHP_EOL;
         }
@@ -107,7 +107,7 @@ class DatabaseSeeder extends Seeder
 
         echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
-        if (Config::get('database.default') == "sqlsrv_recetas") {
+        if (Config::get('database.default') == "sqlsrv_recetas_nube" || Config::get('database.default') == "sqlsrv_recetas_desa" || Config::get('database.default') == "sqlsrv_recetas") {
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Catálogo', '/Catalogo', 'fa-solid fa-gear', 0, 'migration', 2"
             )[0];
@@ -309,7 +309,7 @@ class DatabaseSeeder extends Seeder
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
         }
 
-        if (Config::get('database.default') == "sqlsrv_conciliador") {
+        if (Config::get('database.default') == "sqlsrv_conciliador_desa" || Config::get('database.default') == "sqlsrv_conciliador") {
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Catálogo', '/Catalogo', 'fa-solid fa-layer-group', 0, 'migration', 2"
             )[0];
@@ -476,15 +476,23 @@ class DatabaseSeeder extends Seeder
 
         echo "======================================================================" . PHP_EOL;
 
-        if (Config::get('database.default') == "sqlsrv_recetas") {
+        if (Config::get('database.default') == "sqlsrv_recetas_nube" || Config::get('database.default') == "sqlsrv_recetas_desa" || Config::get('database.default') == "sqlsrv_recetas") {
             $contrasenia = "lwYx8+0tB1bK3dAeL8oi8FZs4tBPnV/FsoWBm+hFE9A=";
+
+            $usuario = DB::select(
+                "exec [dbo].[sp_usuario_crud] 0, 'Usuario', 'usuario.desa', '{$contrasenia}', 'usuario@gmail.com', 1, 'migration', 2"
+            )[0];
+
+            $usuario = DB::select(
+                "exec [dbo].[sp_usuario_crud] 0, 'Usuario', 'hcruz', '{$contrasenia}', 'hcruz@fascr.com', 1, 'migration', 2"
+            )[0];
         } else {
             $contrasenia = "aD71mfjmsFmDBnAlc1Hu+fEfJqsZ7+Gp8aSgxVZAT40=";
-        }
 
-        $usuario = DB::select(
-            "exec [dbo].[sp_usuario_crud] 0, 'Usuario', 'usuario.desa', '{$contrasenia}', 'usuario@gmail.com', 1, 'migration', 2"
-        )[0];
+            $usuario = DB::select(
+                "exec [dbo].[sp_usuario_crud] 0, 'Usuario', 'usuario.desa', '{$contrasenia}', 'usuario@gmail.com', 1, 'migration', 2"
+            )[0];
+        }
 
         echo "Usuario Creado: {$usuario->id} - {$usuario->nombre_completo}" . PHP_EOL;
     }
@@ -861,6 +869,28 @@ class DatabaseSeeder extends Seeder
 
         DB::select(
             "exec [dbo].[sp_configuracion_import] 0, 'estado', 'Estado del pedido', 8, 4, 'migracion', 2"
+        )[0];
+
+        //PEYA
+
+        DB::select(
+            "exec [dbo].[sp_configuracion_import] 0, 'id_pedido', 'ID', 0, 3, 'migracion', 2"
+        )[0];
+
+        DB::select(
+            "exec [dbo].[sp_configuracion_import] 0, 'local', 'Local', 5, 3, 'migracion', 2"
+        )[0];
+
+        DB::select(
+            "exec [dbo].[sp_configuracion_import] 0, 'fecha', 'Fecha del pedido', 16, 3, 'migracion', 2"
+        )[0];
+
+        DB::select(
+            "exec [dbo].[sp_configuracion_import] 0, 'total', 'Total con propina', 28, 3, 'migracion', 2"
+        )[0];
+
+        DB::select(
+            "exec [dbo].[sp_configuracion_import] 0, 'estado', 'Estado', 13, 3, 'migracion', 2"
         )[0];
 
         for ($i = 0; $i < 5; $i++) {
