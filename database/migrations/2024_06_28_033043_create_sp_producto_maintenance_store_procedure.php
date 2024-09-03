@@ -78,7 +78,7 @@ BEGIN
 		INNER JOIN [dbo].[tbl_informacion] AS T1 WITH(NOLOCK) ON T0.[informacion_id] = T1.[id]
 		INNER JOIN [dbo].[tbl_marca] AS T2 WITH(NOLOCK) ON T1.[marca_id] = T2.[id]
 		INNER JOIN [dbo].[tbl_unidad] AS T3 WITH(NOLOCK) ON T1.[unidad_id] = T3.[id]
-		WHERE T0.[deleted_at] IS NULL AND T1.[prefijo] IN ('PTL', 'PTI', 'SE');
+		WHERE T0.[deleted_at] IS NULL AND T1.[prefijo] IN ('SE');
     END
 	
     --CONSULTA OPCION 7 Seleccionar todos los registros de la tabla.

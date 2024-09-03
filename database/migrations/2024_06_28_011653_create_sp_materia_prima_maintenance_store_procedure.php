@@ -89,7 +89,7 @@ BEGIN
 		WHERE T0.[deleted_at] IS NULL AND T1.[prefijo] IN ('MP', 'EM', 'AS');
     END
 	
-    --CONSULTA OPCION 7 Seleccionar todos los registros de la tabla.
+    --CONSULTA OPCION 7 Seleccionar todos los registros de la tabla por el identificador.
     IF @opcion = 7
     BEGIN
 		SELECT T0.id, T0.prefijo, T0.activo, T0.informacion_id, 
@@ -153,6 +153,15 @@ BEGIN
         UPDATE [dbo].[tbl_materia_prima_alergeno] SET [deleted_by] = @usuario, [deleted_at] = GETDATE() 
 		OUTPUT INSERTED.[materia_prima_id] INTO @RecuperarId
         WHERE [id] = @id;
+
+		SET @ultimo_id = (SELECT TOP 1 Id FROM @RecuperarId);
+
+        EXECUTE sp_materia_prima_maintenance
+        @id = @ultimo_id,
+        @activo = null,
+		@alergeno_id = 0,
+        @usuario = NULL,
+        @opcion = 7
     END
 
 END

@@ -31,7 +31,7 @@ BEGIN
     BEGIN
         SELECT * FROM [dbo].[tbl_csv_plataforma] WITH(NOLOCK) 
         WHERE [procesado] = 0 
-        AND [informacion] IN ('REGISTRADO', 'RE PROSESAR');
+        AND [informacion] IN ('REGISTRADO', 'REPROCESAR');
     END
 
     --CONSULTA OPCION 3 Actualizamos el registro en la tabla.
@@ -43,7 +43,7 @@ BEGIN
     --CONSULTA OPCION 4 Actualizamos el estado.
     IF @opcion = 4
     BEGIN
-        UPDATE [dbo].[tbl_csv_plataforma] SET [informacion] = @informacion WHERE [id] = @id;
+        UPDATE [dbo].[tbl_csv_plataforma] SET [informacion] = @informacion, [procesado] = 1 WHERE [id] = @id;
     END
 
     --CONSULTA OPCION 5 Seleccionamos todos los registros que ya han sido procesados.
@@ -110,6 +110,12 @@ BEGIN
     IF @opcion = 15 
     BEGIN
         SELECT * FROM [dbo].[tbl_csv_plataforma] WITH(NOLOCK) WHERE [informacion] = 'CONCILIACION MANUAL';
+    END
+
+    --CONSULTA OPCION 16 Seleccionamos todos los registros del estado.
+    IF @opcion = 16 
+    BEGIN
+        SELECT * FROM [dbo].[tbl_csv_plataforma] WITH(NOLOCK) WHERE [informacion] = 'REPROCESAR';
     END
 END
             "

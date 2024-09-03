@@ -24,7 +24,7 @@ BEGIN
     FROM INFORMATION_SCHEMA.COLUMNS AS T0
     WHERE T0.[TABLE_SCHEMA] = 'dbo'
     AND T0.[TABLE_NAME] = 'tbl_csv_icg'
-    AND T0.[COLUMN_NAME] NOT IN ('id', 'plataforma_id', 'plataforma', 'punto_venta', 'fecha_entrega', 'total_promocion', 'serie_compuesta', 'numero_documento', 'forma_pago', 'nombre_cliente', 'cajero', 'estado', 'created_at', 'created_by', 'procesado')
+    AND T0.[COLUMN_NAME] NOT IN ('id', 'plataforma_id', 'plataforma', 'punto_venta', 'fecha_entrega', 'total_promocion', 'serie_compuesta', 'numero_documento', 'forma_pago', 'nombre_cliente', 'cajero', 'estado', 'created_at', 'created_by', 'procesado', 'no_id')
     ORDER BY T0.[ORDINAL_POSITION];
 
     SELECT CONCAT('PLATAFORMA - ',UPPER(T0.[COLUMN_NAME])) AS nombre, 

@@ -43,7 +43,7 @@ class CreateTblCsvPlataformaTable extends Migration
             $table->timestamp('created_at', 0);
             $table->string('created_by', 25);
             $table->boolean('procesado')->default(false);
-            $table->enum('informacion', ['REGISTRADO', 'REGLA VALIDACION', 'CONCILIACION AUTOMATICA', 'CONCILIACION MANUAL', 'RE PROSESAR'])->default('REGISTRADO');
+            $table->enum('informacion', ['REGISTRADO', 'REGLA VALIDACION', 'CONCILIACION AUTOMATICA', 'CONCILIACION MANUAL', 'REPROCESAR'])->default('REGISTRADO');
 
             $table->unique(array('plataforma', 'id_pedido', 'punto_venta', 'fecha', 'total', 'estado'), 'llave_unica_uno');
             $table->index(array('plataforma', 'id_pedido', 'punto_venta', 'fecha', 'total', 'estado', 'procesado'), 'index_optimizacion_busqueda_uno');
@@ -57,6 +57,7 @@ class CreateTblCsvPlataformaTable extends Migration
             $table->index(array('plataforma_id', 'informacion', 'procesado'), 'index_optimizacion_busqueda_ocho');
             $table->index(array('plataforma_id', 'informacion'), 'index_optimizacion_busqueda_nueve');
             $table->index(array('plataforma_id', 'id_pedido', 'punto_venta_id', 'fecha', 'total', 'estado_id', 'informacion'), 'index_optimizacion_busqueda_diez');
+            $table->index(array('informacion'), 'index_optimizacion_busqueda_once');
         });
     }
 

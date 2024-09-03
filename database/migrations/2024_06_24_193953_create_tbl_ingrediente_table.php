@@ -15,29 +15,30 @@ class CreateTblIngredienteTable extends Migration
     {
         Schema::create('tbl_ingrediente', function (Blueprint $table) {
             $table->id();
-            $table->enum('tipo', ['PRODUCTO', 'MATERIA PRIMA'])->index();
+            $table->enum('tipo', ['PRODUCTO', 'MATERIA PRIMA'])->index(); //BackEnd
 
-            $table->bigInteger('receta_id')->unsigned()->index();
+            $table->bigInteger('receta_id')->unsigned()->index(); //BackEnd
             $table->foreign('receta_id')->references('id')->on('tbl_receta');
 
-            $table->string('categoria', 75);
-            $table->bigInteger('categoria_id')->unsigned()->index();
+            $table->string('categoria', 75); //BackEnd
+
+            $table->bigInteger('categoria_id')->unsigned()->index(); //Form
             $table->foreign('categoria_id')->references('id')->on('tbl_categoria');
 
-            $table->bigInteger('informacion_id')->unsigned()->index();
+            $table->bigInteger('informacion_id')->unsigned()->index(); //Form
             $table->foreign('informacion_id')->references('id')->on('tbl_informacion');
 
-            $table->string('netsuit', 100);
-            $table->string('nombre', 150);
+            $table->string('netsuit', 100); //BackEnd
+            $table->string('nombre', 150); //BackEnd
 
-            $table->string('marca', 75);
-            $table->longText('alergenos')->nullable();
+            $table->string('marca', 75); //BackEnd
+            $table->longText('alergenos')->nullable(); //BackEnd
 
-            $table->decimal('cantidad', 14, 4)->default(1);
-            $table->string('nomenclatura', 20);
+            $table->decimal('cantidad', 14, 4)->default(1); //Form
+            $table->string('nomenclatura', 20); //BackEnd
 
-            $table->timestamp('created_at', 0);
-            $table->string('created_by', 25);
+            $table->timestamp('created_at', 0); //BackEnd
+            $table->string('created_by', 25); //BackEnd
 
             $table->index(array('receta_id', 'tipo'));
             $table->index(array('receta_id', 'categoria_id', 'informacion_id'));

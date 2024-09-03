@@ -43,6 +43,7 @@ class CreateTblCsvIcgTable extends Migration
             $table->timestamp('created_at', 0);
             $table->string('created_by', 25);
             $table->boolean('procesado')->default(false);
+            $table->boolean('no_id')->default(false);
 
             $table->index(array('id', 'procesado'));
             $table->index(array('id', 'plataforma_id', 'punto_venta_id', 'procesado'));
@@ -50,6 +51,9 @@ class CreateTblCsvIcgTable extends Migration
             $table->index(array('plataforma', 'punto_venta', 'serie_compuesta', 'numero_documento', 'total_bruto', 'total_neto',  'procesado'));
             $table->index(array('plataforma', 'punto_venta', 'serie_compuesta', 'numero_documento', 'fecha_pedido', 'total_bruto', 'procesado'));
             $table->index(array('created_by', 'procesado'));
+            $table->index(array('no_id', 'procesado'));
+            $table->index(array('no_id', 'id_pedido', 'procesado', 'plataforma_id'));
+            $table->index(array('no_id', 'id_pedido', 'plataforma_id'));
 
             $table->index(array('id', 'plataforma', 'id_pedido', 'fecha_pedido', 'fecha_entrega', 'punto_venta', 'procesado'), 'index_optimizacion_busqueda_uno');
             $table->index(array('id', 'plataforma', 'id_pedido', 'punto_venta', 'serie_compuesta', 'fecha_pedido', 'total_bruto', 'total_promocion', 'total_neto', 'forma_pago', 'procesado'), 'index_optimizacion_busqueda_dos');

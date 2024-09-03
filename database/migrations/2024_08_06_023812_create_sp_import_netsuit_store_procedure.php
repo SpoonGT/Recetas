@@ -58,6 +58,12 @@ BEGIN
     --CONSULTA OPCION 7 Seleccionamos registros que fueron operados y se registraron en la tabla definitiva.
     IF @opcion = 7 
     BEGIN
+        UPDATE T0 
+        SET T0.[nombre] = T1.[nombre]
+        FROM [dbo].[tbl_informacion] AS T0
+        INNER JOIN [dbo].[tbl_import_netsuit] AS T1 ON T1.[articulo] = T0.[netsuit]
+        WHERE dbo.fn_obtener_letras_sin_espacio(T1.[articulo]) IN ('MP', 'EM', 'AS');
+
         SELECT *
         FROM [dbo].[tbl_import_netsuit] AS TEMPORAL WITH(NOLOCK)
         WHERE [procesado] = 0
@@ -66,7 +72,7 @@ BEGIN
             SELECT *
             FROM [dbo].[tbl_informacion] AS DEFINITIVA WITH(NOLOCK)
             WHERE TEMPORAL.[articulo] = DEFINITIVA.[netsuit]
-        )
+        );
     END
 
     --CONSULTA OPCION 8 Actualizamos todos los registros que no fueron operados.

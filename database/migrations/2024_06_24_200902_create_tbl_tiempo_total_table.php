@@ -14,17 +14,14 @@ class CreateTblTiempoTotalTable extends Migration
     public function up()
     {
         Schema::create('tbl_tiempo_total', function (Blueprint $table) {
-            $table->bigInteger('receta_id')->unsigned()->index();
+            $table->bigInteger('receta_id')->unsigned()->index(); //BackEnd
             $table->foreign('receta_id')->references('id')->on('tbl_receta');
 
-            $table->time('cantidad');
-            $table->string('nomenclatura', 20);
+            $table->smallInteger('cantidad'); //Form
+            $table->enum('tiempo', ['HORAS', 'MINUTOS', 'SEGUNDOS'])->index(); //Form
 
-            $table->bigInteger('unidad_id')->unsigned()->index();
-            $table->foreign('unidad_id')->references('id')->on('tbl_unidad');
-
-            $table->timestamp('created_at', 0);
-            $table->string('created_by', 25);
+            $table->timestamp('created_at', 0); //BackEnd
+            $table->string('created_by', 25); //BackEnd
 
             $table->unique('receta_id');
         });

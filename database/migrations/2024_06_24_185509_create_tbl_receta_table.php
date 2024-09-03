@@ -16,26 +16,26 @@ class CreateTblRecetaTable extends Migration
         Schema::create('tbl_receta', function (Blueprint $table) {
             $table->id();
 
-            $table->string('nombre', 150); //Postre Suspiro Limeño INDUSTRIA
+            $table->string('nombre', 150); //Form
 
-            $table->boolean('activo')->default(true);
+            $table->boolean('activo')->default(true); //BackEnd
 
-            $table->bigInteger('estado_id')->unsigned()->index();
+            $table->bigInteger('estado_id')->unsigned()->index(); //BackEnd
             $table->foreign('estado_id')->references('id')->on('tbl_estado');
 
-            $table->bigInteger('chef_id')->unsigned()->index();
+            $table->bigInteger('chef_id')->unsigned()->index(); //Form
             $table->foreign('chef_id')->references('id')->on('tbl_usuario');
 
-            $table->bigInteger('produce_id')->unsigned()->index();
+            $table->bigInteger('produce_id')->unsigned()->index(); //Form
             $table->foreign('produce_id')->references('id')->on('tbl_area');
 
-            $table->bigInteger('empaque_id')->unsigned()->index();
+            $table->bigInteger('empaque_id')->unsigned()->index(); //Form
             $table->foreign('empaque_id')->references('id')->on('tbl_area');
 
-            $table->timestamps();
+            $table->timestamps(); //BackEnd
 
-            $table->string('created_by', 25);
-            $table->string('updated_by', 25)->nullable();
+            $table->string('created_by', 25); //BackEnd
+            $table->string('updated_by', 25)->nullable(); //BackEnd
 
             $table->index(array('id', 'activo', 'estado_id'));
             $table->index(array('activo', 'estado_id'));

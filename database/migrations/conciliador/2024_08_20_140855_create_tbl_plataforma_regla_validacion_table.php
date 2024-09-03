@@ -30,6 +30,12 @@ class CreateTblPlataformaReglaValidacionTable extends Migration
 
             $table->timestamp('created_at', 0);
             $table->string('created_by', 25);
+
+            $table->index(array('csv_plataforma_id', 'csv_icg_id', 'regla_validacion_id'), 'index_optimizacion_busqueda_uno');
+            $table->index(array('regla_validacion_id', 'anio', 'mes'), 'index_optimizacion_busqueda_dos');
+            $table->index(array('created_by', 'anio', 'mes'), 'index_optimizacion_busqueda_tres');
+            $table->index(array('created_at', 'regla_validacion_id', 'csv_plataforma_id'), 'index_optimizacion_busqueda_cuatro');
+            $table->index(array('regla_validacion_id', 'anio', 'mes', 'csv_plataforma_id'), 'index_optimizacion_busqueda_cinco');
         });
     }
 

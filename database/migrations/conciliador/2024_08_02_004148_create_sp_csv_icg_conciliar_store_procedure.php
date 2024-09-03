@@ -35,6 +35,12 @@ BEGIN
         UPDATE [dbo].[tbl_csv_icg] SET [procesado] = 1 WHERE [id] = @id;
     END
 
+    --CONSULTA OPCION 4 Actualizamos el registro en la tabla.
+    IF @opcion = 4
+    BEGIN
+        UPDATE [dbo].[tbl_csv_icg] SET [procesado] = 1, [no_id] = 1 WHERE [no_id] = 0 AND [id_pedido] LIKE '%NO ID%' AND [plataforma_id] = @plataforma_id;
+    END
+
     --CONSULTA OPCION 5 Seleccionamos todos los registros que ya han sido procesados.
     IF @opcion = 5 
     BEGIN
@@ -57,6 +63,12 @@ BEGIN
     IF @opcion = 8 
     BEGIN
         SELECT * FROM [dbo].[tbl_csv_icg] WITH(NOLOCK) WHERE [plataforma_id] = @plataforma_id AND [punto_venta_id] = @punto_venta_id;
+    END
+
+    --CONSULTA OPCION 9 Seleccionamos todos los no id.
+    IF @opcion = 9 
+    BEGIN
+        SELECT * FROM [dbo].[tbl_csv_icg] WITH(NOLOCK) WHERE [no_id] = 1;
     END
 END
             "

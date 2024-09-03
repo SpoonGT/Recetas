@@ -14,22 +14,18 @@ class CreateTblHorneoTable extends Migration
     public function up()
     {
         Schema::create('tbl_horneo', function (Blueprint $table) {
-            $table->bigInteger('receta_id')->unsigned()->index();
+            $table->bigInteger('receta_id')->unsigned()->index(); //BackEnd
             $table->foreign('receta_id')->references('id')->on('tbl_receta');
 
-            $table->time('tiempo_horneo');
-            $table->smallInteger('horno');
+            $table->string('tiempo_horneo'); //Form
+            $table->smallInteger('horno'); //Form
 
-            $table->smallInteger('temperatura');
-            $table->string('nomenclatura', 20);
+            $table->string('temperatura', 100); //Form
 
-            $table->bigInteger('unidad_id')->unsigned()->index();
-            $table->foreign('unidad_id')->references('id')->on('tbl_unidad');
+            $table->longText('otros')->nullable(); //Form
 
-            $table->longText('otros')->nullable();
-
-            $table->timestamp('created_at', 0);
-            $table->string('created_by', 25);
+            $table->timestamp('created_at', 0); //BackEnd
+            $table->string('created_by', 25); //BackEnd
 
             $table->unique('receta_id');
         });

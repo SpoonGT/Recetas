@@ -16,14 +16,14 @@ class CreateTblPreparcionTable extends Migration
         Schema::create('tbl_preparcion', function (Blueprint $table) {
             $table->id();
 
-            $table->bigInteger('receta_id')->unsigned()->index();
+            $table->bigInteger('receta_id')->unsigned()->index(); //BackEnd
             $table->foreign('receta_id')->references('id')->on('tbl_receta');
 
-            $table->smallInteger('secuencia');
-            $table->longText('descripcion');
+            $table->smallInteger('secuencia'); //Form
+            $table->longText('descripcion'); //Form
 
-            $table->timestamp('created_at', 0);
-            $table->string('created_by', 25);
+            $table->timestamp('created_at', 0); //BackEnd
+            $table->string('created_by', 25); //BackEnd
 
             $table->index(array('receta_id', 'secuencia'));
         });
