@@ -26,16 +26,16 @@ class MateriaPrimaImport implements ToModel
             if (count($existe) == 0) {
                 $es_valdo = substr($row[6], 0, 2);
 
-                if ($es_valdo == "MP" || $es_valdo == "EM") {
+                if ($es_valdo == "MP" || $es_valdo == "EM" || $es_valdo == "AS") {
 
-                    $rondas = random_int(0, 20);
+                    $rondas = random_int(0, 3);
 
                     $alergenos = array();
                     for ($i = 0; $i < $rondas; $i++) {
                         $data["id"] = random_int(1, 20);
                         array_push($alergenos, $data);
                     }
-                    $json = count($alergenos) > 0 ? json_encode($alergenos) : '[{"id":1}]';
+                    $json = count($alergenos) > 0 ? json_encode($alergenos) : null;
 
                     $unidades = DB::select(
                         "exec [dbo].[sp_table_maintenance] 0, 'tbl_unidad', null, 'migration', 1"
@@ -48,9 +48,15 @@ class MateriaPrimaImport implements ToModel
                         }
                     }
 
-                    $informacion = DB::select(
-                        "exec [dbo].[sp_information_maintenance] 0, '{$row[6]}', '{$row[7]}', '{$row[3]}', 1, {$unidad_id}, null, 'tbl_materia_prima', '{$json}', 'migration', 2"
-                    )[0];
+                    if (is_null($json)) {
+                        $informacion = DB::select(
+                            "exec [dbo].[sp_information_maintenance] 0, '{$row[6]}', '{$row[7]}', '{$row[3]}', 1, {$unidad_id}, null, 'tbl_materia_prima', null, 'migration', 2"
+                        )[0];
+                    } else {
+                        $informacion = DB::select(
+                            "exec [dbo].[sp_information_maintenance] 0, '{$row[6]}', '{$row[7]}', '{$row[3]}', 1, {$unidad_id}, null, 'tbl_materia_prima', '{$json}', 'migration', 2"
+                        )[0];
+                    }
 
                     echo "Información Creada: {$informacion->id} - {$informacion->netsuit} | {$informacion->nombre}" . PHP_EOL;
                 }
