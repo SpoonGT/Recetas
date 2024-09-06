@@ -38,7 +38,9 @@ BEGIN
     --CONSULTA OPCION 4 Actualizamos el registro en la tabla.
     IF @opcion = 4
     BEGIN
-        UPDATE [dbo].[tbl_csv_icg] SET [procesado] = 1, [no_id] = 1 WHERE [no_id] = 0 AND [id_pedido] LIKE '%NO ID%' AND [plataforma_id] = @plataforma_id;
+        UPDATE [dbo].[tbl_csv_icg] SET [procesado] = 0, [no_id] = 1 WHERE [no_id] = 0 AND [id_pedido] LIKE '%NO ID%' AND [plataforma_id] = @plataforma_id;
+        
+        UPDATE [dbo].[tbl_csv_plataforma_temporal] SET [procesado] = 1, [mensaje] = 'Fuera de la conciliación por identificador inválido' WHERE [procesado] = 0 AND [id_pedido] LIKE '%NO ID%' AND [plataforma_id] = @plataforma_id;
     END
 
     --CONSULTA OPCION 5 Seleccionamos todos los registros que ya han sido procesados.
@@ -68,7 +70,7 @@ BEGIN
     --CONSULTA OPCION 9 Seleccionamos todos los no id.
     IF @opcion = 9 
     BEGIN
-        SELECT * FROM [dbo].[tbl_csv_icg] WITH(NOLOCK) WHERE [no_id] = 1;
+        SELECT * FROM [dbo].[tbl_csv_icg] WITH(NOLOCK) WHERE [no_id] = 1 AND [procesado] = 0;
     END
 END
             "

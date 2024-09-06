@@ -32,6 +32,9 @@ BEGIN
         INSERT INTO [dbo].[tbl_plataforma_regla_validacion] ([csv_plataforma_id], [csv_icg_id], [regla_validacion_id], [anio], [mes], [created_at], [created_by])
         VALUES (@csv_plataforma_id, @csv_icg_id, @regla_validacion_id, YEAR(GETDATE()), MONTH(GETDATE()), GETDATE(), @usuario);
 
+        UPDATE [dbo].[tbl_csv_icg] SET [procesado] = 1 WHERE [id] = @csv_icg_id;
+        UPDATE [dbo].[tbl_csv_plataforma] SET [procesado] = 1, [informacion] = 'REGLA VALIDACION' WHERE [id] = @csv_plataforma_id;
+
         SET @ultimo_id = IDENT_CURRENT(N'[dbo].[tbl_plataforma_regla_validacion]');
 
         EXECUTE sp_plataforma_regla_validacion_maintenance

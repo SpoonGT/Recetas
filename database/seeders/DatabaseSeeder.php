@@ -423,6 +423,18 @@ class DatabaseSeeder extends Seeder
 
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'NO ID ICG', '/AdministrarICG/No/Id', 'fa-solid fa-file-shield', {$menu_id}, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
             //========================= Plataforma
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Administrar Plataforma', '/AdministrarPlataforma', 'fa-solid fa-circle-info', 0, 'migration', 2"
@@ -952,5 +964,10 @@ class DatabaseSeeder extends Seeder
                 "exec [dbo].[sp_caso_crud] 0, 'Caso $i', 'migracion', 2"
             )[0];
         }
+
+        $query = "SELECT T0.id AS plataforma_id, T0.plataforma AS plataforma_abreviatura, T0.id_pedido AS plataforma_identificador, T0.punto_venta AS plataforma_punto_venta, T0.fecha AS plataforma_fecha, T0.total AS plataforma_total, T0.estado AS plataforma_estado, T1.id AS icg_id, T1.plataforma AS icg_abreviatura, T1.id_pedido AS icg_identificador, T1.punto_venta AS icg_punto_venta, T1.fecha_pedido AS icg_fecha, T1.total_bruto AS icg_total_bruto, T1.total_neto AS icg_total_neto, T1.serie_compuesta AS icg_serie, T1.numero_documento AS icg_documento, T1.numero_orden AS icg_orden FROM [tbl_csv_plataforma] AS T0 WITH(NOLOCK), [tbl_csv_icg] AS T1 WITH(NOLOCK) WHERE T0.[plataforma_id] = 4 AND T1.[plataforma_id] = 4 AND T0.[informacion] = ''REGISTRADO'' AND T0.[procesado] = 0 AND T1.[procesado] = 0 AND T1.[id_pedido] = T0.[id_pedido] AND T0.[plataforma_estado_id] = 2 AND T1.[total_neto] < ''0''";
+        DB::select(
+            "exec [dbo].[sp_regla_validacion_maintenance] 0, 1, 'test', '{$query}', 4, 1, 'migracion', 2"
+        )[0];
     }
 }

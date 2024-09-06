@@ -131,6 +131,15 @@ BEGIN
 		WHERE T0.[deleted_at] IS NULL AND T0.[usuario] = @nameuser AND T0.[contrasenia] = @contrasenia;
     END
 
+    --CONSULTA OPCION 8 Seleccionamos registro.
+    IF @opcion = 8 
+    BEGIN
+        SELECT T0.*, T1.nombre AS 'rol' 
+		FROM [dbo].[tbl_usuario] T0
+		INNER JOIN [dbo].[tbl_rol] T1 ON T0.rol_id = T1.id
+		WHERE T0.[usuario] = @nameuser;
+    END
+
 END
             "
         );
