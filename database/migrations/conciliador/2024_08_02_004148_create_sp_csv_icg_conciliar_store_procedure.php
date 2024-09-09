@@ -52,7 +52,7 @@ BEGIN
     --CONSULTA OPCION 6 Seleccionamos todos los registros de la plataforma.
     IF @opcion = 6 
     BEGIN
-        SELECT * FROM [dbo].[tbl_csv_icg] WITH(NOLOCK) WHERE [plataforma_id] = @plataforma_id;
+        SELECT * FROM [dbo].[tbl_csv_icg] WITH(NOLOCK) WHERE [plataforma_id] = @plataforma_id AND [procesado] = 0;
     END
 
     --CONSULTA OPCION 7 Seleccionamos todos los registros del punto de venta.

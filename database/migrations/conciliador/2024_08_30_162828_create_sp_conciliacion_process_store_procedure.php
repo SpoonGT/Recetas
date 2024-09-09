@@ -118,7 +118,7 @@ BEGIN
 		FROM [dbo].[tbl_conciliacion] T0 WITH(NOLOCK)
         INNER JOIN [dbo].[tbl_csv_plataforma] T1 WITH(NOLOCK) ON T1.[id] = T0.[csv_plataforma_id] AND T1.[procesado] = 1
         INNER JOIN [dbo].[tbl_csv_icg] T2 WITH(NOLOCK) ON T2.[id] = T0.[csv_icg_id] AND T2.[procesado] = 1
-        WHERE T0.[informacion] = 'CONCILIACION MANUAL';
+        WHERE T0.[informacion] = 'CONCILIACION MANUAL' AND T1.[plataforma_id] = @csv_plataforma_id;
     END
 
 END

@@ -31,7 +31,7 @@ BEGIN
     --CONSULTA OPCION 1 Seleccionar todos los registros de la tabla.
     IF @opcion = 1
     BEGIN
-        SELECT * FROM [dbo].[tbl_plataforma] WITH(NOLOCK) WHERE [deleted_at] IS NULL;
+        SELECT * FROM [dbo].[tbl_plataforma] WITH(NOLOCK);
     END
 
     --CONSULTA OPCION 2 Guardamos el registro en la tabla.
@@ -93,12 +93,6 @@ BEGIN
         @opcion = 5
     END
 
-    --CONSULTA OPCION 4 Eliminamos el registro en la tabla.
-    IF @opcion = 4 
-    BEGIN
-        UPDATE [dbo].[tbl_plataforma] SET [deleted_by] = @usuario, [deleted_at] = GETDATE() WHERE [id] = @id;
-    END
-
     --CONSULTA OPCION 5 Seleccionamos por id el registro en la tabla.
     IF @opcion = 5 
     BEGIN
@@ -115,6 +109,18 @@ BEGIN
     IF @opcion = 7 
     BEGIN
         SELECT * FROM [dbo].[tbl_plataforma] WITH(NOLOCK) WHERE [abreviatura] = @abreviatura;
+    END
+
+    --CONSULTA OPCION 8 Activar el registro en la tabla.
+    IF @opcion = 8 
+    BEGIN
+        UPDATE [dbo].[tbl_plataforma] SET [deleted_by] = NULL, [deleted_at] = NULL WHERE [id] = @id;
+    END
+
+    --CONSULTA OPCION 9 Desactivar el registro en la tabla.
+    IF @opcion = 9 
+    BEGIN
+        UPDATE [dbo].[tbl_plataforma] SET [deleted_by] = @usuario, [deleted_at] = GETDATE() WHERE [id] = @id;
     END
 
 END

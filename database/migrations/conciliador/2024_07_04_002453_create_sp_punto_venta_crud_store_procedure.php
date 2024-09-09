@@ -30,7 +30,7 @@ BEGIN
     --CONSULTA OPCION 1 Seleccionar todos los registros de la tabla.
     IF @opcion = 1
     BEGIN
-        SELECT * FROM [dbo].[tbl_punto_venta] WITH(NOLOCK) WHERE [deleted_at] IS NULL;
+        SELECT * FROM [dbo].[tbl_punto_venta] WITH(NOLOCK);
     END
 
     --CONSULTA OPCION 2 Guardamos el registro en la tabla.
@@ -88,12 +88,6 @@ BEGIN
         @opcion = 5
     END
 
-    --CONSULTA OPCION 4 Eliminamos el registro en la tabla.
-    IF @opcion = 4 
-    BEGIN
-        UPDATE [dbo].[tbl_punto_venta] SET [deleted_by] = @usuario, [deleted_at] = GETDATE() WHERE [id] = @id;
-    END
-
     --CONSULTA OPCION 5 Seleccionamos por id el registro en la tabla.
     IF @opcion = 5 
     BEGIN
@@ -117,6 +111,18 @@ BEGIN
     IF @opcion = 8 
     BEGIN
         SELECT * FROM [dbo].[tbl_punto_venta] WITH(NOLOCK) WHERE [local] = @local;
+    END
+
+    --CONSULTA OPCION 9 Activar el registro en la tabla.
+    IF @opcion = 9 
+    BEGIN
+        UPDATE [dbo].[tbl_punto_venta] SET [deleted_by] = NULL, [deleted_at] = NULL WHERE [id] = @id;
+    END
+
+    --CONSULTA OPCION 10 Desactivar el registro en la tabla.
+    IF @opcion = 10 
+    BEGIN
+        UPDATE [dbo].[tbl_punto_venta] SET [deleted_by] = @usuario, [deleted_at] = GETDATE() WHERE [id] = @id;
     END
 
 END

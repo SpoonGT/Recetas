@@ -65,7 +65,7 @@ BEGIN
         UPDATE [dbo].[tbl_regla_validacion] SET [deleted_by] = NULL, [deleted_at] = NULL WHERE [id] = @id;
     END
 
-    --CONSULTA OPCION 4 Eliminamos el registro en la tabla.
+    --CONSULTA OPCION 4 Desactivar el registro en la tabla.
     IF @opcion = 4 
     BEGIN
         UPDATE [dbo].[tbl_regla_validacion] SET [deleted_by] = @usuario, [deleted_at] = GETDATE() WHERE [id] = @id;

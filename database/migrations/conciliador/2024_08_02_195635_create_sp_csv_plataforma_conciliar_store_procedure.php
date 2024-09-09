@@ -117,6 +117,12 @@ BEGIN
     BEGIN
         SELECT * FROM [dbo].[tbl_csv_plataforma] WITH(NOLOCK) WHERE [informacion] = 'REPROCESAR';
     END
+
+    --CONSULTA OPCION 17 Seleccionamos todos los registros del estado.
+    IF @opcion = 17 
+    BEGIN
+        SELECT * FROM [dbo].[tbl_csv_plataforma] WITH(NOLOCK) WHERE [plataforma_id] = @plataforma_id AND [informacion] = 'REPROCESAR';
+    END
 END
             "
         );
