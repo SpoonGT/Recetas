@@ -24,7 +24,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    --CONSULTA OPCION 2 Guardamos el registro en la tabla.
+    --CONSULTA OPCION 2 Guardamos el registro que hacen match en la tabla.
     IF @opcion = 2 
     BEGIN
         DECLARE @TEMPORAL_CONCILIAR TABLE
@@ -49,11 +49,10 @@ BEGIN
         @usuario AS created_by
         FROM (SELECT * FROM [dbo].[tbl_csv_plataforma] WITH(NOLOCK) WHERE [plataforma_id] = @csv_plataforma_id AND [procesado] = 0 AND [informacion] = 'REGISTRADO') AS T0, 
         (SELECT * FROM [dbo].[tbl_csv_icg] WITH(NOLOCK) WHERE [plataforma_id] = @csv_plataforma_id AND [procesado] = 0) AS T1
-        WHERE T0.[id_pedido] = T1.[id_pedido]
-        AND T0.[plataforma_id] = T1.[plataforma_id]
+        WHERE T0.[plataforma_id] = T1.[plataforma_id]
         AND T0.[punto_venta_id] = T1.[punto_venta_id]
-        AND T0.[fecha] = T1.[fecha_pedido]
-        AND T0.[total] = T1.[total_neto];
+        AND T0.[fecha] = T1.[fecha_entrega]
+        AND ROUND(T0.[total], 0, -2) = ROUND(T1.[total_neto], 0, -2);
 
         INSERT INTO [dbo].[tbl_conciliacion] ([csv_plataforma_id], [csv_icg_id], [informacion], [anio], [mes], [created_at], [created_by])
 		SELECT [csv_plataforma_id], [csv_icg_id], [informacion], [anio], [mes], [created_at], [created_by] FROM @TEMPORAL_CONCILIAR;

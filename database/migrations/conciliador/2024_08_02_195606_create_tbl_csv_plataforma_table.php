@@ -58,6 +58,8 @@ class CreateTblCsvPlataformaTable extends Migration
             $table->index(array('plataforma_id', 'informacion'), 'index_optimizacion_busqueda_nueve');
             $table->index(array('plataforma_id', 'id_pedido', 'punto_venta_id', 'fecha', 'total', 'estado_id', 'informacion'), 'index_optimizacion_busqueda_diez');
             $table->index(array('informacion'), 'index_optimizacion_busqueda_once');
+
+            $table->index(array('plataforma_id', 'punto_venta_id', 'fecha', 'total'), 'index_optimizacion_match');
         });
     }
 

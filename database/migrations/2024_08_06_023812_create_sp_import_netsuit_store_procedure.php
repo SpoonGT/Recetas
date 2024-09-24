@@ -58,7 +58,8 @@ BEGIN
     IF @opcion = 7 
     BEGIN
         UPDATE T0 
-        SET T0.[nombre] = T1.[nombre]
+        SET T0.[nombre] = T1.[nombre],
+        T0.[unidad_id] = (SELECT TOP 1 [id] FROM [dbo].[tbl_unidad] WHERE [nombre] = T1.[unidad])
         FROM [dbo].[tbl_informacion] AS T0
         INNER JOIN [dbo].[tbl_import_netsuit] AS T1 ON T1.[articulo] = T0.[netsuit]
         WHERE dbo.fn_obtener_letras_sin_espacio(T1.[articulo]) IN ('MP', 'EM', 'AS');

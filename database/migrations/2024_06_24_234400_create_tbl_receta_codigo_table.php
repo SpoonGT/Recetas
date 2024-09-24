@@ -24,6 +24,7 @@ class CreateTblRecetaCodigoTable extends Migration
 
             $table->dateTime('fecha_aprobacion')->index();
 
+            $table->string('usuario', 75);
             $table->bigInteger('aprueba_id')->unsigned()->index();
             $table->foreign('aprueba_id')->references('id')->on('tbl_usuario');
 
@@ -33,7 +34,11 @@ class CreateTblRecetaCodigoTable extends Migration
             $table->bigInteger('receta_id')->unsigned()->index();
             $table->foreign('receta_id')->references('id')->on('tbl_receta');
 
+            $table->bigInteger('receta_padre_id')->default(0);
+            $table->bigInteger('receta_original_id')->default(0);
+
             $table->unique(array('version', 'correlativo_codigo_id', 'receta_id'));
+            $table->unique(array('version', 'correlativo_codigo_id', 'receta_padre_id', 'receta_original_id'));
             $table->index(array('version', 'correlativo_codigo_id'));
             $table->index(array('version', 'receta_id'));
             $table->index(array('codigo_receta', 'netsuit', 'codigo_barra'));

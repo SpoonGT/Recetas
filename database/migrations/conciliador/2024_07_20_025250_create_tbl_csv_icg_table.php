@@ -61,6 +61,8 @@ class CreateTblCsvIcgTable extends Migration
             $table->index(array('plataforma', 'id_pedido', 'punto_venta', 'serie_compuesta', 'numero_documento', 'fecha_pedido', 'total_bruto', 'total_neto', 'forma_pago', 'procesado'), 'index_optimizacion_busqueda_cuatro');
             $table->index(array('plataforma', 'punto_venta', 'serie_compuesta', 'numero_documento', 'procesado'), 'index_optimizacion_busqueda_cinco');
             $table->index(array('plataforma', 'id_pedido', 'punto_venta', 'fecha_pedido', 'fecha_entrega', 'total_bruto', 'total_promocion', 'total_neto', 'serie_compuesta', 'numero_documento', 'numero_orden', 'forma_pago', 'nombre_cliente', 'cajero', 'estado', 'procesado'), 'index_optimizacion_busqueda_seis');
+
+            $table->index(array('plataforma_id', 'punto_venta_id', 'fecha_entrega', 'total_neto'), 'index_optimizacion_match');
         });
     }
 

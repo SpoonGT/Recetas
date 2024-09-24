@@ -24,8 +24,6 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    DECLARE @ultimo_id INT = 0;
-
     --CONSULTA OPCION 2 Guardamos el registro en la tabla.
     IF @opcion = 2 
     BEGIN
@@ -34,47 +32,34 @@ BEGIN
 
         UPDATE [dbo].[tbl_csv_icg] SET [procesado] = 1 WHERE [id] = @csv_icg_id;
         UPDATE [dbo].[tbl_csv_plataforma] SET [procesado] = 1, [informacion] = 'REGLA VALIDACION' WHERE [id] = @csv_plataforma_id;
-
-        SET @ultimo_id = IDENT_CURRENT(N'[dbo].[tbl_plataforma_regla_validacion]');
-
-        EXECUTE sp_plataforma_regla_validacion_maintenance
-        @csv_plataforma_id = @ultimo_id,
-        @csv_icg_id = 0,
-        @regla_validacion_id = 0,
-        @usuario = NULL,
-        @opcion = 5
     END
 
-    --CONSULTA OPCION 5 Seleccionamos por id el registro en la tabla.
-    IF @opcion = 5 
+    --CONSULTA OPCION 3 Actualizamos el registro en la tabla.
+    IF @opcion = 3
     BEGIN
-        SELECT T1.*, 
-		CONCAT(T2.[plataforma], CONCAT('(', CONCAT(T2.[abreviatura], ')'))) AS plataforma,
-		T3.[nombre] AS caso
-		FROM [dbo].[tbl_plataforma_regla_validacion] T0 WITH(NOLOCK)
-        INNER JOIN [dbo].[tbl_regla_validacion] T1 WITH(NOLOCK) ON T1.[id] = T0.[regla_validacion_id] AND T1.[deleted_at] IS NULL
-        INNER JOIN [dbo].[tbl_plataforma] T2 WITH(NOLOCK) ON T2.[id] = T1.[plataforma_id] AND T2.[deleted_at] IS NULL
-        INNER JOIN [dbo].[tbl_caso] T3 WITH(NOLOCK) ON T3.[id] = T1.[caso_id] AND T3.[deleted_at] IS NULL
-        WHERE T0.[id] = @csv_plataforma_id;
+        UPDATE [dbo].[tbl_plataforma_regla_validacion]
+        SET 
+            [resuelto] = 1,
+            [updated_by] = @usuario,
+            [updated_at] = GETDATE()
+        WHERE [id] = @csv_plataforma_id;
     END
 
     --CONSULTA OPCION 6 Seleccionamos por plataforma.
     IF @opcion = 6 
     BEGIN
-        SET @csv_icg_id = (SELECT TOP 1 [csv_icg_id] FROM [dbo].[tbl_plataforma_regla_validacion] WITH(NOLOCK) WHERE [csv_plataforma_id] = @csv_plataforma_id);
-
-        SELECT * FROM [dbo].[tbl_csv_plataforma] WITH(NOLOCK) WHERE [id] = @csv_plataforma_id;   
-
-        SELECT * FROM [dbo].[tbl_csv_icg] WITH(NOLOCK) WHERE [id] = @csv_icg_id;    
-
-        SELECT T1.*, 
-		CONCAT(T2.[plataforma], CONCAT('(', CONCAT(T2.[abreviatura], ')'))) AS plataforma,
-		T3.[nombre] AS caso
-		FROM [dbo].[tbl_plataforma_regla_validacion] T0 WITH(NOLOCK)
-        INNER JOIN [dbo].[tbl_regla_validacion] T1 WITH(NOLOCK) ON T1.[id] = T0.[regla_validacion_id] AND T1.[deleted_at] IS NULL
-        INNER JOIN [dbo].[tbl_plataforma] T2 WITH(NOLOCK) ON T2.[id] = T1.[plataforma_id] AND T2.[deleted_at] IS NULL
-        INNER JOIN [dbo].[tbl_caso] T3 WITH(NOLOCK) ON T3.[id] = T1.[caso_id] AND T3.[deleted_at] IS NULL
-        WHERE T0.[csv_plataforma_id] = @csv_plataforma_id AND T0.[csv_icg_id] = @csv_icg_id;
+        SELECT 
+            T0.[id] AS id,
+            T2.[id] AS 'codigo', 
+            T2.[nombre] AS 'caso',
+            T4.id AS csv_plataforma_id, T4.plataforma_id, T4.plataforma, T4.id_pedido, T4.punto_venta_id, T4.punto_venta, T4.alias_id, T4.fecha, T4.total, T4.estado, T4.plataforma_estado_id, T4.estado_id, T4.informacion,
+            T3.id AS csv_icg_id, T3.fecha_pedido, T3.fecha_entrega, T3.total_bruto, T3.total_promocion, T3.total_neto, T3.serie_compuesta, T3.numero_documento, T3.numero_orden, T3.forma_pago, T3.nombre_cliente, T3.cajero
+        FROM [dbo].[tbl_plataforma_regla_validacion] AS T0
+        INNER JOIN [dbo].[tbl_regla_validacion] AS T1 ON T1.[id] = T0.[regla_validacion_id]
+        INNER JOIN [dbo].[tbl_caso] AS T2 ON T2.[id] = T1.[caso_id]
+        INNER JOIN [dbo].[tbl_csv_icg] AS T3 ON T3.[id] = T0.[csv_icg_id]
+        INNER JOIN [dbo].[tbl_csv_plataforma] AS T4 ON T4.[id] = T0.[csv_plataforma_id]
+        WHERE [resuelto] = 0;
     END
 
 END
