@@ -96,7 +96,8 @@ BEGIN
         T0.created_at AS conciliacion_created_at,
         T0.created_by AS conciliacion_created_by,
         T0.anio AS conciliacion_anio,
-        T0.mes AS conciliacion_mes
+        T0.mes AS conciliacion_mes, 
+        T2.id_pedido AS pedido_icg
 		FROM [dbo].[tbl_conciliacion] T0 WITH(NOLOCK)
         INNER JOIN [dbo].[tbl_csv_plataforma] T1 WITH(NOLOCK) ON T1.[id] = T0.[csv_plataforma_id] AND T1.[procesado] = 1
         INNER JOIN [dbo].[tbl_csv_icg] T2 WITH(NOLOCK) ON T2.[id] = T0.[csv_icg_id] AND T2.[procesado] = 1
@@ -113,7 +114,8 @@ BEGIN
         T0.created_at AS conciliacion_created_at,
         T0.created_by AS conciliacion_created_by,
         T0.anio AS conciliacion_anio,
-        T0.mes AS conciliacion_mes
+        T0.mes AS conciliacion_mes, 
+        T2.id_pedido AS pedido_icg
 		FROM [dbo].[tbl_conciliacion] T0 WITH(NOLOCK)
         INNER JOIN [dbo].[tbl_csv_plataforma] T1 WITH(NOLOCK) ON T1.[id] = T0.[csv_plataforma_id] AND T1.[procesado] = 1
         INNER JOIN [dbo].[tbl_csv_icg] T2 WITH(NOLOCK) ON T2.[id] = T0.[csv_icg_id] AND T2.[procesado] = 1

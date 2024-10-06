@@ -8,6 +8,7 @@ use App\Imports\PuntoVentaImport;
 use App\Imports\SubEnsambleImport;
 use Illuminate\Support\Facades\DB;
 use App\Imports\AsignarAliasImport;
+use App\Imports\ExpedienteImport;
 use App\Imports\MateriaPrimaImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Config;
@@ -21,19 +22,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->generar_menu();
-        $this->seguridad();
-        if (Config::get('database.default') == "sqlsrv_recetas_nube" || Config::get('database.default') == "sqlsrv_recetas_desa" || Config::get('database.default') == "sqlsrv_recetas") {
-            $this->catalogo_receta();
-            $this->import_receta();
-            $this->materia_prima_receta();
-            $this->producto_receta();
-            echo "Migración de Recetas" . PHP_EOL;
-        }
+        if (Config::get('database.default') == "mysql_estadistica") {
+            Excel::import(new ExpedienteImport, 'database/seeders/Expedientes.xlsx');
+        } else {
+            $this->generar_menu();
+            $this->seguridad();
+            if (Config::get('database.default') == "sqlsrv_recetas_nube" || Config::get('database.default') == "sqlsrv_recetas_desa" || Config::get('database.default') == "sqlsrv_recetas") {
+                $this->catalogo_receta();
+                $this->import_receta();
+                $this->materia_prima_receta();
+                $this->producto_receta();
+                echo "Migración de Recetas" . PHP_EOL;
+            }
 
-        if (Config::get('database.default') == "sqlsrv_conciliador_desa" || Config::get('database.default') == "sqlsrv_conciliador") {
-            $this->catalogo_conciliacion();
-            echo "Migración de Conciliación" . PHP_EOL;
+            if (Config::get('database.default') == "sqlsrv_conciliador_desa" || Config::get('database.default') == "sqlsrv_conciliador") {
+                $this->catalogo_conciliacion();
+                echo "Migración de Conciliación" . PHP_EOL;
+            }
         }
     }
 
@@ -45,6 +50,7 @@ class DatabaseSeeder extends Seeder
 
         echo "Rol Creado: {$rol->id} - {$rol->nombre}" . PHP_EOL;
 
+        //1
         $menu = DB::select(
             "exec [dbo].[sp_menu_crud] 0, 'Inicio', '/Home', 'fa-solid fa-house-laptop', 0, 'migration', 2"
         )[0];
@@ -57,6 +63,7 @@ class DatabaseSeeder extends Seeder
 
         echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+        //2
         $menu = DB::select(
             "exec [dbo].[sp_menu_crud] 0, 'Seguridad', '/Seguridad', 'fa-solid fa-gears', 0, 'migration', 2"
         )[0];
@@ -71,6 +78,7 @@ class DatabaseSeeder extends Seeder
 
         echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+        //3
         $menu = DB::select(
             "exec [dbo].[sp_menu_crud] 0, 'Rol', '/Seguridad/Rol', 'fa-solid fa-dice-d6', {$menu_id}, 'migration', 2"
         )[0];
@@ -83,6 +91,7 @@ class DatabaseSeeder extends Seeder
 
         echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+        //4
         $menu = DB::select(
             "exec [dbo].[sp_menu_crud] 0, 'Menu', '/Seguridad/Menu', 'fa-solid fa-list', {$menu_id}, 'migration', 2"
         )[0];
@@ -95,6 +104,7 @@ class DatabaseSeeder extends Seeder
 
         echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+        //5
         $menu = DB::select(
             "exec [dbo].[sp_menu_crud] 0, 'Usuario', '/Seguridad/Usuario', 'fa-solid fa-user-gear', {$menu_id}, 'migration', 2"
         )[0];
@@ -310,6 +320,8 @@ class DatabaseSeeder extends Seeder
         }
 
         if (Config::get('database.default') == "sqlsrv_conciliador_desa" || Config::get('database.default') == "sqlsrv_conciliador") {
+
+            //6
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Catálogo', '/Catalogo', 'fa-solid fa-layer-group', 0, 'migration', 2"
             )[0];
@@ -324,6 +336,7 @@ class DatabaseSeeder extends Seeder
 
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+            //7
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Punto de Venta', '/Catalogo/PuntoVenta', 'fa-solid fa-map-location', {$menu_id}, 'migration', 2"
             )[0];
@@ -336,6 +349,7 @@ class DatabaseSeeder extends Seeder
 
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+            //8
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Plataforma', '/Catalogo/Plataforma', 'fa-solid fa-truck-ramp-box', {$menu_id}, 'migration', 2"
             )[0];
@@ -348,6 +362,7 @@ class DatabaseSeeder extends Seeder
 
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+            //9
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Regla de Negocio', '/Catalogo/ReglaNegocio', 'fa-solid fa-pen-ruler', {$menu_id}, 'migration', 2"
             )[0];
@@ -360,6 +375,7 @@ class DatabaseSeeder extends Seeder
 
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+            //10
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Caso', '/Catalogo/Caso', 'fa-solid fa-rectangle-list', {$menu_id}, 'migration', 2"
             )[0];
@@ -373,6 +389,7 @@ class DatabaseSeeder extends Seeder
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
             //========================= ICG
+            //11
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Administrar ICG', '/AdministrarICG', 'fa-solid fa-circle-info', 0, 'migration', 2"
             )[0];
@@ -387,6 +404,7 @@ class DatabaseSeeder extends Seeder
 
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+            //12
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Importar ICG', '/AdministrarICG/CsvIcgTemporal', 'fa-solid fa-upload', {$menu_id}, 'migration', 2"
             )[0];
@@ -399,6 +417,7 @@ class DatabaseSeeder extends Seeder
 
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+            //13
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Duplicado ICG', '/AdministrarICG/Duplicado', 'fa-solid fa-clone', {$menu_id}, 'migration', 2"
             )[0];
@@ -411,6 +430,7 @@ class DatabaseSeeder extends Seeder
 
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+            //14
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Data Depurada ICG', '/AdministrarICG/Data/Depurada', 'fa-solid fa-file-shield', {$menu_id}, 'migration', 2"
             )[0];
@@ -423,6 +443,7 @@ class DatabaseSeeder extends Seeder
 
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+            //15
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'NO ID ICG', '/AdministrarICG/No/Id', 'fa-solid fa-file-circle-minus', {$menu_id}, 'migration', 2"
             )[0];
@@ -436,6 +457,7 @@ class DatabaseSeeder extends Seeder
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
             //========================= Plataforma
+            //16
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Administrar Plataforma', '/AdministrarPlataforma', 'fa-solid fa-circle-info', 0, 'migration', 2"
             )[0];
@@ -450,6 +472,7 @@ class DatabaseSeeder extends Seeder
 
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+            //17
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Importar Plataforma', '/AdministrarPlataforma/CsvPlataformaTemporal', 'fa-solid fa-file-csv', {$menu_id}, 'migration', 2"
             )[0];
@@ -462,6 +485,7 @@ class DatabaseSeeder extends Seeder
 
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+            //18
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Data Depurada Plataforma', '/AdministrarPlataforma/Data/Depurada', 'fa-solid fa-file-shield', {$menu_id}, 'migration', 2"
             )[0];
@@ -475,6 +499,7 @@ class DatabaseSeeder extends Seeder
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
             //========================= Conciliación
+            //19
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Conciliación', '/Conciliacion/ICG/Plataforma', 'fa-solid fa-hard-drive', 0, 'migration', 2"
             )[0];
@@ -489,6 +514,7 @@ class DatabaseSeeder extends Seeder
 
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+            //20
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Conciliación Automática', '/Conciliacion/ICG/Plataforma/Automatica', 'fa-solid fa-person-chalkboard', {$menu_id}, 'migration', 2"
             )[0];
@@ -501,6 +527,7 @@ class DatabaseSeeder extends Seeder
 
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+            //21
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Conciliación Manual', '/Conciliacion/ICG/Plataforma/Manual', 'fa-solid fa-person-through-window', {$menu_id}, 'migration', 2"
             )[0];
@@ -513,6 +540,7 @@ class DatabaseSeeder extends Seeder
 
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
+            //22
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Regla Aplicada', '/Conciliacion/Regla/Validacion/Aplicada', 'fa-solid fa-check-double', {$menu_id}, 'migration', 2"
             )[0];
@@ -526,6 +554,7 @@ class DatabaseSeeder extends Seeder
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
             //========================= Reporte
+            //23
             $menu = DB::select(
                 "exec [dbo].[sp_menu_crud] 0, 'Reportería', '/Reporte', 'fa-solid fa-boxes-packing', 0, 'migration', 2"
             )[0];
@@ -539,6 +568,69 @@ class DatabaseSeeder extends Seeder
             )[0];
 
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            //==================================================== MENU DISPONIBLE
+            /*
+                1	Inicio
+                2	Seguridad
+                3	Rol
+                4	Menu
+                5	Usuario
+                6	Catálogo
+                7	Punto de Venta
+                8	Plataforma
+                9	Regla de Negocio
+                10	Caso
+                11	Administrar ICG
+                12	Importar ICG
+                13	Duplicado ICG
+                14	Data Depurada ICG
+                15	NO ID ICG
+                16	Administrar Plataforma
+                17	Importar Plataforma
+                18	Data Depurada Plataforma
+                19	Conciliación
+                20	Conciliación Automática
+                21	Conciliación Manual
+                22	Regla Aplicada
+                23	Reportería
+            */
+
+            //ROL GESTION
+            $rol = DB::select(
+                "exec [dbo].[sp_rol_crud] 0, 'Gestor', 'Rol para administrar todas las pantallas y procesos de importación de ICG y plataformas.', 'migration', 2"
+            )[0];
+
+            $menus = array(1, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22);
+            for ($i = 0; $i < count($menus); $i++) {
+                DB::select(
+                    "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menus[$i]}, 'migration', 2"
+                )[0];
+            }
+
+            //ROL USUARIO
+            $rol = DB::select(
+                "exec [dbo].[sp_rol_crud] 0, 'Usuario', 'Rol para consultar información en reportería disponible en la plataforma.', 'migration', 2"
+            )[0];
+
+            $menus = array(1, 23);
+            for ($i = 0; $i < count($menus); $i++) {
+                DB::select(
+                    "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menus[$i]}, 'migration', 2"
+                )[0];
+            }
+
+            //ROL VALIDACION
+            $rol = DB::select(
+                "exec [dbo].[sp_rol_crud] 0, 'Validación', 'Rol para configurar el sistema para operar ICG y plataformas.', 'migration', 2"
+            )[0];
+
+            $menus = array(1, 6, 7, 8, 9, 10);
+            for ($i = 0; $i < count($menus); $i++) {
+                DB::select(
+                    "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menus[$i]}, 'migration', 2"
+                )[0];
+            }
         }
     }
 
