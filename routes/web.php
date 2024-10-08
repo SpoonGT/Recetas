@@ -25,11 +25,11 @@ Route::get('/', function () {
     $completo = Estadistica::count();
     $incompleto = Bitacora::count();
 
-    $fecha_min = Estadistica::min('ingreso');
+    $fecha_min = Estadistica::whereYear('ingreso', '>', 1995)->min('ingreso');
     $fecha_max = Estadistica::max('ingreso');
 
     $tabla_top_nuevo = Estadistica::with('anio', 'interesado', 'tramite', 'estado')->orderBy('ingreso', 'DESC')->limit(10)->get();
-    $tabla_top_viejo = Estadistica::with('anio', 'interesado', 'tramite', 'estado')->orderBy('ingreso', 'ASC')->limit(10)->get();
+    $tabla_top_viejo = Estadistica::with('anio', 'interesado', 'tramite', 'estado')->whereYear('ingreso', '>', 1995)->orderBy('ingreso', 'ASC')->limit(10)->get();
 
     $categoria_grafica1 = Anio::orderBy('valor')->pluck('valor');
     $data_grafica1 = DB::table('estadistica')->join('anio', 'anio.id', 'anio_id')->select(DB::raw("COUNT(*) AS total"))->groupBy('valor')->orderBy('valor')->pluck('total');
@@ -78,6 +78,46 @@ Route::get('/', function () {
 
     $expedientes = Estadistica::with('anio', 'interesado', 'tramite', 'estado')->get();
 
+    $date = date("Y-m-d");
+    $categoria_grafica_agrupado = [
+        "14/01/1996 - 14/01/2000",
+        "14/01/2000 - 14/01/2004",
+        "14/01/2004 - 14/01/2008",
+        "14/01/2008 - 14/01/2012",
+        "14/01/2012 - 14/01/2016",
+        "14/01/2016 - 14/01/2020",
+        "14/01/2020 - 14/01/2024",
+        "14/01/2024 - {$date}"
+    ];
+    $categoria_grafica_agrupados = [
+        "Período Presidencial 14/01/1996 - 14/01/2000",
+        "Período Presidencial 14/01/2000 - 14/01/2004",
+        "Período Presidencial 14/01/2004 - 14/01/2008",
+        "Período Presidencial 14/01/2008 - 14/01/2012",
+        "Período Presidencial 14/01/2012 - 14/01/2016",
+        "Período Presidencial 14/01/2016 - 14/01/2020",
+        "Período Presidencial 14/01/2020 - 14/01/2024",
+        "Período Presidencial 14/01/2024 - {$date}"
+    ];
+    $agrupado_1 = DB::table('estadistica')->whereBetween('ingreso', ['1996-01-01', '2000-01-14'])->count();
+    $agrupado_2 = DB::table('estadistica')->whereBetween('ingreso', ['2000-01-14', '2004-01-14'])->count();
+    $agrupado_3 = DB::table('estadistica')->whereBetween('ingreso', ['2004-01-14', '2008-01-14'])->count();
+    $agrupado_4 = DB::table('estadistica')->whereBetween('ingreso', ['2008-01-14', '2012-01-14'])->count();
+    $agrupado_5 = DB::table('estadistica')->whereBetween('ingreso', ['2012-01-14', '2016-01-14'])->count();
+    $agrupado_6 = DB::table('estadistica')->whereBetween('ingreso', ['2016-01-14', '2020-01-14'])->count();
+    $agrupado_7 = DB::table('estadistica')->whereBetween('ingreso', ['2020-01-14', '2024-01-14'])->count();
+    $agrupado_8 = DB::table('estadistica')->whereBetween('ingreso', ['2024-01-14', $date])->count();
+    $data_grafica_agrupado = [$agrupado_1, $agrupado_2, $agrupado_3, $agrupado_4, $agrupado_5, $agrupado_6, $agrupado_7, $agrupado_8];
+
+    $data_grafica5 = array();
+    $data = null;
+
+    for ($i = 0; $i < 8; $i++) {
+        $data["name"] = $categoria_grafica_agrupados[$i];
+        $data["y"] = $data_grafica_agrupado[$i];
+        array_push($data_grafica5, $data);
+    }
+
     return view('welcome', compact(
         'completo',
         'incompleto',
@@ -96,6 +136,8 @@ Route::get('/', function () {
         'cantidad_interesados',
         'cantidad_tramites',
         'cantidad_estados',
-        'expedientes'
+        'expedientes',
+        'categoria_grafica_agrupado',
+        'data_grafica5'
     ));
 });

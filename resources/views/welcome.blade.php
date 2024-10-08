@@ -322,6 +322,19 @@
             <div class="row g-5 py-5 border-bottom">
                 <div class="col-md-12">
                     <div class="card">
+                        <div class="card-body">
+                            <div id="grafica5" class="card-img-top"></div>
+                        </div>
+                        <div class="card-footer">
+                            <small>Fecha de creación: {{ date('d/m/Y H:i:s') }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-5 py-5 border-bottom">
+                <div class="col-md-12">
+                    <div class="card">
                         <div class="card-header">Expedientes cargados para la estadística</div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -622,6 +635,61 @@
                     }
                 }]
             },
+            credits: {
+                enabled: false
+            }
+        });
+    </script>
+
+    <!-- Grafica 5 -->
+    <script type="text/javascript">
+        var categoria = <?php echo json_encode($categoria_grafica_agrupado); ?>;
+        var data = <?php echo json_encode($data_grafica5); ?>;
+
+        Highcharts.chart('grafica5', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                align: 'left',
+                text: 'Expedientes por período presidencial'
+            },
+            subtitle: {
+                align: 'left',
+                text: 'La gráfica muestra la cantidad de expedientes agrupados por período presidencial.'
+            },
+            accessibility: {
+                announceNewData: {
+                    enabled: true
+                }
+            },
+            xAxis: {
+                min: 0,
+                categories: categoria,
+                type: 'category'
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Cantidad de expedientes'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            series: [{
+                name: 'Expedientes',
+                colorByPoint: true,
+                data: data
+            }],
             credits: {
                 enabled: false
             }
