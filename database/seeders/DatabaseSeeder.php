@@ -1001,7 +1001,7 @@ class DatabaseSeeder extends Seeder
 
         echo "Plataforma Creado: {$plataforma->id} - {$plataforma->plataforma}" . PHP_EOL;
 
-        Excel::import(new AsignarAliasImport, 'database/seeders/AsignarAlias.xlsx');
+        //Excel::import(new AsignarAliasImport, 'database/seeders/AsignarAlias.xlsx');
 
         DB::select(
             "exec [dbo].[sp_configuracion_import] 0, 'id_pedido', 'Número de pedido', 2, 1, 'migracion', 2"

@@ -39,7 +39,7 @@ class PuntoVentaImport implements ToModel
             $codigo = str_pad(count($cantidad) + 1, 4, "0", STR_PAD_LEFT);
 
             $quitar_spoon = explode("-", $data);
-            $local = trim($quitar_spoon[1]);
+            $local = trim(count($quitar_spoon) > 1 ? $quitar_spoon[1] : $quitar_spoon[0]);
 
             $insert = DB::select(
                 "exec [dbo].[sp_punto_venta_crud] 0, '$codigo', '$local', '$data', 'migracion', 2"

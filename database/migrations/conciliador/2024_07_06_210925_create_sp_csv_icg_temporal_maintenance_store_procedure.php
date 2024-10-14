@@ -69,8 +69,8 @@ BEGIN
             AND TEMP.[serie_compuesta] = TABLA.[serie_compuesta]
             AND TEMP.[fecha_pedido] = TABLA.[fecha_pedido] 
             AND TEMP.[total_bruto] = TABLA.[total_bruto]
-            AND TEMP.[total_promocion] = TABLA.[total_promocion]
-            AND TEMP.[total_neto] = TABLA.[total_neto]
+            AND CONVERT(DECIMAL, REPLACE(ISNULL(TEMP.[total_promocion], '0'), ',', '')) = CONVERT(DECIMAL, REPLACE(ISNULL(TABLA.[total_promocion], '0'), ',', ''))
+            AND CONVERT(DECIMAL, REPLACE(ISNULL(TEMP.[total_neto], '0'), ',', '')) = CONVERT(DECIMAL, REPLACE(ISNULL(TABLA.[total_neto], '0'), ',', ''))
             AND TEMP.[forma_pago] = TABLA.[forma_pago]
             AND TEMP.[procesado] = 0
         ) AS 'id',
@@ -92,8 +92,8 @@ BEGIN
             AND TEMP.[serie_compuesta] = TABLA.[serie_compuesta]
             AND TEMP.[fecha_pedido] = TABLA.[fecha_pedido] 
             AND TEMP.[total_bruto] = TABLA.[total_bruto]
-            AND TEMP.[total_promocion] = TABLA.[total_promocion]
-            AND TEMP.[total_neto] = TABLA.[total_neto]
+            AND CONVERT(DECIMAL, REPLACE(ISNULL(TEMP.[total_promocion], '0'), ',', '')) = CONVERT(DECIMAL, REPLACE(ISNULL(TABLA.[total_promocion], '0'), ',', ''))
+            AND CONVERT(DECIMAL, REPLACE(ISNULL(TEMP.[total_neto], '0'), ',', '')) = CONVERT(DECIMAL, REPLACE(ISNULL(TABLA.[total_neto], '0'), ',', ''))
             AND TEMP.[forma_pago] = TABLA.[forma_pago]
             AND TEMP.[procesado] = 0
         ) AS 'numero_documento',
@@ -106,8 +106,8 @@ BEGIN
             AND TEMP.[serie_compuesta] = TABLA.[serie_compuesta]
             AND TEMP.[fecha_pedido] = TABLA.[fecha_pedido] 
             AND TEMP.[total_bruto] = TABLA.[total_bruto]
-            AND TEMP.[total_promocion] = TABLA.[total_promocion]
-            AND TEMP.[total_neto] = TABLA.[total_neto]
+            AND CONVERT(DECIMAL, REPLACE(ISNULL(TEMP.[total_promocion], '0'), ',', '')) = CONVERT(DECIMAL, REPLACE(ISNULL(TABLA.[total_promocion], '0'), ',', ''))
+            AND CONVERT(DECIMAL, REPLACE(ISNULL(TEMP.[total_neto], '0'), ',', '')) = CONVERT(DECIMAL, REPLACE(ISNULL(TABLA.[total_neto], '0'), ',', ''))
             AND TEMP.[forma_pago] = TABLA.[forma_pago]
             AND TEMP.[procesado] = 0
         ) AS 'numero_orden',
@@ -121,8 +121,8 @@ BEGIN
             AND TEMP.[serie_compuesta] = TABLA.[serie_compuesta]
             AND TEMP.[fecha_pedido] = TABLA.[fecha_pedido] 
             AND TEMP.[total_bruto] = TABLA.[total_bruto]
-            AND TEMP.[total_promocion] = TABLA.[total_promocion]
-            AND TEMP.[total_neto] = TABLA.[total_neto]
+            AND CONVERT(DECIMAL, REPLACE(ISNULL(TEMP.[total_promocion], '0'), ',', '')) = CONVERT(DECIMAL, REPLACE(ISNULL(TABLA.[total_promocion], '0'), ',', ''))
+            AND CONVERT(DECIMAL, REPLACE(ISNULL(TEMP.[total_neto], '0'), ',', '')) = CONVERT(DECIMAL, REPLACE(ISNULL(TABLA.[total_neto], '0'), ',', ''))
             AND TEMP.[forma_pago] = TABLA.[forma_pago]
             AND TEMP.[procesado] = 0
         ) AS 'nombre_cliente',
@@ -135,8 +135,8 @@ BEGIN
             AND TEMP.[serie_compuesta] = TABLA.[serie_compuesta]
             AND TEMP.[fecha_pedido] = TABLA.[fecha_pedido] 
             AND TEMP.[total_bruto] = TABLA.[total_bruto]
-            AND TEMP.[total_promocion] = TABLA.[total_promocion]
-            AND TEMP.[total_neto] = TABLA.[total_neto]
+            AND CONVERT(DECIMAL, REPLACE(ISNULL(TEMP.[total_promocion], '0'), ',', '')) = CONVERT(DECIMAL, REPLACE(ISNULL(TABLA.[total_promocion], '0'), ',', ''))
+            AND CONVERT(DECIMAL, REPLACE(ISNULL(TEMP.[total_neto], '0'), ',', '')) = CONVERT(DECIMAL, REPLACE(ISNULL(TABLA.[total_neto], '0'), ',', ''))
             AND TEMP.[forma_pago] = TABLA.[forma_pago]
             AND TEMP.[procesado] = 0
         ) AS 'cajero',
@@ -149,8 +149,8 @@ BEGIN
             AND TEMP.[serie_compuesta] = TABLA.[serie_compuesta]
             AND TEMP.[fecha_pedido] = TABLA.[fecha_pedido] 
             AND TEMP.[total_bruto] = TABLA.[total_bruto]
-            AND TEMP.[total_promocion] = TABLA.[total_promocion]
-            AND TEMP.[total_neto] = TABLA.[total_neto]
+            AND CONVERT(DECIMAL, REPLACE(ISNULL(TEMP.[total_promocion], '0'), ',', '')) = CONVERT(DECIMAL, REPLACE(ISNULL(TABLA.[total_promocion], '0'), ',', ''))
+            AND CONVERT(DECIMAL, REPLACE(ISNULL(TEMP.[total_neto], '0'), ',', '')) = CONVERT(DECIMAL, REPLACE(ISNULL(TABLA.[total_neto], '0'), ',', ''))
             AND TEMP.[forma_pago] = TABLA.[forma_pago]
             AND TEMP.[procesado] = 0
         ) AS 'estado'
@@ -192,8 +192,8 @@ BEGIN
             AND TEMPORAL.[fecha_pedido] = DEFINITIVA.[fecha_pedido] 
             AND TEMPORAL.[fecha_entrega] = DEFINITIVA.[fecha_entrega] 
             AND TEMPORAL.[total_bruto] = DEFINITIVA.[total_bruto]
-            AND TEMPORAL.[total_promocion] = DEFINITIVA.[total_promocion]
-            AND TEMPORAL.[total_neto] = DEFINITIVA.[total_neto]
+            AND CONVERT(DECIMAL, REPLACE(ISNULL(TEMPORAL.[total_promocion], '0'), ',', '')) = DEFINITIVA.[total_promocion]
+            AND CONVERT(DECIMAL, REPLACE(ISNULL(TEMPORAL.[total_neto], '0'), ',', '')) = DEFINITIVA.[total_neto]
             AND TEMPORAL.[serie_compuesta] = DEFINITIVA.[serie_compuesta]
             AND TEMPORAL.[numero_documento] = DEFINITIVA.[numero_documento]
             AND TEMPORAL.[numero_orden] = ISNULL(DEFINITIVA.[numero_orden], '')
@@ -219,8 +219,8 @@ BEGIN
             AND TEMPORAL.[fecha_pedido] = DEFINITIVA.[fecha_pedido] 
             AND TEMPORAL.[fecha_entrega] = DEFINITIVA.[fecha_entrega] 
             AND TEMPORAL.[total_bruto] = DEFINITIVA.[total_bruto]
-            AND TEMPORAL.[total_promocion] = DEFINITIVA.[total_promocion]
-            AND TEMPORAL.[total_neto] = DEFINITIVA.[total_neto]
+            AND CONVERT(DECIMAL, REPLACE(ISNULL(TEMPORAL.[total_promocion], '0'), ',', '')) = DEFINITIVA.[total_promocion]
+            AND CONVERT(DECIMAL, REPLACE(ISNULL(TEMPORAL.[total_neto], '0'), ',', '')) = DEFINITIVA.[total_neto]
             AND TEMPORAL.[serie_compuesta] = DEFINITIVA.[serie_compuesta]
             AND TEMPORAL.[numero_documento] = DEFINITIVA.[numero_documento]
             AND TEMPORAL.[numero_orden] = ISNULL(DEFINITIVA.[numero_orden], '')
