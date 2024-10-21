@@ -37,6 +37,8 @@ class CreateTblRecetaTable extends Migration
             $table->string('created_by', 25); //BackEnd
             $table->string('updated_by', 25)->nullable(); //BackEnd
 
+            $table->bigInteger('receta_padre_id')->default(0);
+
             $table->index(array('id', 'activo', 'estado_id'));
             $table->index(array('activo', 'estado_id'));
             $table->index(array('chef_id', 'activo', 'estado_id'));

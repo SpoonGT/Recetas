@@ -65,7 +65,7 @@ BEGIN
             @opcion = 4
 
             INSERT INTO [dbo].[tbl_token] ([token], [token_refresh], [usuario_id], [expira])
-            VALUES (@token, @token_refresh, @usuario_id, (SELECT DATEADD(minute, 5, GETDATE())));
+            VALUES (@token, @token_refresh, @usuario_id, (SELECT DATEADD(minute, 65, GETDATE())));
 
             EXECUTE sp_token_maintenance
             @token = @token,
