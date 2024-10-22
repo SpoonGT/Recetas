@@ -14,7 +14,7 @@ class CreateTblControlCambioTable extends Migration
     public function up()
     {
         Schema::create('tbl_control_cambio', function (Blueprint $table) {
-            $table->enum('accion', ['NUEVO', 'MODIFICAR', 'ELIMINAR'])->index();
+            $table->enum('accion', ['ENCABEZADO DE RECETA', 'INGREDIENTE DE RECETA', 'PROCESOS DE ELABORACION DE RECETA'])->index();
             $table->longText('anterior')->nullable();
             $table->longText('actual');
 
@@ -24,6 +24,7 @@ class CreateTblControlCambioTable extends Migration
             $table->bigInteger('receta_padre_id')->unsigned()->index();
             $table->foreign('receta_padre_id')->references('id')->on('tbl_receta');
 
+            $table->string('usuario', 25); //BackEnd
             $table->bigInteger('usuario_id')->unsigned()->index();
             $table->foreign('usuario_id')->references('id')->on('tbl_usuario');
 
@@ -31,6 +32,7 @@ class CreateTblControlCambioTable extends Migration
 
             $table->index(array('receta_padre_id', 'receta_id'));
             $table->index(array('receta_padre_id', 'receta_id', 'usuario_id'));
+            $table->index(array('receta_padre_id', 'receta_id', 'accion'));
         });
     }
 
