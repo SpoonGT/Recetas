@@ -41,7 +41,7 @@ Route::get('/', function () {
         $data["name"] = $item->nombre;
 
         $cantidad = DB::table('estadistica')->where('tramite_id', $item->id)->count();
-        $porcentaje =  $cantidad * 100 / $completo;
+        $porcentaje =  $cantidad;
         $data["y"] = $porcentaje;
 
         array_push($data_grafica2, $data);

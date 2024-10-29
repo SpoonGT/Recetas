@@ -33,17 +33,19 @@ class CreateTblRecetaTable extends Migration
             $table->foreign('empaque_id')->references('id')->on('tbl_area');
 
             $table->timestamps(); //BackEnd
+            $table->softDeletes()->index();
 
             $table->string('created_by', 25); //BackEnd
             $table->string('updated_by', 25)->nullable(); //BackEnd
 
             $table->bigInteger('receta_padre_id')->default(0);
 
-            $table->index(array('id', 'activo', 'estado_id'));
-            $table->index(array('activo', 'estado_id'));
-            $table->index(array('chef_id', 'activo', 'estado_id'));
-            $table->index(array('produce_id', 'activo', 'estado_id'));
-            $table->index(array('empaque_id', 'activo', 'estado_id'));
+            $table->index(array('receta_padre_id', 'deleted_at'));
+            $table->index(array('id', 'activo', 'estado_id', 'deleted_at'));
+            $table->index(array('activo', 'estado_id', 'deleted_at'));
+            $table->index(array('chef_id', 'activo', 'estado_id', 'deleted_at'));
+            $table->index(array('produce_id', 'activo', 'estado_id', 'deleted_at'));
+            $table->index(array('empaque_id', 'activo', 'estado_id', 'deleted_at'));
         });
     }
 
