@@ -112,6 +112,19 @@ Route::get('/', function () {
     $data_grafica5 = array();
     $data = null;
 
+    $tramites = ['RESUELTOS', 'NO RESUELTOS'];
+    $data_resueltos = array();
+
+    foreach ($tramites as $item) {
+        $data["name"] = $item;
+
+        $cantidad = DB::table('estadistica')->where('resuelto', $item == 'RESUELTOS')->count();
+        $porcentaje =  $cantidad;
+        $data["y"] = $porcentaje;
+
+        array_push($data_resueltos, $data);
+    }
+
     for ($i = 0; $i < 8; $i++) {
         $data["name"] = $categoria_grafica_agrupados[$i];
         $data["y"] = $data_grafica_agrupado[$i];
@@ -138,6 +151,7 @@ Route::get('/', function () {
         'cantidad_estados',
         'expedientes',
         'categoria_grafica_agrupado',
-        'data_grafica5'
+        'data_grafica5',
+        'data_resueltos'
     ));
 });

@@ -271,6 +271,19 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
+                            <div id="resueltos" class="card-img-top"></div>
+                        </div>
+                        <div class="card-footer">
+                            <small>Fecha de creación: {{ date('d/m/Y H:i:s') }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-5 py-5 border-bottom">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
                             <div id="grafica1" class="card-img-top"></div>
                         </div>
                         <div class="card-footer">
@@ -690,6 +703,75 @@
                 colorByPoint: true,
                 data: data
             }],
+            credits: {
+                enabled: false
+            }
+        });
+    </script>
+
+    <!-- Resueltos -->
+    <script type="text/javascript">
+        var data = <?php echo json_encode($data_resueltos); ?>;
+
+        Highcharts.chart('resueltos', {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: 'Expedientes resueltos'
+            },
+            subtitle: {
+                text: 'La gráfica muestra la cantidad de expedientes resueltos y pendientes de resolver.'
+            },
+            legend: {
+                lenabled: false
+            },
+            tooltip: {
+                valueSuffix: '%'
+            },
+            plotOptions: {
+                series: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: [{
+                        enabled: true,
+                        distance: 20
+                    }, {
+                        enabled: true,
+                        distance: -40,
+                        format: '{point.percentage:.1f}%',
+                        style: {
+                            fontSize: '1.2em',
+                            textOutline: 'none',
+                            opacity: 0.7
+                        },
+                        filter: {
+                            operator: '>',
+                            property: 'percentage',
+                            value: 10
+                        }
+                    }]
+                }
+            },
+            series: [{
+                name: 'Expedientes',
+                colorByPoint: true,
+                data: data
+            }],
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            },
             credits: {
                 enabled: false
             }
