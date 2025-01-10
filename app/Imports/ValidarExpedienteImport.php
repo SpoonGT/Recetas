@@ -27,8 +27,6 @@ class ValidarExpedienteImport implements ToModel
             Estadistica::where('anio_id', $anio->id)
             ->where('correlativo', $expediente[0])
             ->update(['resuelto' => true]);
-
-            print $row[0] . PHP_EOL;
         } catch (\Throwable $th) {
             print $th->getMessage() . PHP_EOL;
         }

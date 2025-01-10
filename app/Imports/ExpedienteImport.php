@@ -60,8 +60,6 @@ class ExpedienteImport implements ToModel
             );
 
             DB::commit();
-
-            print $row[2] . PHP_EOL;
         } catch (\Throwable $th) {
             DB::rollBack();
 
