@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Imports\AsignarAliasImport;
 use App\Imports\ExpedienteImport;
 use App\Imports\MateriaPrimaImport;
+use App\Imports\ValidarExpedienteImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Config;
 
@@ -23,7 +24,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         if (Config::get('database.default') == "mysql_estadistica") {
-            Excel::import(new ExpedienteImport, 'database/seeders/Expedientes.xlsx');
+            Excel::import(new ExpedienteImport, 'database/seeders/Expedientes2025.xlsx');
+            Excel::import(new ValidarExpedienteImport, 'database/seeders/ExpedienteResuelto.xlsx');
         } else {
             $this->generar_menu();
             $this->seguridad();

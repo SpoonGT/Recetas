@@ -22,7 +22,7 @@ class ExpedienteImport implements ToModel
     public function model(array $row)
     {
         try {
-            if ($row[0] == "No." || is_null($row[0]) || empty($row[0])) {
+            if ($row[0] == "NO" || is_null($row[0]) || empty($row[0])) {
                 return null;
             }
 
@@ -48,21 +48,20 @@ class ExpedienteImport implements ToModel
             $estado = Estado::firstOrNew(['nombre' => $row[6]]);
             $estado->save();
 
-            $fecha = explode('.', $row[5]);
-            $anio_str = strlen($fecha[2]) == 2 ? "20{$fecha[2]}" : $fecha[2];
-
             Estadistica::create(
                 [
                     'anio_id' => $anio->id,
                     'correlativo' => $row[2],
                     'interesado_id' => $interesado->id,
                     'tramite_id' => $tramite->id,
-                    'ingreso' => "{$anio_str}-{$fecha[1]}-$fecha[0]",
+                    'ingreso' => date('Y-m-d', strtotime($row[5])),
                     'estado_id' => $estado->id
                 ]
             );
 
             DB::commit();
+
+            print $row[2] . PHP_EOL;
         } catch (\Throwable $th) {
             DB::rollBack();
 

@@ -32,6 +32,8 @@ class CreateEstadisticaTable extends Migration
             $table->bigInteger('estado_id')->unsigned()->index();
             $table->foreign('estado_id')->references('id')->on('estado');
 
+            $table->boolean('resuelto')->default(false);
+
             $table->index(['estado_id', 'anio_id']);
         });
     }

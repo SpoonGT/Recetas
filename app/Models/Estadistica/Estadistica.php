@@ -25,7 +25,7 @@ class Estadistica extends Model
      *
      * @var array
      */
-    protected $fillable = ['anio_id', 'correlativo', 'interesado_id', 'tramite_id', 'ingreso', 'estado_id'];
+    protected $fillable = ['anio_id', 'correlativo', 'interesado_id', 'tramite_id', 'ingreso', 'estado_id', 'resuelto'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -33,6 +33,15 @@ class Estadistica extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'resuelto' => 'boolean',
+    ];
 
     public function anio()
     {
