@@ -22,10 +22,10 @@ class ValidarExpedienteImport implements ToModel
             }
 
             $expediente = explode("-", $row[0]);
-            $anio = Anio::where('valor', $expediente[0])->first();
+            $anio = Anio::where('valor', $expediente[1])->first();
 
             Estadistica::where('anio_id', $anio->id)
-            ->where('correlativo', $expediente[1])
+            ->where('correlativo', $expediente[0])
             ->update(['resuelto' => true]);
 
             print $row[0] . PHP_EOL;
