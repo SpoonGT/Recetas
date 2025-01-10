@@ -504,9 +504,6 @@
             legend: {
                 lenabled: false
             },
-            tooltip: {
-                valueSuffix: '%'
-            },
             plotOptions: {
                 series: {
                     allowPointSelect: true,
@@ -517,7 +514,7 @@
                     }, {
                         enabled: true,
                         distance: -40,
-                        format: '{point.percentage:.1f}',
+                        format: '{point.percentage:.1f}%',
                         style: {
                             fontSize: '1.2em',
                             textOutline: 'none',
@@ -726,9 +723,6 @@
             legend: {
                 lenabled: false
             },
-            tooltip: {
-                valueSuffix: '%'
-            },
             plotOptions: {
                 series: {
                     allowPointSelect: true,
@@ -739,7 +733,7 @@
                     }, {
                         enabled: true,
                         distance: -40,
-                        format: '{point.percentage:.1f}',
+                        format: '{point.percentage:.1f}%',
                         style: {
                             fontSize: '1.2em',
                             textOutline: 'none',
