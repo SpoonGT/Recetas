@@ -517,7 +517,7 @@
                     }, {
                         enabled: true,
                         distance: -40,
-                        format: '{point.percentage:.1f}%',
+                        format: '{point.percentage:.1f}',
                         style: {
                             fontSize: '1.2em',
                             textOutline: 'none',
@@ -739,7 +739,7 @@
                     }, {
                         enabled: true,
                         distance: -40,
-                        format: '{point.percentage:.1f}%',
+                        format: '{point.percentage:.1f}',
                         style: {
                             fontSize: '1.2em',
                             textOutline: 'none',
