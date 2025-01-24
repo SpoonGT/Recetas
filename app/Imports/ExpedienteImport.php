@@ -54,7 +54,7 @@ class ExpedienteImport implements ToModel
                     'correlativo' => $row[2],
                     'interesado_id' => $interesado->id,
                     'tramite_id' => $tramite->id,
-                    'ingreso' => date('Y-m-d', strtotime($row[5])),
+                    'ingreso' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[5])->format('Y-m-d'),
                     'estado_id' => $estado->id
                 ]
             );
