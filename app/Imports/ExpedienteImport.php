@@ -48,7 +48,7 @@ class ExpedienteImport implements ToModel
             $estado = Estado::firstOrNew(['nombre' => $row[6]]);
             $estado->save();
 
-            $correlativo = str_replace(['S/N', '(5T)', ' ', ' Y 456-2010', '(2T)', '-', '-2016', '(3T)', '|', '2T)'], ['0', '0', '', '', '', '', '', '', ''], '', $row[2]);
+            $correlativo = str_replace(['S/N', '(5T)', ' ', ' Y 456-2010', '(2T)', '-', '2016', '(3T)', '|', '2T)'], ['', '', '', '', '', '', '', '', '', ''], $row[2]);
 
             Estadistica::create(
                 [
