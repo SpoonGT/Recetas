@@ -48,13 +48,15 @@ class ExpedienteImport implements ToModel
             $estado = Estado::firstOrNew(['nombre' => $row[6]]);
             $estado->save();
 
+            $correlativo = str_replace(['S/N', '(5T)', ' ', ' Y 456-2010', '(2T)', '-', '-2016', '(3T)', '|', '2T)'], ['0', '0', '', '', '', '', '', '', ''], '', $row[2]);
+
             Estadistica::create(
                 [
                     'anio_id' => $anio->id,
-                    'correlativo' => $row[2],
+                    'correlativo' => $correlativo == '.' ? 0 : intval($correlativo),
                     'interesado_id' => $interesado->id,
                     'tramite_id' => $tramite->id,
-                    'ingreso' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[5])->format('Y-m-d'),
+                    'ingreso' => is_numeric($row[5]) ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[5])->format('Y-m-d') : date('Y-m-d', strtotime($row[5])),
                     'estado_id' => $estado->id
                 ]
             );
