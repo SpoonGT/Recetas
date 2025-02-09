@@ -17,8 +17,8 @@ class CreateTblFichaTecnicaAlergenoTable extends Migration
             $table->bigInteger('ficha_tecnica_id')->unsigned()->index();
             $table->foreign('ficha_tecnica_id')->references('id')->on('tbl_ficha_tecnica');
 
-            $table->bigInteger('materia_prima_id')->unsigned()->index();
-            $table->foreign('materia_prima_id')->references('id')->on('tbl_materia_prima');
+            $table->bigInteger('informacion_id')->unsigned()->index();
+            $table->foreign('informacion_id')->references('id')->on('tbl_informacion');
 
             $table->bigInteger('alergeno_id')->unsigned()->index();
             $table->foreign('alergeno_id')->references('id')->on('tbl_alergeno');

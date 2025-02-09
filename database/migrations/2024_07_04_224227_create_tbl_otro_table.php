@@ -20,6 +20,7 @@ class CreateTblOtroTable extends Migration
             $table->foreign('ficha_tecnica_id')->references('id')->on('tbl_ficha_tecnica');
 
             $table->longText('almacenamiento');
+            $table->string('potencial_mal_uso', 150);
 
             $table->timestamp('created_at', 0);
             $table->string('created_by', 25);

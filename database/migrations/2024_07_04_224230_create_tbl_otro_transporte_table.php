@@ -23,8 +23,6 @@ class CreateTblOtroTransporteTable extends Migration
             $table->bigInteger('transporte_id')->unsigned()->index();
             $table->foreign('transporte_id')->references('id')->on('tbl_transporte');
 
-            $table->string('almacenamiento', 150);
-
             $table->timestamp('created_at', 0);
             $table->string('created_by', 25);
 
