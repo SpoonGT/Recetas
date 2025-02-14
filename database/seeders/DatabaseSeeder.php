@@ -738,7 +738,7 @@ class DatabaseSeeder extends Seeder
 
         echo "Categoría Creada: {$categoria->id} - {$categoria->nombre}" . PHP_EOL;
 
-        $json = '{"nombre": "Decoración", "prefijos": "PTL, PTI"}';
+        $json = '{"nombre": "Decoración", "prefijos": "PTL, PTI, MP"}';
         $categoria = DB::select(
             "exec [dbo].[sp_table_maintenance] $categoria->id, 'tbl_categoria', '{$json}', 'migration', 3"
         )[0];
