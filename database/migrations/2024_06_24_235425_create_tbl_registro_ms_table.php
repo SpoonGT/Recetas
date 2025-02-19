@@ -14,13 +14,13 @@ class CreateTblRegistroMsTable extends Migration
     public function up()
     {
         Schema::create('tbl_registro_ms', function (Blueprint $table) {
+            $table->id();
+            
             $table->string('codigo', 50)->unique();
+            $table->longText('documento');
 
             $table->dateTime('fecha_inicio');
             $table->dateTime('fecha_vencimiento');
-
-            $table->bigInteger('ficha_tecnica_id')->unsigned()->index();
-            $table->foreign('ficha_tecnica_id')->references('id')->on('tbl_ficha_tecnica');
 
             $table->timestamp('created_at', 0);
             $table->string('created_by', 25);
