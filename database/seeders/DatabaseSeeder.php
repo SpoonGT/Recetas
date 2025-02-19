@@ -188,6 +188,32 @@ class DatabaseSeeder extends Seeder
 
             echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
 
+            // Menu transporte
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Transporte', '/Catalogo/Transporte', 'fa-solid fa-bus', {$menu_id}, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
+            // Menu microbiologico
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Microbiologico', '/Catalogo/Microbiologico', 'fa-solid fa-vial-virus', {$menu_id}, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
             $rol_menu = DB::select(
                 "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
             )[0];
@@ -712,7 +738,7 @@ class DatabaseSeeder extends Seeder
 
         echo "Categoría Creada: {$categoria->id} - {$categoria->nombre}" . PHP_EOL;
 
-        $json = '{"nombre": "Decoración", "prefijos": "PTL, PTI"}';
+        $json = '{"nombre": "Decoración", "prefijos": "PTL, PTI, MP"}';
         $categoria = DB::select(
             "exec [dbo].[sp_table_maintenance] $categoria->id, 'tbl_categoria', '{$json}', 'migration', 3"
         )[0];
