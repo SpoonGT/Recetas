@@ -214,6 +214,19 @@ class DatabaseSeeder extends Seeder
 
             echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
 
+            // Menu registroMS
+            $rol_menu = DB::select(
+                "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
+            )[0];
+
+            echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
+
+            $menu = DB::select(
+                "exec [dbo].[sp_menu_crud] 0, 'Registro MS', '/Catalogo/RegistroMS', 'fa-solid fa-user-nurse', {$menu_id}, 'migration', 2"
+            )[0];
+
+            echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
+
             $rol_menu = DB::select(
                 "exec [dbo].[sp_rol_menu_config] {$rol->id}, {$menu->id}, 'migration', 2"
             )[0];
