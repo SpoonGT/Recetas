@@ -31,9 +31,9 @@ class DatabaseSeeder extends Seeder
             $this->seguridad();
             if (Config::get('database.default') == "sqlsrv_recetas_nube" || Config::get('database.default') == "sqlsrv_recetas_desa" || Config::get('database.default') == "sqlsrv_recetas") {
                 $this->catalogo_receta();
-                $this->import_receta();
+                /*$this->import_receta();
                 $this->materia_prima_receta();
-                $this->producto_receta();
+                $this->producto_receta();*/
                 echo "Migración de Recetas" . PHP_EOL;
             }
 
