@@ -18,7 +18,7 @@ class CreateTblHorneoTable extends Migration
             $table->foreign('receta_id')->references('id')->on('tbl_receta');
 
             $table->string('tiempo_horneo'); //Form
-            $table->smallInteger('horno'); //Form
+            $table->string('horno'); //Form
 
             $table->string('temperatura', 100); //Form
 
