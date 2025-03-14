@@ -16,7 +16,7 @@ class CreateTblInformacionTable extends Migration
         Schema::create('tbl_informacion', function (Blueprint $table) {
             $table->id();
             $table->enum('prefijo', ['PTL', 'PTI', 'SE', 'MP', 'EM', 'AS']);
-            $table->smallInteger('codigo');
+            $table->bigInteger('codigo');
             $table->string('netsuit', 100)->unique();
 
             $table->string('nombre', 150);
