@@ -260,7 +260,7 @@ class DatabaseSeeder extends Seeder
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
             $menu = DB::select(
-                "exec [dbo].[sp_menu_crud] 0, 'Netsuit', '/MateriaPrima/Netsuit', 'fa-solid fa-wheat-awn', {$menu_id}, 'migration', 2"
+                "exec [dbo].[sp_menu_crud] 0, 'Netsuite', '/MateriaPrima/Netsuite', 'fa-solid fa-wheat-awn', {$menu_id}, 'migration', 2"
             )[0];
 
             echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
@@ -310,7 +310,7 @@ class DatabaseSeeder extends Seeder
             echo "Menu asignado al Rol: {$rol_menu->menu_id} - {$rol_menu->rol_id}" . PHP_EOL;
 
             $menu = DB::select(
-                "exec [dbo].[sp_menu_crud] 0, 'Revisión Receta', '/Recetas/RevisionReceta', 'fa-solid fa-clipboard-check', {$menu_id}, 'migration', 2"
+                "exec [dbo].[sp_menu_crud] 0, 'Aprobación Receta', '/Recetas/RevisionReceta', 'fa-solid fa-clipboard-check', {$menu_id}, 'migration', 2"
             )[0];
 
             echo "Menu Creado: {$menu->id} - {$menu->nombre}" . PHP_EOL;
